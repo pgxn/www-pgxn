@@ -8,11 +8,16 @@ Module::Build->new(
     create_makefile_pl => 'traditional',
     configure_requires => { 'Module::Build' => '0.30' },
     build_requires     => {
+        'File::Spec::Functions' => 0,
         'Module::Build'         => '0.30',
         'Test::More'            => '0.96',
     },
     requires => {
-        'perl'                  => 5.008001,
+        Carp            => 0,
+        'HTTP::Tiny'    => 0,
+        JSON            => 0,
+        'perl'          => 5.010,
+        'URI::Template' => 0,
     },
     recommends => {
         'Test::Pod'           => '1.41',

@@ -1,0 +1,9 @@
+{
+   "tag": "key value",
+   "releases": {
+      "pair": {
+         "stable": [ "0.1.0" ],
+         "testing": [ "0.1.1" ]
+      }
+   }
+}
