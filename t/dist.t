@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 use utf8;
-use Test::More tests => 31;
+use Test::More tests => 45;
 #use Test::More 'no_plan';
 use WWW::PGXN;
 
@@ -56,6 +56,7 @@ is_deeply [ $dist->versions_for('testing') ], [qw(0.1.1)],
 is_deeply [ $dist->versions_for('unstable') ], [],
   'Should have no unstable versions';
 
+##############################################################################
 # Now find for a particular version number.
 ok $dist = $pgxn->find_distribution(name => 'pair', version => '0.1.2'),
     'Find pair 0.1.2';
@@ -95,6 +96,32 @@ is_deeply $dist->resources, {
         web => 'http://github.com/theory/kv-pair/'
     }
 }, 'Should have resources';
+
+##############################################################################
+# Test merging.
+ok $dist = $pgxn->find_distribution(name => 'pair'),
+    'Find "pair" again';
+ok $dist->_merge_meta, 'Merge distmeta';
+
+is $dist->version_for('stable'), '0.1.2', 'Should have proper stable version';
+is $dist->version, '0.1.2', 'Version should be "0.1.2"';
+
+ok $dist = $pgxn->find_distribution(name => 'pair', version => '0.1.2'),
+    'Find "pair" 0.1.2 again';
+ok $dist->_merge_by_dist, 'Merge by-dist';
+is $dist->version_for('stable'), '0.1.2', 'Should have proper stable version';
+is $dist->version, '0.1.2', 'Version should be "0.1.2"';
+
+# Test implicit merging.
+ok my $dist = $pgxn->find_distribution(name => 'pair'),
+    'Find "pair" once more';
+is $dist->version_for('stable'), '0.1.2', 'Should have proper stable version';
+is $dist->version, '0.1.2', 'Version should be "0.1.2"';
+
+ok $dist = $pgxn->find_distribution(name => 'pair', version => '0.1.2'),
+    'Find "pair" 0.1.2 once more';
+is $dist->version_for('stable'), '0.1.2', 'Should have proper stable version';
+is $dist->version, '0.1.2', 'Version should be "0.1.2"';
 
 # delete $dist->{_pgxn};
 # use Data::Dump; ddx $dist;

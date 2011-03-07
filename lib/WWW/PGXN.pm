@@ -23,11 +23,10 @@ sub new {
 sub find_distribution {
     my ($self, %p) = @_;
     $p{dist} = delete $p{name};
-    my $url = $self->_url_for((exists $p{version} ? 'meta' : 'by-dist'), %p);
-    my $res = $self->_request->get($url);
-    croak "Request for $url failed: $res->{status}: $res->{reason}\n"
-        unless $res->{success};
-    WWW::PGXN::Distribution->new($self, JSON->new->utf8->decode($res->{content}));
+    WWW::PGXN::Distribution->new(
+        $self,
+        $self->_fetch((exists $p{version} ? 'meta' : 'by-dist'), %p)
+    );
 }
 
 sub url {
@@ -70,6 +69,15 @@ sub _request {
         agent => __PACKAGE__ . "/$VERSION",
         proxy => $self->proxy,
     );
+}
+
+sub _fetch {
+    my $self = shift;
+    my $url = $self->_url_for(@_);
+    my $res = $self->_request->get($url);
+    croak "Request for $url failed: $res->{status}: $res->{reason}\n"
+        unless $res->{success};
+    WWW::PGXN::Distribution->new($self, JSON->new->utf8->decode($res->{content}));
 }
 
 package
