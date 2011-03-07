@@ -13,9 +13,9 @@ Module::Build->new(
         'Test::More'            => '0.96',
     },
     requires => {
-        Carp            => 0,
+        'Carp'          => 0,
         'HTTP::Tiny'    => 0,
-        JSON            => 0,
+        'JSON'          => 0,
         'perl'          => 5.010,
         'URI::Template' => 0,
     },

@@ -2,6 +2,7 @@ package WWW::PGXN;
 
 use 5.8.1;
 use strict;
+use WWW::PGXN::Distribution;
 use HTTP::Tiny;
 use URI::Template;
 use JSON;
@@ -20,8 +21,13 @@ sub new {
 }
 
 sub find_distribution {
-    my ($self, $dist) = @_;
-#    my $res = $http->get()
+    my ($self, %p) = @_;
+    $p{dist} = delete $p{name};
+    my $url = $self->_url_for((exists $p{version} ? '' : 'by-') . 'dist', %p);
+    my $res = $self->_request->get($url);
+    croak "Request for $url failed: $res->{status}: $res->{reason}\n"
+        unless $res->{success};
+    WWW::PGXN::Distribution->new($self, JSON->new->utf8->decode($res->{content}));
 }
 
 sub url {
@@ -49,6 +55,13 @@ sub _uri_templates {
         my $tmpl = JSON->new->utf8->decode($res->{content});
         map { $_ => URI::Template->new($tmpl->{$_}) } keys %{ $tmpl };
     }};
+}
+
+sub _url_for {
+    my ($self, $name) = (shift, shift);
+    my $tmpl = $self->_uri_templates->{$name}
+        or croak qq{No URI template named "$name"};
+    return $self->url . $tmpl->process(@_);
 }
 
 sub _request {

@@ -1,6 +1,7 @@
 {
    "name": "pair",
    "releases": {
-      "stable": ["0.1.0"]
+      "stable": ["0.1.2", "0.1.0"],
+      "testing": ["0.1.1"]
    }
 }
