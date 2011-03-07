@@ -23,7 +23,7 @@ sub new {
 sub find_distribution {
     my ($self, %p) = @_;
     $p{dist} = delete $p{name};
-    my $url = $self->_url_for((exists $p{version} ? '' : 'by-') . 'dist', %p);
+    my $url = $self->_url_for((exists $p{version} ? 'meta' : 'by-dist'), %p);
     my $res = $self->_request->get($url);
     croak "Request for $url failed: $res->{status}: $res->{reason}\n"
         unless $res->{success};
