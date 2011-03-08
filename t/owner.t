@@ -25,7 +25,7 @@ can_ok $owner, qw(
     email
     uri
     twitter
-    release_info
+    releases
 );
 
 is $owner->nickname, 'theory', 'Should have nickname';
@@ -33,7 +33,7 @@ is $owner->name, 'David E. Wheeler', 'Should have name';
 is $owner->email, 'david@justatheory.com', 'Should have email';
 is $owner->uri, 'http://justatheory.com/', 'Should have URI';
 is $owner->twitter, 'theory', 'Should have twitter nick';
-is_deeply $owner->release_info, {
+is_deeply $owner->releases, {
     explanation => { stable => ["0.2.0"] },
     pair => { stable => ["0.1.0"] },
 }, 'Should have release data';

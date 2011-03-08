@@ -24,7 +24,7 @@ sub new {
     bless $data, $class;
 }
 
-sub release_info {
+sub releases {
     +{ %{ shift->{releases} } }
 }
 
@@ -99,9 +99,41 @@ The owner's email address.
 
 The owner's Twitter nickname, if any.
 
-=head3 C<release_info>
+=head3 C<releases>
 
+  my $releases = $owner->releases;
 
+Returns a hash reference describing all of the distributions ever released by
+the owner. The keys of are distribution names and the values are hash
+references that may contain the following keys:
+
+=over
+
+=item C<stable>
+
+=item C<testing>
+
+=item C<unstable>
+
+An array reference with the version numbers of all releases of the
+distribution with the named release status, ordered from most to least recent.
+
+=item C<stable_date>
+
+=item C<testing_date>
+
+=item C<unstable_date>
+
+The date of the most recent release of the named release status. Represented
+as a string in strict L<ISO-8601|http://en.wikipedia.org/wiki/ISO_8601> format
+and in the UTC time zone. Available only from the PGXN API, not mirrors.
+
+=item C<abstract>
+
+A brief description of the distribution. Available only from the PGXN API, not
+mirrors.
+
+=back
 
 =head1 See Also
 
