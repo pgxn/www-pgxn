@@ -94,6 +94,24 @@ sub _fetch_json {
     WWW::PGXN::Distribution->new($self, JSON->new->utf8->decode($res->{content}));
 }
 
+sub _download_to {
+    my ($self, $file) = (shift, shift);
+    my $res = $self->_fetch(dist => @_);
+    if (-e $file) {
+        if (-d $file) {
+            my @seg = $self->_url_for(dist => @_)->path_segments;
+            $file = File::Spec->catfile($file, $seg[-1]);
+        } else {
+            croak "$file already exists";
+        }
+    }
+
+    open my $fh, '>:raw', $file or die "Cannot open $file: $!\n";
+    print $fh $res->{content};
+    close $fh or die "Cannot close $file: $!\n";
+    return $self;
+}
+
 package
 WWW::PGXN::FileReq;
 
@@ -200,10 +218,29 @@ Get or set the URL for a proxy server to use.
 
 =head3 C<find_distribution>
 
-  my $dist = $pgxn->find_distribution($dist_name);
+  my $dist = $pgxn->find_distribution(name => $dist_name);
 
-Finds the data for the named distribution. Returns a
-L<WWW::PGXN::Distribution> object.
+Finds the data for a distribution. Returns a L<WWW::PGXN::Distribution>
+object. The supported parameters are:
+
+=over
+
+=item C<name>
+
+The name of the distribution. Required.
+
+=item C<version>
+
+The version of the distribution. Optional.
+
+=back
+
+=head3 C<find_extension>
+
+  my $dist = $pgxn->find_extension($extension_name);
+
+Finds the data for the named extension. Returns a L<WWW::PGXN::Extension>
+object.
 
 =head1 See Also
 

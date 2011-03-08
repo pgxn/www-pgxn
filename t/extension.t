@@ -3,8 +3,8 @@
 use strict;
 use warnings;
 use utf8;
-use Test::More tests => 28;
-#use Test::More 'no_plan';
+#use Test::More tests => 28;
+use Test::More 'no_plan';
 use WWW::PGXN;
 use File::Spec::Functions qw(catfile);
 
@@ -30,6 +30,11 @@ can_ok $ext, qw(
     latest_distribution
     distribution_for_version
     info_for_version
+    download_stable_to
+    download_latest_to
+    download_testing_to
+    download_unstable_to
+    download_version_to
 );
 
 is $ext->name, 'pair', 'Name should be "pair"';
@@ -67,3 +72,33 @@ is_deeply $ext->latest_info, { dist => 'pair', version => '0.1.0' },
     'Should have latest data';
 is_deeply $ext->testing_info, {}, 'Should have empty testing info';
 is_deeply $ext->unstable_info, {}, 'Should have empty unstable info';
+
+##############################################################################
+# Test downloading.
+my $zip = catfile qw(t pair-0.1.1.zip);
+ok !-e $zip, "$zip should not yet exist";
+END { unlink $zip }
+ok $ext->download_stable_to($zip), "Download to $zip";
+ok -e $zip, "$zip should now exist";
+
+# Download latest.
+my $pgz = catfile qw(t pair-0.1.0.pgz);
+ok !-e $pgz, "$pgz should not yet exist";
+END { unlink $pgz }
+ok $ext->download_latest_to('t'), 'Download to t/';
+ok -e $pgz, "$pgz should now exist";
+
+# Should get undef for nonexistent statuses.
+ok !$ext->download_testing_to('t'), 'Should not download testing';
+ok !$ext->download_unstable_to('t'), 'Should not download unstable';
+
+# Try by version.
+my $ver = catfile qw(t pair-0.1.1.ver);
+ok !-e $ver, "$ver should not yet exist";
+END { unlink $ver }
+ok $ext->download_version_to('0.1.0', $ver), "Download to $ver";
+ok -e $ver, "$ver should now exist";
+
+# Try non-existent version.
+ok !$ext->download_version_to('1.1.1', 't'), 'Should now download 1.1.1';
+

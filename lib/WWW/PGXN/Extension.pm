@@ -48,13 +48,49 @@ sub distribution_for_version {
 
 sub info_for_version {
     my ($self, $version) = @_;
-    my $vdata = $self->{versions}{$version};
+    $self->{versions}{$version};
 }
 
 sub _dist_for_status {
     my ($self, $status) = @_;
     my $vdata = $self->{$status} or return;
     return $self->{_pgxn}->find_distribution(%{ $vdata });
+}
+
+sub download_stable_to {
+    my $self = shift;
+    $self->_download_to(shift, $self->{stable});
+}
+
+sub download_latest_to {
+    my $self = shift;
+    $self->_download_to(shift, $self->latest_info);
+}
+
+sub download_testing_to {
+    my $self = shift;
+    $self->_download_to(shift, $self->{testing});
+}
+
+sub download_unstable_to {
+    my $self = shift;
+    $self->_download_to(shift, $self->{unstable});
+}
+
+sub download_version_to {
+    my ($self, $version, $file) = @_;
+    my $info = $self->info_for_version($version) or return;
+    $self->_download_to($file, $info->[0]);
+}
+
+sub _download_to {
+    my ($self, $file, $info) = @_;
+    return unless $info;
+    $self->{_pgxn}->_download_to(
+        $file,
+        dist    => $info->{dist},
+        version => $info->{version},
+    );
 }
 
 1;

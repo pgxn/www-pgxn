@@ -89,25 +89,12 @@ sub url {
 }
 
 sub download_to {
-    my ($self, $file) = @_;
-    my $res = $self->{_pgxn}->_fetch(
-        'dist',
+    my $self = shift;
+    $self->{_pgxn}->_download_to(
+        shift,
         dist    => $self->name,
         version => $self->version
     );
-    if (-e $file) {
-        if (-d $file) {
-            my @seg = $self->url->path_segments;
-            $file = File::Spec->catfile($file, $seg[-1]);
-        } else {
-            croak "$file already exists";
-        }
-    }
-
-    open my $fh, '>:raw', $file or die "Cannot open $file: $!\n";
-    print $fh $res->{content};
-    close $fh or die "Cannot close $file: $!\n";
-    return $self;
 }
 
 1;
