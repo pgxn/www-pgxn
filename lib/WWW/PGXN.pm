@@ -98,8 +98,7 @@ sub _request {
 }
 
 sub _fetch {
-    my $self = shift;
-    my $url = $self->_url_for(@_);
+    my ($self, $url) = @_;
     my $res = $self->_request->get($url);
     croak "Request for $url failed: $res->{status}: $res->{reason}\n"
         unless $res->{success};
@@ -108,16 +107,17 @@ sub _fetch {
 
 sub _fetch_json {
     my $self = shift;
-    my $res = $self->_fetch(@_);
+    my $res = $self->_fetch($self->_url_for(@_));
     WWW::PGXN::Distribution->new($self, JSON->new->utf8->decode($res->{content}));
 }
 
 sub _download_to {
     my ($self, $file) = (shift, shift);
-    my $res = $self->_fetch(dist => @_);
+    my $url = $self->_url_for(dist => @_);
+    my $res = $self->_fetch($url);
     if (-e $file) {
         if (-d $file) {
-            my @seg = $self->_url_for(dist => @_)->path_segments;
+            my @seg = $url->path_segments;
             $file = File::Spec->catfile($file, $seg[-1]);
         } else {
             croak "$file already exists";

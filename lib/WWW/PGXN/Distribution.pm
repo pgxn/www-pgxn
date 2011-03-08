@@ -75,7 +75,9 @@ sub _merge_meta {
 
 sub _merge_by_dist {
     my $self = shift;
-    my $by_dist = $self->{_pgxn}->_fetch_json( 'by-dist', dist    => $self->{name} );
+    my $by_dist = $self->{_pgxn}->_fetch_json(
+        'by-dist', dist => $self->{name}
+    );
     @{$self}{keys %{ $by_dist }} = values %{ $by_dist };
 }
 
