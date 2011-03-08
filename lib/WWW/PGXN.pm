@@ -184,16 +184,26 @@ WWW::PGXN - Interface to the PGXN API
 
 =head1 Synopsis
 
-  my $pgxn = WWW::PGXN->new(
-      url => 'http://api.pgxn.org/',
-  );
-
+  my $pgxn = WWW::PGXN->new( url => 'http://api.pgxn.org/' );
   my $dist = $pgxn->find_distribution(name => 'pgTAP');
+  $dist->download_to('.');
 
 =head1 Description
 
 This module provide a simple Perl interface over the the L<PGXN
-API|http://api.pgxn.org/>. It also works with any PGXN mirror server.
+API|http://api.pgxn.org/>. It also works with any PGXN mirror server. It
+provides an interface for finding distributions, extensions, owners, and tags.
+It's designed to make it dead simple for applications such as web apps and
+command-line clients to get the data they need from a PGXN mirror with a
+minimum of hassle, including via the file system, if there is a local mirror.
+
+L<PGXN|http://pgxn.org> is a C<CPAN|http://cpan.org>-inspired network for
+distributing extensions for the L<PostgreSQL RDBMS|http://www.postgresql.org>.
+All of the infrastructure tools, however, have been designed to be used to
+create networks for distributing any kind of release distributions. As such,
+WWW::PGXN should work with any mirror that gets its data from a
+L<PGXN::Manager|http://github.com/theory/pgxn-manager>-managed master server,
+and with any L<PGXN::API|http://github.com/theory/pgxn-api>-powered server.
 
 =head1 Interface
 
@@ -201,9 +211,7 @@ API|http://api.pgxn.org/>. It also works with any PGXN mirror server.
 
 =head3 C<new>
 
-  my $pgxn = WWW::PGXN->new(
-      url => 'http://api.pgxn.org/',
-  );
+  my $pgxn = WWW::PGXN->new( url => 'http://api.pgxn.org/');
 
 Construct a new WWW::PGXN object. The only required attribute is C<url>. The
 supported parameters are:
@@ -217,7 +225,7 @@ Required.
 
 =item C<proxy>
 
-URL of a proxy server to use.
+URL of a proxy server to use. Ignored if C<url> is a C<file:> URL.
 
 =back
 
@@ -228,14 +236,17 @@ URL of a proxy server to use.
   my $url = $pgxn->url;
   $pgxn->url($url);
 
-Get or set the URL for the PGXN mirror or API server.
+Get or set the URL for the PGXN mirror or API server. May be a C<file:> URL,
+in which case the API will be accessed purely via the file system. Otherwise
+it uses L<HTTP::Tiny> to access the API.
 
 =head3 C<proxy>
 
   my $proxy = $pgxn->proxy;
   $pgxn->proxy($proxy);
 
-Get or set the URL for a proxy server to use.
+Get or set the URL for a proxy server to use. Ignored if C<url> is a C<file:>
+URL.
 
 =head2 Instance Methods
 
@@ -258,24 +269,39 @@ The version of the distribution. Optional.
 
 =back
 
+If the distribution cannot be found, C<undef> will be returned. For any other
+errors, an exception will be thrown.
+
 =head3 C<find_extension>
 
   my $dist = $pgxn->find_extension($extension_name);
 
 Finds the data for the named extension. Returns a L<WWW::PGXN::Extension>
-object.
+object. If the extension cannot be found, C<undef> will be returned. For any
+other errors, an exception will be thrown.
 
 =head3 C<find_owner>
 
   my $dist = $pgxn->find_owner($owner_name);
 
-Finds the data for the named owner. Returns a L<WWW::PGXN::Owner> object.
+Finds the data for the named owner. Returns a L<WWW::PGXN::Owner> object. If
+the owner cannot be found, C<undef> will be returned. For any other errors, an
+exception will be thrown.
 
 =head3 C<find_tag>
 
   my $dist = $pgxn->find_tag($tag_name);
 
-Finds the data for the named tag. Returns a L<WWW::PGXN::Tag> object.
+Finds the data for the named tag. Returns a L<WWW::PGXN::Tag> object. If the
+tag cannot be found, C<undef> will be returned. For any other errors, an
+exception will be thrown.
+
+=head3 C<mirrors>
+
+  my @mirrors = $pgxn->mirrors;
+
+Returns a list of L<WWW::PGXN::Mirror> objects representing all of the mirrors
+in the network to which the PGXN API or mirror server belongs.
 
 =head1 See Also
 
@@ -286,7 +312,7 @@ Finds the data for the named tag. Returns a L<WWW::PGXN::Tag> object.
 The PostgreSQL Extension Network, the reference implementation of the PGXN
 infrastructure.
 
-=item * L<PGXN::API>
+=item * L<PGXN::API|http://github.com/theory/pgxn-api>
 
 Creates and serves a PGXN API implementation from a PGXN mirror.
 
