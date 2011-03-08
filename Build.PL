@@ -17,7 +17,7 @@ Module::Build->new(
         'File::Spec'    => 0,
         'HTTP::Tiny'    => 0,
         'JSON'          => 0,
-        'perl'          => 5.010,
+        'perl'          => 5.008003,
         'URI::Template' => 0,
     },
     recommends => {
