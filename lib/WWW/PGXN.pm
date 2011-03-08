@@ -27,7 +27,7 @@ sub find_distribution {
     my ($self, %p) = @_;
     $p{dist} = delete $p{name} unless exists $p{dist};
     my $data = $self->_fetch_json(
-        (exists $p{version} ? 'meta' : 'by-dist'), %p
+        (defined $p{version} ? 'meta' : 'by-dist'), %p
     ) or return;
     WWW::PGXN::Distribution->new($self, $data);
 }
