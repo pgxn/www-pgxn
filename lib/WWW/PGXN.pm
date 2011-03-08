@@ -130,7 +130,7 @@ sub _download_to {
     open my $fh, '>:raw', $file or die "Cannot open $file: $!\n";
     print $fh $res->{content};
     close $fh or die "Cannot close $file: $!\n";
-    return $self;
+    return $file;
 }
 
 package

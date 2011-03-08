@@ -139,12 +139,12 @@ is $dist->url, 'file:t/mirror/dist/pair/pair-0.1.1.pgz','Should have URL';
 my $zip = catfile qw(t pair-0.1.1.zip);
 ok !-e $zip, "$zip should not yet exist";
 END { unlink $zip }
-ok $dist->download_to($zip), "Download to $zip";
+is $dist->download_to($zip), $zip, "Download to $zip";
 ok -e $zip, "$zip should now exist";
 
 # Download to a diretory.
 my $pgz = catfile qw(t pair-0.1.1.pgz);
 ok !-e $pgz, "$pgz should not yet exist";
 END { unlink $pgz }
-ok $dist->download_to('t'), 'Download to t/';
+is $dist->download_to('t'), $pgz, 'Download to t/';
 ok -e $pgz, "$pgz should now exist";

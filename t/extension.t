@@ -82,14 +82,14 @@ is_deeply $ext->unstable_info, {}, 'Should have empty unstable info';
 my $zip = catfile qw(t pair-0.1.1.zip);
 ok !-e $zip, "$zip should not yet exist";
 END { unlink $zip }
-ok $ext->download_stable_to($zip), "Download to $zip";
+is $ext->download_stable_to($zip), $zip, "Download to $zip";
 ok -e $zip, "$zip should now exist";
 
 # Download latest.
 my $pgz = catfile qw(t pair-0.1.1.pgz);
 ok !-e $pgz, "$pgz should not yet exist";
 END { unlink $pgz }
-ok $ext->download_latest_to('t'), 'Download to t/';
+is $ext->download_latest_to('t'), $pgz, 'Download to t/';
 ok -e $pgz, "$pgz should now exist";
 
 # Should get undef for nonexistent statuses.
@@ -100,7 +100,7 @@ ok !$ext->download_unstable_to('t'), 'Should not download unstable';
 my $ver = catfile qw(t pair-0.0.5.ver);
 ok !-e $ver, "$ver should not yet exist";
 END { unlink $ver }
-ok $ext->download_version_to('0.0.5', $ver), "Download to $ver";
+is $ext->download_version_to('0.0.5', $ver), $ver, "Download to $ver";
 ok -e $ver, "$ver should now exist";
 
 # Try non-existent version.
