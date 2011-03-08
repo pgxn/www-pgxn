@@ -14,6 +14,7 @@ Module::Build->new(
     },
     requires => {
         'Carp'          => 0,
+        'File::Spec'    => 0,
         'HTTP::Tiny'    => 0,
         'JSON'          => 0,
         'perl'          => 5.010,

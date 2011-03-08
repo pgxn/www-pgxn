@@ -2,6 +2,8 @@ package WWW::PGXN::Distribution;
 
 use 5.8.1;
 use strict;
+use File::Spec;
+use Carp;
 
 BEGIN {
     # XXX Use DateTime for release date?
@@ -62,7 +64,7 @@ sub version_for  { shift->releases->{+shift}[0] }
 sub _merge_meta {
     my $self = shift;
     my $rel = $self->{releases};
-    my $meta = $self->{_pgxn}->_fetch(
+    my $meta = $self->{_pgxn}->_fetch_json(
         'meta',
         version => $rel->{stable}[0] || $rel->{testing}[0] || $rel->{unstable}[0],
         dist    => $self->{name},
@@ -72,8 +74,39 @@ sub _merge_meta {
 
 sub _merge_by_dist {
     my $self = shift;
-    my $by_dist = $self->{_pgxn}->_fetch( 'by-dist', dist    => $self->{name} );
+    my $by_dist = $self->{_pgxn}->_fetch_json( 'by-dist', dist    => $self->{name} );
     @{$self}{keys %{ $by_dist }} = values %{ $by_dist };
+}
+
+sub url {
+    my $self = shift;
+    $self->{_pgxn}->_url_for(
+        'dist',
+        dist    => $self->name,
+        version => $self->version
+    );
+}
+
+sub download_to {
+    my ($self, $file) = @_;
+    my $res = $self->{_pgxn}->_fetch(
+        'dist',
+        dist    => $self->name,
+        version => $self->version
+    );
+    if (-e $file) {
+        if (-d $file) {
+            my @seg = $self->url->path_segments;
+            $file = File::Spec->catfile($file, $seg[-1]);
+        } else {
+            croak "$file already exists";
+        }
+    }
+
+    open my $fh, '>:raw', $file or die "Cannot open $file: $!\n";
+    print $fh $res->{content};
+    close $fh or die "Cannot close $file: $!\n";
+    return $self;
 }
 
 1;

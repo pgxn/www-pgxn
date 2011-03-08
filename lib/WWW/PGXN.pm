@@ -5,7 +5,7 @@ use strict;
 use WWW::PGXN::Distribution;
 use HTTP::Tiny;
 use URI::Template;
-use JSON;
+use JSON ();
 use Carp;
 
 our $VERSION = '0.10';
@@ -25,7 +25,7 @@ sub find_distribution {
     $p{dist} = delete $p{name};
     WWW::PGXN::Distribution->new(
         $self,
-        $self->_fetch((exists $p{version} ? 'meta' : 'by-dist'), %p)
+        $self->_fetch_json((exists $p{version} ? 'meta' : 'by-dist'), %p)
     );
 }
 
@@ -60,7 +60,7 @@ sub _url_for {
     my ($self, $name) = (shift, shift);
     my $tmpl = $self->_uri_templates->{$name}
         or croak qq{No URI template named "$name"};
-    return $self->url . $tmpl->process(@_);
+    return URI->new($self->url . $tmpl->process(@_));
 }
 
 sub _request {
@@ -77,6 +77,12 @@ sub _fetch {
     my $res = $self->_request->get($url);
     croak "Request for $url failed: $res->{status}: $res->{reason}\n"
         unless $res->{success};
+    return $res;
+}
+
+sub _fetch_json {
+    my $self = shift;
+    my $res = $self->_fetch(@_);
     WWW::PGXN::Distribution->new($self, JSON->new->utf8->decode($res->{content}));
 }
 
@@ -84,9 +90,8 @@ package
 WWW::PGXN::FileReq;
 
 use strict;
-use URI::file;
-use File::Spec::Functions qw(catfile);
-use namespace::autoclean;
+use URI::file ();
+use File::Spec ();
 
 sub new {
     bless {} => shift;
@@ -95,7 +100,7 @@ sub new {
 sub get {
     my $self = shift;
     (my $file = shift) =~ s{^file:}{};
-    $file = catfile split m{/}, $file;
+    $file = File::Spec->catfile(split m{/}, $file);
 
     return {
         success => 0,

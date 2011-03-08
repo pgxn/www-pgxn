@@ -3,9 +3,10 @@
 use strict;
 use warnings;
 use utf8;
-use Test::More tests => 45;
+use Test::More tests => 53;
 #use Test::More 'no_plan';
 use WWW::PGXN;
+use File::Spec::Functions qw(catfile);
 
 # Set up the WWW::PGXN object.
 my $pgxn = new_ok 'WWW::PGXN', [ url => 'file:t/mirror' ];
@@ -122,6 +123,27 @@ ok $dist = $pgxn->find_distribution(name => 'pair', version => '0.1.2'),
     'Find "pair" 0.1.2 once more';
 is $dist->version_for('stable'), '0.1.2', 'Should have proper stable version';
 is $dist->version, '0.1.2', 'Version should be "0.1.2"';
+
+##############################################################################
+# Test other methods.
+ok $dist = $pgxn->find_distribution(name => 'pair', version => '0.1.1'),
+    'Find pair 1.0.1';
+
+is $dist->url, 'file:t/mirror/dist/pair/pair-0.1.1.pgz','Should have URL';
+
+# Download to a file.
+my $zip = catfile qw(t pair-0.1.1.zip);
+ok !-e $zip, "$zip should not yet exist";
+END { unlink $zip }
+ok $dist->download_to($zip), "Download to $zip";
+ok -e $zip, "$zip should now exist";
+
+# Download to a diretory.
+my $pgz = catfile qw(t pair-0.1.1.pgz);
+ok !-e $pgz, "$pgz should not yet exist";
+END { unlink $pgz }
+ok $dist->download_to('t'), 'Download to t/';
+ok -e $pgz, "$pgz should now exist";
 
 # delete $dist->{_pgxn};
 # use Data::Dump; ddx $dist;
