@@ -2,11 +2,9 @@
 
 use strict;
 use warnings;
-use utf8;
 use Test::More tests => 10;
 #use Test::More 'no_plan';
 use WWW::PGXN;
-use File::Spec::Functions qw(catfile);
 
 # Set up the WWW::PGXN object.
 my $pgxn = new_ok 'WWW::PGXN', [ url => 'file:t/mirror' ];

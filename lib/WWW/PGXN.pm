@@ -5,6 +5,7 @@ use strict;
 use WWW::PGXN::Distribution;
 use WWW::PGXN::Extension;
 use WWW::PGXN::Owner;
+use WWW::PGXN::Tag;
 use HTTP::Tiny;
 use URI::Template;
 use JSON ();
@@ -43,6 +44,14 @@ sub find_owner {
     WWW::PGXN::Owner->new(
         $self,
         $self->_fetch_json('by-owner', owner => $ext)
+    );
+}
+
+sub find_tag {
+    my ($self, $ext) = @_;
+    WWW::PGXN::Tag->new(
+        $self,
+        $self->_fetch_json('by-tag', tag => $ext)
     );
 }
 
@@ -127,6 +136,7 @@ WWW::PGXN::FileReq;
 use strict;
 use URI::file ();
 use File::Spec ();
+use URI::Escape ();
 
 sub new {
     bless {} => shift;
@@ -135,7 +145,7 @@ sub new {
 sub get {
     my $self = shift;
     (my $file = shift) =~ s{^file:}{};
-    $file = File::Spec->catfile(split m{/}, $file);
+    $file = URI::Escape::uri_unescape(File::Spec->catfile(split m{/}, $file));
 
     return {
         success => 0,
@@ -256,6 +266,12 @@ object.
   my $dist = $pgxn->find_owner($owner_name);
 
 Finds the data for the named owner. Returns a L<WWW::PGXN::Owner> object.
+
+=head3 C<find_tag>
+
+  my $dist = $pgxn->find_tag($tag_name);
+
+Finds the data for the named tag. Returns a L<WWW::PGXN::Tag> object.
 
 =head1 See Also
 
