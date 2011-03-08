@@ -4,6 +4,7 @@ use 5.8.1;
 use strict;
 use WWW::PGXN::Distribution;
 use WWW::PGXN::Extension;
+use WWW::PGXN::Owner;
 use HTTP::Tiny;
 use URI::Template;
 use JSON ();
@@ -34,6 +35,14 @@ sub find_extension {
     WWW::PGXN::Extension->new(
         $self,
         $self->_fetch_json('by-extension', extension => $ext)
+    );
+}
+
+sub find_owner {
+    my ($self, $ext) = @_;
+    WWW::PGXN::Owner->new(
+        $self,
+        $self->_fetch_json('by-owner', owner => $ext)
     );
 }
 
@@ -241,6 +250,12 @@ The version of the distribution. Optional.
 
 Finds the data for the named extension. Returns a L<WWW::PGXN::Extension>
 object.
+
+=head3 C<find_owner>
+
+  my $dist = $pgxn->find_owner($owner_name);
+
+Finds the data for the named owner. Returns a L<WWW::PGXN::Owner> object.
 
 =head1 See Also
 

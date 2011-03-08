@@ -2,6 +2,7 @@
    "nickname": "theory",
    "name": "David E. Wheeler",
    "email": "david@justatheory.com",
+   "twitter": "theory",
    "uri": "http://justatheory.com/",
    "releases": {
       "explanation": {
@@ -9,12 +10,6 @@
       },
       "pair": {
          "stable": ["0.1.0"]
-      },
-      "pgTAP": {
-         "stable": ["0.25.0"]
-      },
-      "semver": {
-         "stable": ["0.2.0"]
       }
    }
 }

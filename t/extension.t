@@ -3,8 +3,8 @@
 use strict;
 use warnings;
 use utf8;
-#use Test::More tests => 28;
-use Test::More 'no_plan';
+use Test::More tests => 40;
+#use Test::More 'no_plan';
 use WWW::PGXN;
 use File::Spec::Functions qw(catfile);
 
