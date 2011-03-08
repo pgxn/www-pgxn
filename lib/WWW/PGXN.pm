@@ -26,34 +26,28 @@ sub new {
 sub find_distribution {
     my ($self, %p) = @_;
     $p{dist} = delete $p{name} unless exists $p{dist};
-    WWW::PGXN::Distribution->new(
-        $self,
-        $self->_fetch_dist_json((exists $p{version} ? 'meta' : 'by-dist'), %p)
-    );
+    my $data = $self->_fetch_json(
+        (exists $p{version} ? 'meta' : 'by-dist'), %p
+    ) or return;
+    WWW::PGXN::Distribution->new($self, $data);
 }
 
 sub find_extension {
     my ($self, $ext) = @_;
-    WWW::PGXN::Extension->new(
-        $self,
-        $self->_fetch_dist_json('by-extension', extension => $ext)
-    );
+    my $data = $self->_fetch_json('by-extension', extension => $ext) or return;
+    WWW::PGXN::Extension->new($self, $data);
 }
 
 sub find_owner {
     my ($self, $ext) = @_;
-    WWW::PGXN::Owner->new(
-        $self,
-        $self->_fetch_dist_json('by-owner', owner => $ext)
-    );
+    my $data = $self->_fetch_json('by-owner', owner => $ext) or return;
+    WWW::PGXN::Owner->new($self, $data);
 }
 
 sub find_tag {
     my ($self, $ext) = @_;
-    WWW::PGXN::Tag->new(
-        $self,
-        $self->_fetch_dist_json('by-tag', tag => $ext)
-    );
+    my $data = $self->_fetch_json('by-tag', tag => $ext) or return;
+    WWW::PGXN::Tag->new($self, $data);
 }
 
 sub mirrors {
@@ -110,20 +104,15 @@ sub _request {
 sub _fetch {
     my ($self, $url) = @_;
     my $res = $self->_request->get($url);
-    croak "Request for $url failed: $res->{status}: $res->{reason}\n"
-        unless $res->{success};
-    return $res;
+    return $res if $res->{success};
+    return if $res->{status} == 404;
+    croak "Request for $url failed: $res->{status}: $res->{reason}\n";
 }
 
 sub _fetch_json {
     my $self = shift;
-    my $res = $self->_fetch($self->_url_for(@_));
+    my $res = $self->_fetch($self->_url_for(@_)) or return;
     return JSON->new->utf8->decode($res->{content});
-}
-
-sub _fetch_dist_json {
-    my $self = shift;
-    WWW::PGXN::Distribution->new($self, $self->_fetch_json(@_));
 }
 
 sub _download_to {
@@ -199,12 +188,12 @@ WWW::PGXN - Interface to the PGXN API
       url => 'http://api.pgxn.org/',
   );
 
-  my $dist = $pgxn->distribution('pgTAP');
+  my $dist = $pgxn->find_distribution(name => 'pgTAP');
 
 =head1 Description
 
 This module provide a simple Perl interface over the the L<PGXN
-API|http://api.pgxn.org/>.
+API|http://api.pgxn.org/>. It also works with any PGXN mirror server.
 
 =head1 Interface
 

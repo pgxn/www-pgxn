@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 use utf8;
-use Test::More tests => 6;
+use Test::More tests => 7;
 #use Test::More 'no_plan';
 use WWW::PGXN;
 use File::Spec::Functions qw(catfile);
@@ -12,6 +12,10 @@ use File::Spec::Functions qw(catfile);
 my $pgxn = new_ok 'WWW::PGXN', [ url => 'file:t/mirror' ];
 
 ##############################################################################
+# Try to get a nonexistent tag.
+ok !$pgxn->find_tag('nonexistent'),
+    'Should get nothing when searching for a nonexistent tag';
+
 # Fetch tag data.
 ok my $tag = $pgxn->find_tag('key value'),
     'Find tag "key value"';

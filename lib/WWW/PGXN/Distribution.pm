@@ -65,19 +65,19 @@ sub version_for  { shift->releases->{+shift}[0] }
 sub _merge_meta {
     my $self = shift;
     my $rel = $self->{releases};
-    my $meta = $self->{_pgxn}->_fetch_dist_json(
+    my $meta = $self->{_pgxn}->_fetch_json(
         'meta',
         version => $rel->{stable}[0] || $rel->{testing}[0] || $rel->{unstable}[0],
         dist    => $self->{name},
-    );
+    ) || {};
     @{$self}{keys %{ $meta }} = values %{ $meta };
 }
 
 sub _merge_by_dist {
     my $self = shift;
-    my $by_dist = $self->{_pgxn}->_fetch_dist_json(
+    my $by_dist = $self->{_pgxn}->_fetch_json(
         'by-dist', dist => $self->{name}
-    );
+    ) || {};
     @{$self}{keys %{ $by_dist }} = values %{ $by_dist };
 }
 

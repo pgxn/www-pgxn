@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::More tests => 10;
+use Test::More tests => 11;
 #use Test::More 'no_plan';
 use WWW::PGXN;
 
@@ -10,6 +10,10 @@ use WWW::PGXN;
 my $pgxn = new_ok 'WWW::PGXN', [ url => 'file:t/mirror' ];
 
 ##############################################################################
+# Try to get a nonexistent owner.
+ok !$pgxn->find_owner('nonexistent'),
+    'Should get nothing when searching for a nonexistent owner';
+
 # Fetch owner data.
 ok my $owner = $pgxn->find_owner('theory'),
     'Find owner "theory"';

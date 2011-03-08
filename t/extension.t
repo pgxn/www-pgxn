@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 use utf8;
-use Test::More tests => 40;
+use Test::More tests => 41;
 #use Test::More 'no_plan';
 use WWW::PGXN;
 use File::Spec::Functions qw(catfile);
@@ -12,6 +12,10 @@ use File::Spec::Functions qw(catfile);
 my $pgxn = new_ok 'WWW::PGXN', [ url => 'file:t/mirror' ];
 
 ##############################################################################
+# Try to get a nonexistent distribution.
+ok !$pgxn->find_extension('nonexistent'),
+    'Should get nothing when searching for a nonexistent extension';
+
 # Fetch extension data.
 ok my $ext = $pgxn->find_extension('pair'),
     'Find extension "pair"';

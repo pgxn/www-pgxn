@@ -2,7 +2,7 @@ WWW/PGXN version 0.10
 =====================
 
 This library's module, WWW::PGXN, provides a simple Perl interface to the PGXN
-Web API.
+Web API. It's designed to work with any PGXN mirror or API server.
 
 INSTALLATION
 
