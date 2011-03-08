@@ -157,9 +157,107 @@ The status of the latest release. Should be one of:
 
 =head2 Instance Methods
 
+=head3 C<stable_info>
+
+=head3 C<testing_info>
+
+=head3 C<unstable_info>
+
+  my $stable_info   = $extension->stable_info;
+  my $testing_info  = $extension->testing_info;
+  my $unstable_info = $extension->unstable_info;
+
+Returns a hash reference describing the latest version of the extension for
+the named release status. The supported keys are:
+
+=over
+
+=item C<dist>
+
+The name of the distribution in which the extension may be found.
+
+=item C<version>
+
+The version of the distribution in which the extension may be found.
+
+=item C<abstract>
+
+A brief description of the extension. Available only from PGXN API servers,
+not mirrors.
+
+=back
+
+If no release has been made with the given status, an empty hash reference
+will be returned.
+
+=head3 C<latest_info>
+
+  my $latest_info = $extension->latest_info;
+
+Returns a hash reference describing the latest version of the extension.
+Essentially a convenience method for:
+
+    my $meth = $extension->latest . '_info';
+    my $info = $extension->$meth;
+
+=head3 C<info_for_version>
+
+  my $version_info = $extension->info_for_version;
+
+Returns a hash reference containing the distribution information for the named
+version of the extension, if it exists. The supported keys are:
+
+=over
+
+=item C<dist>
+
+The name of the distribution in which the version of the extension may be
+found.
+
+=item C<version>
+
+The version of the distribution in which the version of the extension may be
+found.
+
+=item C<release_date>
+
+The release date the distribution containing the version of the extension.
+Available only from PGXN API servers, not mirrors.
+
+Returns C<undef> if no such version of the extension exists.
+
+=back
+
+=head3 C<stable_distribution>
+
+=head3 C<testing_distribution>
+
+=head3 C<unstable_distribution>
+
+  my $stable_distribution   = $extension->stable_distribution;
+  my $testing_distribution  = $extension->testing_distribution;
+  my $unstable_distribution = $extension->unstable_distribution;
+
+Returns a L<WWW::PGXN::Distribution> object describing the distribution
+containing the distribution with the named release status. Returns C<undef> if
+no distribution contains the extension with that status.
+
+=head3 C<latest_distribution>
+
+Returns a L<WWW::PGXN::Distribution> object describing the distribution in
+which the latest version of the extension is found. Essentially a convenience
+method for:
+
+    my $meth = $extension->latest . '_distribution';
+    my $dist = $extension->$meth;
+
 =head3 C<distribution_for_version>
 
-=head3 C<download_latest_to>
+  my $version_distribution = $extension->distribution_for_version($version);
+
+Returns a L<WWW::PGXN::Distribution> object describing the distribution in
+which the named version of the extension is found. Returns C<undef> if no such
+version of the extension exists.
 
 =head3 C<download_stable_to>
 
@@ -167,25 +265,32 @@ The status of the latest release. Should be one of:
 
 =head3 C<download_unstable_to>
 
+  my $stable_file   = $extension->download_stable_to('/usr/src');
+  my $testing_file  = $extension->download_testing_to('.');
+  my $unstable_file = $extension->download_unstable_to('mfile.zip');
+
+Downloads the distribution containing the latest version of the extension with
+the named release status. Pass the name of the file to save to, or the name of
+a directory. If a directory is specified, the file will be written with the
+same name as it has on PGXN, such as C<pgTAP-0.24.0.pgz>. Either way, the name
+of the file written will be returned. Regardless of the file's name, it will
+always be a zip archive.
+
+=head3 C<download_latest_to>
+
+  my $file = $extension->download_latest_to($file);
+
+Download the distribution containing the latest version of the distribution,
+regardless of its release status. Essentially a convenience method for:
+
+    my $meth = 'download_' . $extension->latest . '_to';
+    my $file = $extension->$meth('.');
+
 =head3 C<download_version_to>
 
-=head3 C<info_for_version>
+  my $file = $extension->download_version_to($version, $file);
 
-=head3 C<stable_info>
-
-=head3 C<latest_info>
-
-=head3 C<testing_info>
-
-=head3 C<unstable_info>
-
-=head3 C<stable_distribution>
-
-=head3 C<latest_distribution>
-
-=head3 C<testing_distribution>
-
-=head3 C<unstable_distribution>
+Download the distribution containing the specified version of the extension.
 
 =head1 See Also
 
