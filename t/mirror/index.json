@@ -5,5 +5,6 @@
    "by-tag": "/by/tag/{tag}.json",
    "dist": "/dist/{dist}/{dist}-{version}.pgz",
    "meta": "/dist/{dist}/{dist}-{version}.json",
-   "readme": "/dist/{dist}/{dist}-{version}.readme"
+   "readme": "/dist/{dist}/{dist}-{version}.readme",
+   "mirrors": "/meta/mirrors.json"
 }

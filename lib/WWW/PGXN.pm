@@ -81,7 +81,6 @@ sub _uri_templates {
         croak "Request for $url failed: $res->{status}: $res->{reason}\n"
             unless $res->{success};
         my $tmpl = JSON->new->utf8->decode($res->{content});
-        $tmpl->{mirrors} = '/meta/mirrors.json';
         map { $_ => URI::Template->new($tmpl->{$_}) } keys %{ $tmpl };
     }};
 }

@@ -64,7 +64,6 @@ like $@, qr{Request for file:t/index\.json failed: 404: not found},
 $pgxn->url('file:t/mirror');
 ok my $tmpl =  $pgxn->_uri_templates, 'Get the URI templates';
 my $data = JSON->new->utf8->decode($json);
-$data->{mirrors} = '/meta/mirrors.json';
 is_deeply $tmpl, { map { $_ => URI::Template->new($data->{$_}) } keys %{ $data } },
     'Should have all the templates';
 
