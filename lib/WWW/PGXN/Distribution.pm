@@ -249,11 +249,218 @@ like so:
   open my $fh, '<:raw', $file or die "Cannot open $file: $!\n";
   my $sha1 = Digest::SHA1->new;
   $sha1->addfile($fh);
-  warn $distribution->name . ' ' . $disribution->version
+  warn $distribution->name . ' ' . $distribution->version
       . ' does not validate against SHA1'
       unless $sha1->hexdigest eq $distribution->sha1;
 
 =head2 Instance Methods
+
+=head3 C<maintainers>
+
+  my @maintainers = $distribution->maintainers;
+
+Returns a list of the maintainers of the module. By the recommendation of the
+L<PGXN Meta spec|http://pgxn.org/meta/spec.html#maintainer>, each should be
+formatted with a name and email address suitable for on the recipient line of
+an email.
+
+=head3 C<no_index>
+
+  my $no_index = $distribution->no_index;
+
+Returns a hash reference describing files and directories that should not be
+indexed by search engines or the PGXN infrastructure. The L<PGXN Meta
+spec|http://pgxn.org/meta/spec.html#no_index> specifies that the structure of
+this hash contain only these keys:
+
+=over
+
+=item C<file>
+
+An array of file names.
+
+=item C<directory>
+
+An array of directory names.
+
+=back
+
+The returned has will be empty if all files may be indexed.
+
+=head3 C<prereqs>
+
+  my $prereqs = $distribution->prereqs;
+
+Returns a hash reference describing the prerequisites of the extension. The
+L<PGXN Meta spec|http://pgxn.org/meta/spec.html#prereqs> dictates That the top
+level keys of this hash may be any of:
+
+=over
+
+=item C<configure>
+
+=item C<build>
+
+=item C<test>
+
+=item C<runtime>
+
+=item C<develop>
+
+=back
+
+The value for each of these keys must be a hash reference describing the
+prerequisites for that part of the extension lifecycle. The keys in this
+secondary hash may be any of:
+
+=over
+
+=item C<requires>
+
+=item C<recommends>
+
+=item C<suggests>
+
+=back
+
+Each of these in turn points to another hash reference, the keys of which are
+the names of the prerequisite extensions and the values are their minimum
+required version numbers. See the
+L<Prereq Spec|http://pgxn.org/meta/spec.html#Prereq.Spec> for further
+explication of these phases and relationships. Here's an example of what a
+typical C<prereqs> hash might look like:
+
+  {
+    prereqs => {
+      runtime => {
+        requires => {
+          PostgreSQL => '8.0.0',
+          PostGIS    => '1.5.0'
+        },
+        recommends => {
+          PostgreSQL => '8.4.0'
+        },
+        suggests => {
+          semver => 0
+        },
+      },
+      build => {
+        requires => {
+          prefix => 0
+        },
+      },
+      test => {
+        recommends => {
+          pgTAP   => 0
+        },
+      }
+    }
+  }
+
+=head3 C<provides>
+
+  my $provides = $distribution->provides;
+
+Returns a hash reference describing the resources provided by the
+distribution. The keys are the names of the resources (generally extension
+names) and their values are hash references describing them. The keys
+available in these hashes include:
+
+=over
+
+=item C<file>
+
+The name of the file in which the resource is defined.
+
+=item C<version>
+
+The L<semantic version|SemVer> of the resource.
+
+=item C<abstract>
+
+A brief description of the resource.
+
+=back
+
+Here's an example of the structure for a simple distribution that provides a
+single extension:
+
+  {
+     pair => {
+        abstract => 'A key/value pair data type',
+        file     => 'sql/pair.sql',
+        version  => '0.1.1'
+     }
+  }
+
+See the <spec|http://pgxn.org/meta/spec.html#provides> for more information.
+
+=head3 C<releases>
+
+  my $releases = $distribution->releases;
+
+Returns a hash reference providing the status and version of all releases of
+the distribution. The hash reference must have one or more of the following
+keys:
+
+=over
+
+=item C<stable>
+
+=item C<testing>
+
+=item C<unstable>
+
+=back
+
+The values for each of these keys must be an array reference of the semantic
+version numbers with those release statuses, ordered from most to least
+recently released. A simple example:
+
+  {
+     stable => [ '0.1.1', '0.1.0' ]
+  }
+
+=head3 C<resources>
+
+  my $resources = $distribution->resources;
+
+Returns a hash reference describing the resources for the distribution. These
+include source code repository information, bug reporting addresses, and the
+like. Example:
+
+  {
+     bugtracker => {
+        web => 'http://github.com/theory/kv-pair/issues/'
+     },
+     repository => {
+        type => 'git',
+        url  => 'git://github.com/theory/kv-pair.git',
+        web  => 'http://github.com/theory/kv-pair/'
+     },
+  }
+
+Read the
+L<Resources section of the meta spec|http://pgxn.org/meta/spec.html#resources>
+for all the details.
+
+=head3 C<tags>
+
+  my @tags = $distribution->tags;
+
+Returns a list of the tags associated with the distribution. Each may be used
+to look up further information about the tag via L<WWW::PGXN::Tag> objects
+like so:
+
+  for my $tag ( map { $pgxn->find_tag($_) } $distribution->tags ) {
+      say $tag->name;
+  }
+
+=head3 C<url>
+
+  my $url = $distribution->url;
+
+The URL for the distribution archive file.
 
 =head3 C<download_to>
 
@@ -266,25 +473,36 @@ same name as it has on PGXN, such as C<pgTAP-0.24.0.pgz>. Either way, the name
 of the file written will be returned. Regardless of the file's name, it will
 always be a zip archive.
 
-=head3 C<maintainers>
-
-=head3 C<no_index>
-
-=head3 C<prereqs>
-
-=head3 C<provides>
-
-=head3 C<releases>
-
-=head3 C<resources>
-
-=head3 C<tags>
-
-=head3 C<url>
-
 =head3 C<version_for>
 
+  my $version = $distribution->version_for('testing');
+
+Returns the most recent version for a release status, if any exists. The
+supported release statuses are:
+
+=over
+
+=item C<stable>
+
+=item C<testing>
+
+=item C<unstable>
+
+=back
+
+These version numbers can be used to fetch information specific to a version:
+
+  my $test_dist = $pgxn->find_distribution(
+      name    => $distribution->name,
+      version => $distribution->version_for('testing'),
+  );
+
 =head3 C<versions_for>
+
+  my @versions = $distributions->versions_for('stable');
+
+Returns a list of the versions for a particular release status, if any. The
+are returned in order from most to least recent.
 
 =head1 See Also
 

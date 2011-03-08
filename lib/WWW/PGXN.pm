@@ -179,7 +179,7 @@ __END__
 
 =head1 Name
 
-WWW::PGXN - Interface to the PGXN API
+WWW::PGXN - Interface to PGXN mirrors and the PGXN API
 
 =head1 Synopsis
 
