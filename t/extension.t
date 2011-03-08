@@ -42,33 +42,33 @@ is $ext->latest, 'stable', 'Latest should be "stable"';
 ok my $dist = $ext->stable_distribution, 'Get the stable distribution';
 isa_ok $dist, 'WWW::PGXN::Distribution', 'It';
 is $dist->name, 'pair', 'It should be the "pair" distribution';
-is $dist->version, '0.1.0', 'It should be v0.1.0';
+is $dist->version, '0.1.1', 'It should be v0.1.1';
 
 ok $dist = $ext->latest_distribution, 'Get the latest distribution';
 isa_ok $dist, 'WWW::PGXN::Distribution', 'It';
 is $dist->name, 'pair', 'It should be the "pair" distribution';
-is $dist->version, '0.1.0', 'It should be v0.1.0';
+is $dist->version, '0.1.1', 'It should be v0.1.1';
 
 is $ext->testing_distribution, undef, 'Should have no testing distribution';
 is $ext->unstable_distribution, undef, 'Should have no unstable distribution';
 
 # Fetch for verions.
-ok $dist = $ext->distribution_for_version('0.1.0'),
-    'Get the distribution for pair 0.1.0';
+ok $dist = $ext->distribution_for_version('0.1.1'),
+    'Get the distribution for pair 0.1.2';
 isa_ok $dist, 'WWW::PGXN::Distribution', 'It';
 is $dist->name, 'pair', 'It should be the "pair" distribution';
-is $dist->version, '0.1.0', 'It should be v0.1.0';
+is $dist->version, '0.1.1', 'It should be v0.1.1';
 
 ok $dist = $ext->distribution_for_version('0.0.5'),
     'Get the distribution for pair 0.0.5';
 isa_ok $dist, 'WWW::PGXN::Distribution', 'It';
 is $dist->name, 'pair', 'It should be the "pair" distribution';
-is $dist->version, '0.1.1', 'It should be v0.1.1';
+is $dist->version, '0.1.0', 'It should be v0.1.0';
 
 # Check status data.
-is_deeply $ext->stable_info, { dist => 'pair', version => '0.1.0' },
+is_deeply $ext->stable_info, { dist => 'pair', version => '0.1.1' },
     'Should have stable data';
-is_deeply $ext->latest_info, { dist => 'pair', version => '0.1.0' },
+is_deeply $ext->latest_info, { dist => 'pair', version => '0.1.1' },
     'Should have latest data';
 is_deeply $ext->testing_info, {}, 'Should have empty testing info';
 is_deeply $ext->unstable_info, {}, 'Should have empty unstable info';
@@ -82,7 +82,7 @@ ok $ext->download_stable_to($zip), "Download to $zip";
 ok -e $zip, "$zip should now exist";
 
 # Download latest.
-my $pgz = catfile qw(t pair-0.1.0.pgz);
+my $pgz = catfile qw(t pair-0.1.1.pgz);
 ok !-e $pgz, "$pgz should not yet exist";
 END { unlink $pgz }
 ok $ext->download_latest_to('t'), 'Download to t/';
@@ -93,10 +93,10 @@ ok !$ext->download_testing_to('t'), 'Should not download testing';
 ok !$ext->download_unstable_to('t'), 'Should not download unstable';
 
 # Try by version.
-my $ver = catfile qw(t pair-0.1.1.ver);
+my $ver = catfile qw(t pair-0.0.5.ver);
 ok !-e $ver, "$ver should not yet exist";
 END { unlink $ver }
-ok $ext->download_version_to('0.1.0', $ver), "Download to $ver";
+ok $ext->download_version_to('0.0.5', $ver), "Download to $ver";
 ok -e $ver, "$ver should now exist";
 
 # Try non-existent version.

@@ -114,7 +114,7 @@ is $dist->version_for('stable'), '0.1.2', 'Should have proper stable version';
 is $dist->version, '0.1.2', 'Version should be "0.1.2"';
 
 # Test implicit merging.
-ok my $dist = $pgxn->find_distribution(name => 'pair'),
+ok $dist = $pgxn->find_distribution(name => 'pair'),
     'Find "pair" once more';
 is $dist->version_for('stable'), '0.1.2', 'Should have proper stable version';
 is $dist->version, '0.1.2', 'Version should be "0.1.2"';
