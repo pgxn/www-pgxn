@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 use utf8;
-use Test::More tests => 54;
+use Test::More tests => 55;
 #use Test::More 'no_plan';
 use WWW::PGXN;
 use File::Spec::Functions qw(catfile);
@@ -41,6 +41,8 @@ can_ok $dist => qw(
     maintainers
     versions_for
     version_for
+    url
+    relative_url
 );
 is $dist->{_pgxn}, $pgxn, 'It should contain the WWW::PGXN object';
 
@@ -134,6 +136,7 @@ ok $dist = $pgxn->find_distribution(name => 'pair', version => '0.1.1'),
     'Find pair 1.0.1';
 
 is $dist->url, 'file:t/mirror/dist/pair/pair-0.1.1.pgz','Should have URL';
+is $dist->relative_url, '/dist/pair/pair-0.1.1.pgz','Should have relative URL';
 
 # Download to a file.
 my $zip = catfile qw(t pair-0.1.1.zip);

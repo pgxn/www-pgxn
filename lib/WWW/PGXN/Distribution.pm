@@ -90,6 +90,15 @@ sub url {
     );
 }
 
+sub relative_url {
+    my $self = shift;
+    $self->{_pgxn}->_uri_for(
+        'dist',
+        dist    => $self->name,
+        version => $self->version
+    );
+}
+
 sub download_to {
     my $self = shift;
     $self->{_pgxn}->_download_to(
@@ -460,7 +469,25 @@ like so:
 
   my $url = $distribution->url;
 
-The URL for the distribution archive file.
+The absolute URL for the distribution archive file on the mirror or API sever,
+such as
+
+  http://api.pgxn.org/dist/pair/pair-0.1.1.pgz
+
+Or, for a file system URL:
+
+  file:/path/to/mirror/dist/pair/pair-0.1.1.pgz
+
+=head3 C<relative_url>
+
+  my $uri = $distribution->relative_uri;
+
+The relative URL of the distribution archive file. That is, just the path
+relative to any PGXN mirror root. So rather than the full URL you'd get from
+the C<url> method, you just get the path as derived from the distribution URI
+template, for example:
+
+  /dist/pair/pair-0.1.1.pgz
 
 =head3 C<download_to>
 

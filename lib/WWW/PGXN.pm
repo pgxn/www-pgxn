@@ -85,11 +85,16 @@ sub _uri_templates {
     }};
 }
 
-sub _url_for {
+sub _uri_for {
     my ($self, $name) = (shift, shift);
     my $tmpl = $self->_uri_templates->{$name}
         or croak qq{No URI template named "$name"};
-    return URI->new($self->url . $tmpl->process(@_));
+    return $tmpl->process(@_);
+}
+
+sub _url_for {
+    my $self = shift;;
+    return URI->new($self->url . $self->_uri_for(@_));
 }
 
 sub _request {
