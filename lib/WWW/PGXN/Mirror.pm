@@ -42,14 +42,15 @@ WWW::PGXN::Mirror - Mirror metadata fetched from PGXN
 =head1 Synopsis
 
   my $pgxn = WWW::PGXN->new( url => 'http://api.pgxn.org/' );
-  my $dist = $pgxn->find_mirror(name => 'pgTAP');
-  $dist->download_to('.');
+  for my $mirror ($pgxn->mirrors) {
+      say $mirror->url;
+  }
 
 =head1 Description
 
-This module represents PGXN mirror metadata fetched from PGXN>. It is
-not intended to be constructed directly, but via the
-L<WWW::PGXN/find_mirror> method of L<WWW::PGXN>.
+This module represents PGXN mirror metadata fetched from PGXN>. It is not
+intended to be constructed directly, but via the L<WWW::PGXN/mirrors> method
+of L<WWW::PGXN>.
 
 =head1 Interface
 
@@ -59,11 +60,10 @@ L<WWW::PGXN/find_mirror> method of L<WWW::PGXN>.
 
 =head3 C<new>
 
-  my $mirror = WWW::PGXN::Mirror->new($pgxn, $data);
+  my $mirror = WWW::PGXN::Mirror->new($data);
 
-Construct a new WWW::PGXN::Mirror object. The first argument must be
-an instance of L<WWW::PGXN> that connected to the PGXN server. The second
-argument must be the data fetched.
+Construct a new WWW::PGXN::Mirror object. The argument must be the data
+fetched.
 
 =end private
 
@@ -71,72 +71,72 @@ argument must be the data fetched.
 
 =head3 C<uri>
 
-  my $uri = $pgxn->uri;
-  $pgxn->uri($uri);
+  my $uri = $mirror->uri;
+  $mirror->uri($uri);
 
 The URI of the mirror.
 
 =head3 C<bandwidth>
 
-  my $bandwidth = $pgxn->bandwidth;
-  $pgxn->bandwidth($bandwidth);
+  my $bandwidth = $mirror->bandwidth;
+  $mirror->bandwidth($bandwidth);
 
 The mirror's bandwidth.
 
 =head3 C<frequency>
 
-  my $frequency = $pgxn->frequency;
-  $pgxn->frequency($frequency);
+  my $frequency = $mirror->frequency;
+  $mirror->frequency($frequency);
 
 A description of how frequently the mirror updates.
 
 =head3 C<location>
 
-  my $location = $pgxn->location;
-  $pgxn->location($location);
+  my $location = $mirror->location;
+  $mirror->location($location);
 
 The location of the mirror.
 
 =head3 C<notes>
 
-  my $notes = $pgxn->notes;
-  $pgxn->notes($notes);
+  my $notes = $mirror->notes;
+  $mirror->notes($notes);
 
 Notes about the mirror.
 
 =head3 C<organization>
 
-  my $organization = $pgxn->organization;
-  $pgxn->organization($organization);
+  my $organization = $mirror->organization;
+  $mirror->organization($organization);
 
 The name of the organization hosting the mirror.
 
 =head3 C<email>
 
-  my $email = $pgxn->email;
-  $pgxn->email($email);
+  my $email = $mirror->email;
+  $mirror->email($email);
 
 The email address of the contact responsible for the mirror..
 
 =head3 C<src>
 
-  my $src = $pgxn->src;
-  $pgxn->src($src);
+  my $src = $mirror->src;
+  $mirror->src($src);
 
 The rsync URL that the mirror updates from.
 
 =head3 C<rsync>
 
-  my $rsync = $pgxn->rsync;
-  $pgxn->rsync($rsync);
+  my $rsync = $mirror->rsync;
+  $mirror->rsync($rsync);
 
 The rsync URL the mirror offers for other mirrors to update from. If false,
 the mirror provides no rsync URL of its own.
 
 =head3 C<timezone>
 
-  my $timezone = $pgxn->timezone;
-  $pgxn->timezone($timezone);
+  my $timezone = $mirror->timezone;
+  $mirror->timezone($timezone);
 
 The time zone in which the mirror lives.
 

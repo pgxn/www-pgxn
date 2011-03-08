@@ -104,14 +104,14 @@ WWW::PGXN::Extension - Extension metadata fetched from PGXN
 =head1 Synopsis
 
   my $pgxn = WWW::PGXN->new( url => 'http://api.pgxn.org/' );
-  my $dist = $pgxn->find_extension(name => 'pgTAP');
-  $dist->download_to('.');
+  my $ext  = $pgxn->find_extension('pgTAP');
+  $ext->download_stable_to('.');
 
 =head1 Description
 
-This module represents PGXN extension metadata fetched from PGXN>. It is
-not intended to be constructed directly, but via the
-L<WWW::PGXN/find_extension> method of L<WWW::PGXN>.
+This module represents PGXN extension metadata fetched from PGXN>. It is not
+intended to be constructed directly, but via the L<WWW::PGXN/find_extension>
+method of L<WWW::PGXN>.
 
 =head1 Interface
 
@@ -133,15 +133,15 @@ argument must be the data fetched.
 
 =head3 C<name>
 
-  my $name = $pgxn->name;
-  $pgxn->name($name);
+  my $name = $extension->name;
+  $extension->name($name);
 
 The name of the extension.
 
 =head3 C<latest>
 
-  my $latest = $pgxn->latest;
-  $pgxn->latest($latest);
+  my $latest = $extension->latest;
+  $extension->latest($latest);
 
 The status of the latest release. Should be one of:
 

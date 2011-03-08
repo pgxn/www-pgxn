@@ -19,8 +19,7 @@ BEGIN {
 }
 
 sub new {
-    my ($class, $pgxn, $data) = @_;
-    $data->{_pgxn} = $pgxn;
+    my ($class, $data) = @_;
     bless $data, $class;
 }
 
@@ -36,15 +35,16 @@ WWW::PGXN::Owner - Owner metadata fetched from PGXN
 
 =head1 Synopsis
 
-  my $pgxn = WWW::PGXN->new( url => 'http://api.pgxn.org/' );
-  my $dist = $pgxn->find_owner(name => 'pgTAP');
-  $dist->download_to('.');
+  my $pgxn  = WWW::PGXN->new( url => 'http://api.pgxn.org/' );
+  my $owner = $pgxn->find_owner('theory');
+  say $owner->name, '<', $owner->email, '>';
+
 
 =head1 Description
 
-This module represents PGXN owner metadata fetched from PGXN>. It is
-not intended to be constructed directly, but via the
-L<WWW::PGXN/find_owner> method of L<WWW::PGXN>.
+This module represents PGXN owner metadata fetched from PGXN>. It is not
+intended to be constructed directly, but via the L<WWW::PGXN/find_owner>
+method of L<WWW::PGXN>.
 
 =head1 Interface
 
@@ -54,11 +54,10 @@ L<WWW::PGXN/find_owner> method of L<WWW::PGXN>.
 
 =head3 C<new>
 
-  my $owner = WWW::PGXN::Owner->new($pgxn, $data);
+  my $owner = WWW::PGXN::Owner->new($data);
 
-Construct a new WWW::PGXN::Owner object. The first argument must be
-an instance of L<WWW::PGXN> that connected to the PGXN server. The second
-argument must be the data fetched.
+Construct a new WWW::PGXN::Owner object. The argument must be the data
+fetched.
 
 =end private
 
@@ -66,36 +65,36 @@ argument must be the data fetched.
 
 =head3 C<nickname>
 
-  my $nickname = $pgxn->nickname;
-  $pgxn->nickname($nickname);
+  my $nickname = $owner->nickname;
+  $owner->nickname($nickname);
 
 The owner's nickname (also known as a user name).
 
 =head3 C<name>
 
-  my $name = $pgxn->name;
-  $pgxn->name($name);
+  my $name = $owner->name;
+  $owner->name($name);
 
 The full name of the owner.
 
 =head3 C<uri>
 
-  my $uri = $pgxn->uri;
-  $pgxn->uri($uri);
+  my $uri = $owner->uri;
+  $owner->uri($uri);
 
 The URI for the owner. May be C<undef> if the owner has no URI.
 
 =head3 C<email>
 
-  my $email = $pgxn->email;
-  $pgxn->email($email);
+  my $email = $owner->email;
+  $owner->email($email);
 
 The owner's email address.
 
 =head3 C<twitter>
 
-  my $twitter = $pgxn->twitter;
-  $pgxn->twitter($twitter);
+  my $twitter = $owner->twitter;
+  $owner->twitter($twitter);
 
 The owner's Twitter nickname, if any.
 

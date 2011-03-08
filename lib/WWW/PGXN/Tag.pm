@@ -6,8 +6,7 @@ use strict;
 our $VERSION = '0.10';
 
 sub new {
-    my ($class, $pgxn, $data) = @_;
-    $data->{_pgxn} = $pgxn;
+    my ($class, $data) = @_;
     bless $data, $class;
 }
 
@@ -26,14 +25,14 @@ WWW::PGXN::Tag - Tag metadata fetched from PGXN
 =head1 Synopsis
 
   my $pgxn = WWW::PGXN->new( url => 'http://api.pgxn.org/' );
-  my $dist = $pgxn->find_tag(name => 'pgTAP');
-  $dist->download_to('.');
+  my $tag  = $pgxn->find_tag('unit testing');
+  say $tag->name;
 
 =head1 Description
 
-This module represents PGXN tag metadata fetched from PGXN>. It is
-not intended to be constructed directly, but via the
-L<WWW::PGXN/find_tag> method of L<WWW::PGXN>.
+This module represents PGXN tag metadata fetched from PGXN>. It is not
+intended to be constructed directly, but via the L<WWW::PGXN/find_tag> method
+of L<WWW::PGXN>.
 
 =head1 Interface
 
@@ -43,11 +42,9 @@ L<WWW::PGXN/find_tag> method of L<WWW::PGXN>.
 
 =head3 C<new>
 
-  my $tag = WWW::PGXN::Tag->new($pgxn, $data);
+  my $tag = WWW::PGXN::Tag->new($data);
 
-Construct a new WWW::PGXN::Tag object. The first argument must be
-an instance of L<WWW::PGXN> that connected to the PGXN server. The second
-argument must be the data fetched.
+Construct a new WWW::PGXN::Tag object. The argument must be the data fetched.
 
 =end private
 
@@ -55,8 +52,8 @@ argument must be the data fetched.
 
 =head3 C<name>
 
-  my $name = $pgxn->name;
-  $pgxn->name($name);
+  my $name = $tag->name;
+  $tag->name($name);
 
 The name of the tag.
 

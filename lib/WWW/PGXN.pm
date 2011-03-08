@@ -41,13 +41,13 @@ sub find_extension {
 sub find_owner {
     my ($self, $ext) = @_;
     my $data = $self->_fetch_json('by-owner', owner => $ext) or return;
-    WWW::PGXN::Owner->new($self, $data);
+    WWW::PGXN::Owner->new($data);
 }
 
 sub find_tag {
     my ($self, $ext) = @_;
     my $data = $self->_fetch_json('by-tag', tag => $ext) or return;
-    WWW::PGXN::Tag->new($self, $data);
+    WWW::PGXN::Tag->new($data);
 }
 
 sub mirrors {
