@@ -6,6 +6,7 @@ use WWW::PGXN::Distribution;
 use WWW::PGXN::Extension;
 use WWW::PGXN::Owner;
 use WWW::PGXN::Tag;
+use WWW::PGXN::Mirror;
 use HTTP::Tiny;
 use URI::Template;
 use JSON ();
@@ -27,7 +28,7 @@ sub find_distribution {
     $p{dist} = delete $p{name} unless exists $p{dist};
     WWW::PGXN::Distribution->new(
         $self,
-        $self->_fetch_json((exists $p{version} ? 'meta' : 'by-dist'), %p)
+        $self->_fetch_dist_json((exists $p{version} ? 'meta' : 'by-dist'), %p)
     );
 }
 
@@ -35,7 +36,7 @@ sub find_extension {
     my ($self, $ext) = @_;
     WWW::PGXN::Extension->new(
         $self,
-        $self->_fetch_json('by-extension', extension => $ext)
+        $self->_fetch_dist_json('by-extension', extension => $ext)
     );
 }
 
@@ -43,7 +44,7 @@ sub find_owner {
     my ($self, $ext) = @_;
     WWW::PGXN::Owner->new(
         $self,
-        $self->_fetch_json('by-owner', owner => $ext)
+        $self->_fetch_dist_json('by-owner', owner => $ext)
     );
 }
 
@@ -51,8 +52,16 @@ sub find_tag {
     my ($self, $ext) = @_;
     WWW::PGXN::Tag->new(
         $self,
-        $self->_fetch_json('by-tag', tag => $ext)
+        $self->_fetch_dist_json('by-tag', tag => $ext)
     );
+}
+
+sub mirrors {
+    my $self = shift;
+    return @{ $self->{mirrors} ||= do {
+        my $mirrors = $self->_fetch_json('mirrors');
+        [ map { WWW::PGXN::Mirror->new($_) } @{ $mirrors } ];
+    } };
 }
 
 sub url {
@@ -78,6 +87,7 @@ sub _uri_templates {
         croak "Request for $url failed: $res->{status}: $res->{reason}\n"
             unless $res->{success};
         my $tmpl = JSON->new->utf8->decode($res->{content});
+        $tmpl->{mirrors} = '/meta/mirrors.json';
         map { $_ => URI::Template->new($tmpl->{$_}) } keys %{ $tmpl };
     }};
 }
@@ -108,7 +118,12 @@ sub _fetch {
 sub _fetch_json {
     my $self = shift;
     my $res = $self->_fetch($self->_url_for(@_));
-    WWW::PGXN::Distribution->new($self, JSON->new->utf8->decode($res->{content}));
+    return JSON->new->utf8->decode($res->{content});
+}
+
+sub _fetch_dist_json {
+    my $self = shift;
+    WWW::PGXN::Distribution->new($self, $self->_fetch_json(@_));
 }
 
 sub _download_to {
