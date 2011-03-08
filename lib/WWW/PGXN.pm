@@ -3,18 +3,18 @@ package WWW::PGXN;
 use 5.8.1;
 use strict;
 use WWW::PGXN::Distribution;
+use WWW::PGXN::Extension;
 use HTTP::Tiny;
 use URI::Template;
 use JSON ();
 use Carp;
 
 our $VERSION = '0.10';
-my @attributes = qw(url proxy);
 
 sub new {
     my($class, %args) = @_;
     my $self = bless {} => $class;
-    for my $key ( @attributes ) {
+    for my $key (qw(url proxy)) {
         $self->$key($args{$key}) if exists $args{$key}
     }
     return $self;
@@ -22,10 +22,18 @@ sub new {
 
 sub find_distribution {
     my ($self, %p) = @_;
-    $p{dist} = delete $p{name};
+    $p{dist} = delete $p{name} unless exists $p{dist};
     WWW::PGXN::Distribution->new(
         $self,
         $self->_fetch_json((exists $p{version} ? 'meta' : 'by-dist'), %p)
+    );
+}
+
+sub find_extension {
+    my ($self, $ext) = @_;
+    WWW::PGXN::Extension->new(
+        $self,
+        $self->_fetch_json('by-extension', extension => $ext)
     );
 }
 

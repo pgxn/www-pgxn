@@ -4,10 +4,12 @@ use 5.8.1;
 use strict;
 use File::Spec;
 use Carp;
+our $VERSION = '0.10';
 
 BEGIN {
     # XXX Use DateTime for release date?
     # XXX Use Software::License for license?
+    # XXX Use SemVer for versions?
     for my $attr (qw(
         abstract
         license
@@ -38,7 +40,6 @@ BEGIN {
         *{$attr} = sub { +{ %{ shift->{$attr} || {} } } };
     }
 }
-
 
 sub new {
     my ($class, $pgxn, $data) = @_;

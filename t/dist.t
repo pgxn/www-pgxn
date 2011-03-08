@@ -144,6 +144,3 @@ ok !-e $pgz, "$pgz should not yet exist";
 END { unlink $pgz }
 ok $dist->download_to('t'), 'Download to t/';
 ok -e $pgz, "$pgz should now exist";
-
-# delete $dist->{_pgxn};
-# use Data::Dump; ddx $dist;
