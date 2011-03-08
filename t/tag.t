@@ -23,11 +23,11 @@ isa_ok $tag, 'WWW::PGXN::Tag', 'It';
 can_ok $tag, qw(
     new
     name
-    release_info
+    releases
 );
 
 is $tag->name, 'key value', 'Should have name';
-is_deeply $tag->release_info, {
+is_deeply $tag->releases, {
     pair  => { stable => ['0.1.0'], testing => ['0.1.1'] },
     pgTAP => { stable => ['0.25.0'] },
 }, 'Should have release data';
