@@ -20,7 +20,7 @@ BEGIN {
         release_date
         release_status
         sha1
-        owner
+        user
     )) {
         no strict 'refs';
         *{$attr} = sub {
@@ -184,16 +184,16 @@ The license for the distribution, usually a simple string such as "gpl_3" or
 "postgresql". See the L<PGXN Meta spec|http://pgxn.org/meta/spec.html#license>
 for details.
 
-=head3 C<owner>
+=head3 C<user>
 
-  my $owner = $distribution->owner;
-  $distribution->owner($owner);
+  my $user = $distribution->user;
+  $distribution->user($user);
 
-The nickname of the owner of the distribution. Use the L<WWW::PGXN/find_owner>
-method of L<WWW::PGXN> to get more info on the owner:
+The nickname of the user who released the distribution. Use the
+L<WWW::PGXN/find_user> method of L<WWW::PGXN> to get more info on the user:
 
-  my $owner = $pgxn->find_owner( $distribution->owner );
-  say "Owned by ", $owner->name, ' <', $owner->email, '>';
+  my $user = $pgxn->find_user( $distribution->user );
+  say "Released by ", $user->name, ' <', $user->email, '>';
 
 =head3 C<description>
 

@@ -1,4 +1,4 @@
-package WWW::PGXN::Owner;
+package WWW::PGXN::User;
 
 use 5.8.1;
 use strict;
@@ -31,20 +31,20 @@ __END__
 
 =head1 Name
 
-WWW::PGXN::Owner - Owner metadata fetched from PGXN
+WWW::PGXN::User - User metadata fetched from PGXN
 
 =head1 Synopsis
 
   my $pgxn  = WWW::PGXN->new( url => 'http://api.pgxn.org/' );
-  my $owner = $pgxn->find_owner('theory');
-  say $owner->name, '<', $owner->email, '>';
+  my $user = $pgxn->find_user('theory');
+  say $user->name, '<', $user->email, '>';
 
 
 =head1 Description
 
-This module represents PGXN owner metadata fetched from PGXN>. It is not
-intended to be constructed directly, but via the L<WWW::PGXN/find_owner>
-method of L<WWW::PGXN>.
+This module represents PGXN user metadata fetched from PGXN>. It is not
+intended to be constructed directly, but via the L<WWW::PGXN/find_user> method
+of L<WWW::PGXN>.
 
 =head1 Interface
 
@@ -54,9 +54,9 @@ method of L<WWW::PGXN>.
 
 =head3 C<new>
 
-  my $owner = WWW::PGXN::Owner->new($data);
+  my $user = WWW::PGXN::User->new($data);
 
-Construct a new WWW::PGXN::Owner object. The argument must be the data
+Construct a new WWW::PGXN::User object. The argument must be the data
 fetched.
 
 =end private
@@ -65,45 +65,45 @@ fetched.
 
 =head3 C<nickname>
 
-  my $nickname = $owner->nickname;
-  $owner->nickname($nickname);
+  my $nickname = $user->nickname;
+  $user->nickname($nickname);
 
-The owner's nickname (also known as a user name).
+The user's nickname (also known as a user name).
 
 =head3 C<name>
 
-  my $name = $owner->name;
-  $owner->name($name);
+  my $name = $user->name;
+  $user->name($name);
 
-The full name of the owner.
+The full name of the user.
 
 =head3 C<uri>
 
-  my $uri = $owner->uri;
-  $owner->uri($uri);
+  my $uri = $user->uri;
+  $user->uri($uri);
 
-The URI for the owner. May be C<undef> if the owner has no URI.
+The URI for the user. May be C<undef> if the user has no URI.
 
 =head3 C<email>
 
-  my $email = $owner->email;
-  $owner->email($email);
+  my $email = $user->email;
+  $user->email($email);
 
-The owner's email address.
+The user's email address.
 
 =head3 C<twitter>
 
-  my $twitter = $owner->twitter;
-  $owner->twitter($twitter);
+  my $twitter = $user->twitter;
+  $user->twitter($twitter);
 
-The owner's Twitter nickname, if any.
+The user's Twitter nickname, if any.
 
 =head3 C<releases>
 
-  my $releases = $owner->releases;
+  my $releases = $user->releases;
 
 Returns a hash reference describing all of the distributions ever released by
-the owner. The keys of are distribution names and the values are hash
+the user. The keys of are distribution names and the values are hash
 references that may contain the following keys:
 
 =over

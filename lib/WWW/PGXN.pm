@@ -4,7 +4,7 @@ use 5.8.1;
 use strict;
 use WWW::PGXN::Distribution;
 use WWW::PGXN::Extension;
-use WWW::PGXN::Owner;
+use WWW::PGXN::User;
 use WWW::PGXN::Tag;
 use WWW::PGXN::Mirror;
 use HTTP::Tiny;
@@ -38,15 +38,15 @@ sub find_extension {
     WWW::PGXN::Extension->new($self, $data);
 }
 
-sub find_owner {
-    my ($self, $ext) = @_;
-    my $data = $self->_fetch_json('by-owner', owner => $ext) or return;
-    WWW::PGXN::Owner->new($data);
+sub find_user {
+    my ($self, $user) = @_;
+    my $data = $self->_fetch_json('by-user', user => $user) or return;
+    WWW::PGXN::User->new($data);
 }
 
 sub find_tag {
-    my ($self, $ext) = @_;
-    my $data = $self->_fetch_json('by-tag', tag => $ext) or return;
+    my ($self, $tag) = @_;
+    my $data = $self->_fetch_json('by-tag', tag => $tag) or return;
     WWW::PGXN::Tag->new($data);
 }
 
@@ -196,7 +196,7 @@ WWW::PGXN - Interface to PGXN mirrors and the PGXN API
 
 This module provide a simple Perl interface over the the L<PGXN
 API|http://api.pgxn.org/>. It also works with any PGXN mirror server. It
-provides an interface for finding distributions, extensions, owners, and tags.
+provides an interface for finding distributions, extensions, users, and tags.
 It's designed to make it dead simple for applications such as web apps and
 command-line clients to get the data they need from a PGXN mirror with a
 minimum of hassle, including via the file system, if there is a local mirror.
@@ -284,12 +284,12 @@ Finds the data for the named extension. Returns a L<WWW::PGXN::Extension>
 object. If the extension cannot be found, C<undef> will be returned. For any
 other errors, an exception will be thrown.
 
-=head3 C<find_owner>
+=head3 C<find_user>
 
-  my $dist = $pgxn->find_owner($owner_name);
+  my $dist = $pgxn->find_user($user_name);
 
-Finds the data for the named owner. Returns a L<WWW::PGXN::Owner> object. If
-the owner cannot be found, C<undef> will be returned. For any other errors, an
+Finds the data for the named user. Returns a L<WWW::PGXN::User> object. If the
+user cannot be found, C<undef> will be returned. For any other errors, an
 exception will be thrown.
 
 =head3 C<find_tag>

@@ -35,7 +35,7 @@ can_ok $dist => qw(
     release_status
     resources
     sha1
-    owner
+    user
     releases
     tags
     maintainers
@@ -78,7 +78,7 @@ is $dist->description, 'This library contains a single PostgreSQL extension call
     'Should have description';
 is $dist->release_date, '2010-11-10T12:18:03Z', 'Should have release date';
 is $dist->release_status, 'stable', 'Should have release status';
-is $dist->owner, 'theory', 'Should have owner';
+is $dist->user, 'theory', 'Should have user';
 is $dist->license, 'postgresql', 'Should have license';
 is $dist->sha1, 'cebefd23151b4b797239646f7ae045b03d028fcf', 'Should have SHA1';
 is_deeply [$dist->maintainers], ['David E. Wheeler <david@justatheory.com>'],
