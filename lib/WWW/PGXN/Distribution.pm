@@ -17,7 +17,7 @@ BEGIN {
         version
         description
         generated_by
-        release_date
+        date
         release_status
         sha1
         user
@@ -210,10 +210,10 @@ The distribution description, longer than the abstract.
 The name of the person or application that generated the metadata from which
 this distribution object is created.
 
-=head3 C<release_date>
+=head3 C<date>
 
-  my $release_date = $distribution->release_date;
-  $distribution->release_date($release_date);
+  my $date = $distribution->date;
+  $distribution->date($date);
 
 The date the distribution was released on PGXN. Represented as a string in
 strict L<ISO-8601|http://en.wikipedia.org/wiki/ISO_8601> format and in the UTC

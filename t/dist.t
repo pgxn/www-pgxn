@@ -31,7 +31,7 @@ can_ok $dist => qw(
     no_index
     prereqs
     provides
-    release_date
+    date
     release_status
     resources
     sha1
@@ -76,7 +76,7 @@ is $dist->version, '0.1.2', 'Version should be "0.1.2"';
 is $dist->abstract, 'A key/value pair dåtå type', 'Should have abstrct';
 is $dist->description, 'This library contains a single PostgreSQL extension called `pair`.',
     'Should have description';
-is $dist->release_date, '2010-11-10T12:18:03Z', 'Should have release date';
+is $dist->date, '2010-11-10T12:18:03Z', 'Should have release date';
 is $dist->release_status, 'stable', 'Should have release status';
 is $dist->user, 'theory', 'Should have user';
 is $dist->license, 'postgresql', 'Should have license';

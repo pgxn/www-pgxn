@@ -219,7 +219,7 @@ found.
 The version of the distribution in which the version of the extension may be
 found.
 
-=item C<release_date>
+=item C<date>
 
 The release date the distribution containing the version of the extension.
 Available only from PGXN API servers, not mirrors.
