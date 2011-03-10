@@ -34,6 +34,10 @@ is $owner->email, 'david@justatheory.com', 'Should have email';
 is $owner->uri, 'http://justatheory.com/', 'Should have URI';
 is $owner->twitter, 'theory', 'Should have twitter nick';
 is_deeply $owner->releases, {
-    explanation => { stable => ["0.2.0"] },
-    pair => { stable => ["0.1.0"] },
+    explanation => { stable => [
+        {version => "0.2.0", date => '2011-02-21T20:14:56Z'},
+    ] },
+    pair => { stable => [
+        {version => "0.1.0", date => '2010-10-19T03:59:54Z'},
+    ] },
 }, 'Should have release data';

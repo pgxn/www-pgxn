@@ -51,23 +51,24 @@ sub new {
 sub releases {
     my $self = shift;
     $self->_merge_by_dist unless $self->{releases};
-    return $self->{releases};
+    return +{ %{ $self->{releases} } };
 }
 
 # List accessors.
 sub tags         { @{ shift->{tags}             || [] } }
 sub maintainers  { @{ shift->{maintainer}       || [] } }
-sub versions_for { @{ shift->releases->{+shift} || [] } }
+sub versions_for { map { $_->{version} } @{ shift->releases->{+shift} || [] } }
 
 # Instance methods.
-sub version_for  { shift->releases->{+shift}[0] }
+sub version_for  { shift->releases->{+shift}[0]{version} }
 
 sub _merge_meta {
     my $self = shift;
     my $rel = $self->{releases};
+    my $rels = $rel->{stable} || $rel->{testing} || $rel->{unstable};
     my $meta = $self->{_pgxn}->_fetch_json(
         'meta',
-        version => $rel->{stable}[0] || $rel->{testing}[0] || $rel->{unstable}[0],
+        version => $rels->[0]{version},
         dist    => $self->{name},
     ) || {};
     @{$self}{keys %{ $meta }} = values %{ $meta };
@@ -408,9 +409,9 @@ See the <spec|http://pgxn.org/meta/spec.html#provides> for more information.
 
   my $releases = $distribution->releases;
 
-Returns a hash reference providing the status and version of all releases of
-the distribution. The hash reference must have one or more of the following
-keys:
+Returns a hash reference providing version and date information for all
+releases of the distribution. The hash reference must have one or more of the
+following keys:
 
 =over
 
@@ -420,14 +421,22 @@ keys:
 
 =item C<unstable>
 
+An array reference containing hashes of versions and release dates of all
+releases of the distribution with the named release status, ordered from most
+to least recent.
+
 =back
 
-The values for each of these keys must be an array reference of the semantic
-version numbers with those release statuses, ordered from most to least
-recently released. A simple example:
+Here's an example of the C<releases> data structure:
 
   {
-     stable => [ '0.1.1', '0.1.0' ]
+      stable => [
+          { version => '0.1.1', date => '2010-10-22T16:32:52Z' },
+          { version => '0.1.0', date => '2010-10-19T03:59:54Z' }
+      ],
+      testing => [
+          { version => '0.0.1', date => '2010-09-23T14:23:52Z' }
+      ]
   }
 
 =head3 C<resources>

@@ -28,6 +28,9 @@ can_ok $tag, qw(
 
 is $tag->name, 'key value', 'Should have name';
 is_deeply $tag->releases, {
-    pair  => { stable => ['0.1.0'], testing => ['0.1.1'] },
-    pgTAP => { stable => ['0.25.0'] },
+    pair  => {
+        stable  => [{version => '0.1.0', date => '2010-10-19T03:59:54Z'}],
+        testing => [{version => '0.1.1', date => '2010-10-29T22:44:42Z'}],
+    },
+    pgTAP => { stable => [{version => '0.25.0', date => '2011-01-14T23:43:12Z'}] },
 }, 'Should have release data';

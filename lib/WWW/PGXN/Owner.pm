@@ -114,18 +114,9 @@ references that may contain the following keys:
 
 =item C<unstable>
 
-An array reference with the version numbers of all releases of the
-distribution with the named release status, ordered from most to least recent.
-
-=item C<stable_date>
-
-=item C<testing_date>
-
-=item C<unstable_date>
-
-The date of the most recent release of the named release status. Represented
-as a string in strict L<ISO-8601|http://en.wikipedia.org/wiki/ISO_8601> format
-and in the UTC time zone. Available only from the PGXN API, not mirrors.
+An array reference containing hashes of versions and release dates of all
+releases of the distribution with the named release status, ordered from most
+to least recent.
 
 =item C<abstract>
 
@@ -133,6 +124,27 @@ A brief description of the distribution. Available only from the PGXN API, not
 mirrors.
 
 =back
+
+Here's an example of the C<releases> data structure:
+
+  {
+      explanation => {
+          abstract => 'Turn an explain plan into a proximity tree',
+          stable => [
+              { version => '0.2.0', date => '2011-02-21T20:14:56Z' }
+          ]
+      },
+      pair => {
+          abstract => 'A key/value pair data type',
+          stable => [
+              { version => '0.1.1', date => '2010-10-22T16:32:52Z' },
+              { version => '0.1.0', date => '2010-10-19T03:59:54Z' }
+          ],
+          testing => [
+              { version => '0.0.1', date => '2010-09-23T14:23:52Z' }
+          ]
+      },
+  }
 
 =head1 See Also
 

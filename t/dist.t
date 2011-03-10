@@ -49,8 +49,11 @@ is $dist->{_pgxn}, $pgxn, 'It should contain the WWW::PGXN object';
 # Examine the distribution data.
 is $dist->name, 'pair', 'Distribution name should be "pair"';
 is_deeply $dist->releases, {
-    stable =>  [qw(0.1.2 0.1.0)],
-    testing => ['0.1.1'],
+    stable =>  [
+        {"version" => "0.1.2", "date" => "2010-10-29T22:44:42Z"},
+        {"version" => "0.1.0", "date" => "2010-10-19T03:59:54Z"},
+    ],
+    testing => [{"version" => "0.1.1", "date" => "2010-10-27T23:12:51Z"}],
 }, 'Releases should be correct';
 is $dist->version_for('stable'), '0.1.2', 'Should have proper stable version';
 is $dist->version_for('testing'), '0.1.1', 'Should have proper testing version';
