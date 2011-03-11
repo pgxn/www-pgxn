@@ -18,6 +18,7 @@
          "version": "0.1.1"
       }
    },
+   "special_files": ["Makefile","README.md","META.json"],
    "tags": ["ordered pair", "pair", "key value"],
    "resources": {
       "bugtracker": {

@@ -55,9 +55,10 @@ sub releases {
 }
 
 # List accessors.
-sub tags         { @{ shift->{tags}             || [] } }
-sub maintainers  { @{ shift->{maintainer}       || [] } }
-sub versions_for { map { $_->{version} } @{ shift->releases->{+shift} || [] } }
+sub tags          { @{ shift->{tags}             || [] } }
+sub maintainers   { @{ shift->{maintainer}       || [] } }
+sub special_files { @{ shift->{special_files}    || [] } }
+sub versions_for  { map { $_->{version} } @{ shift->releases->{+shift} || [] } }
 
 # Instance methods.
 sub version_for  { shift->releases->{+shift}[0]{version} }
@@ -288,6 +289,14 @@ Returns a list of the maintainers of the module. By the recommendation of the
 L<PGXN Meta spec|http://pgxn.org/meta/spec.html#maintainer>, each should be
 formatted with a name and email address suitable for on the recipient line of
 an email.
+
+=head3 C<special_files>
+
+  my @special_files = $distribution->special_files;
+
+Returns a list of special files in the distribution, such as C<Changes>,
+C<README>, C<Makefile>, and C<META.json>, among others. Available only from an
+API server. Returns an empty list for distributions fetched from a mirror.
 
 =head3 C<no_index>
 

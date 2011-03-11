@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 use utf8;
-use Test::More tests => 59;
+use Test::More tests => 60;
 #use Test::More 'no_plan';
 use WWW::PGXN;
 use File::Spec::Functions qw(catfile);
@@ -39,6 +39,7 @@ can_ok $dist => qw(
     releases
     tags
     maintainers
+    special_files
     versions_for
     version_for
     url
@@ -87,6 +88,8 @@ is_deeply [$dist->maintainers], ['David E. Wheeler <david@justatheory.com>'],
     'Should have maintainers';
 is_deeply [$dist->tags], ['ordered pair', 'pair', 'key value'],
     'Should have tags';
+is_deeply [$dist->special_files], ["Changes","Makefile","README.md","META.json"],
+    'Should have special files';
 is $dist->generated_by, undef, 'generated_by should be undef';
 is_deeply $dist->no_index, {}, 'Should have empty no-index';
 is_deeply $dist->prereqs, {}, 'Should have empty prereqs';
