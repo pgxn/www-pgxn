@@ -16,3 +16,4 @@ UTC
 SHA
 Prereq
 lifecycle
+browsable
