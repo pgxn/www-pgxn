@@ -109,6 +109,21 @@ sub download_to {
     );
 }
 
+sub source_url {
+    my $self = shift;
+    my $uri = $self->relative_source_url or return;
+    return URI->new($self->{_pgxn}->url . $uri);
+}
+
+sub relative_source_url {
+    my $self = shift;
+    my $tmpl = $self->{_pgxn}->_uri_templates->{source} or return;
+    return $tmpl->process(
+        dist    => $self->name,
+        version => $self->version
+    );
+}
+
 1;
 
 __END__
@@ -497,6 +512,33 @@ the C<url> method, you just get the path as derived from the distribution URI
 template, for example:
 
   /dist/pair/pair-0.1.1.pgz
+
+=head3 C<source_url>
+
+  my $source_url = $distribution->source_url;
+
+The absolute URL to the unzipped source on the API server, suitable for
+browsing. For example:
+
+  http://api.pgxn.org/src/pair/pair-0.1.1/
+
+Or, for a file system URL:
+
+  file:/path/to/mirror/src/pair/pair-0.1.1/
+
+If connected to a mirror, rather than an API server, C<undef> will be
+returned.
+
+=head3 C<relative_source_url>
+
+  my $relative_source_url = $distribution->relative_source_url;
+
+The relative URL of unzipped, browsable distribution. That is, just the path
+relative to any PGXN mirror root. So rather than the full URL you'd get from
+the C<source_url> method, you just get the path as derived from the
+distribution URI template, for example:
+
+  /src/pair/pair-0.1.1/
 
 =head3 C<download_to>
 

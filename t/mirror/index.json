@@ -6,5 +6,6 @@
    "dist": "/dist/{dist}/{dist}-{version}.pgz",
    "meta": "/dist/{dist}/{dist}-{version}.json",
    "readme": "/dist/{dist}/{dist}-{version}.readme",
-   "mirrors": "/meta/mirrors.json"
+   "mirrors": "/meta/mirrors.json",
+   "source": "/src/{dist}/{dist}-{version}/"
 }

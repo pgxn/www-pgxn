@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 use utf8;
-use Test::More tests => 55;
+use Test::More tests => 59;
 #use Test::More 'no_plan';
 use WWW::PGXN;
 use File::Spec::Functions qw(catfile);
@@ -43,6 +43,8 @@ can_ok $dist => qw(
     version_for
     url
     relative_url
+    source_url
+    relative_source_url
 );
 is $dist->{_pgxn}, $pgxn, 'It should contain the WWW::PGXN object';
 
@@ -140,6 +142,15 @@ ok $dist = $pgxn->find_distribution(name => 'pair', version => '0.1.1'),
 
 is $dist->url, 'file:t/mirror/dist/pair/pair-0.1.1.pgz','Should have URL';
 is $dist->relative_url, '/dist/pair/pair-0.1.1.pgz','Should have relative URL';
+
+# Check source URLs.
+is $dist->source_url, 'file:t/mirror/src/pair/pair-0.1.1/','Should have source URL';
+is $dist->relative_source_url, '/src/pair/pair-0.1.1/','Should have relative source URL';
+
+# They should be undef if no "source" template.
+delete $pgxn->_uri_templates->{source};
+is $dist->source_url, undef, 'Should have no source URL when no tmplate';
+is $dist->relative_source_url, undef, 'Should have no relative  source URL when no tmplate';
 
 # Download to a file.
 my $zip = catfile qw(t pair-0.1.1.zip);
