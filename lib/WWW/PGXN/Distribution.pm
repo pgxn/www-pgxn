@@ -62,6 +62,7 @@ sub versions_for  { map { $_->{version} } @{ shift->releases->{+shift} || [] } }
 
 # Instance methods.
 sub version_for  { shift->releases->{+shift}[0]{version} }
+sub date_for     { shift->releases->{+shift}[0]{date} }
 
 sub _merge_meta {
     my $self = shift;
@@ -583,6 +584,23 @@ These version numbers can be used to fetch information specific to a version:
       name    => $distribution->name,
       version => $distribution->version_for('testing'),
   );
+
+=head3 C<date_for>
+
+  my $date = $distribution->date_for('unstable');
+
+Like C<version_for()>, but returns the release date of the most recent version
+for the given release status. The supported release statuses are:
+
+=over
+
+=item C<stable>
+
+=item C<testing>
+
+=item C<unstable>
+
+=back
 
 =head3 C<versions_for>
 

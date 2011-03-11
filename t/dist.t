@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 use utf8;
-use Test::More tests => 60;
+use Test::More tests => 63;
 #use Test::More 'no_plan';
 use WWW::PGXN;
 use File::Spec::Functions qw(catfile);
@@ -61,6 +61,10 @@ is_deeply $dist->releases, {
 is $dist->version_for('stable'), '0.1.2', 'Should have proper stable version';
 is $dist->version_for('testing'), '0.1.1', 'Should have proper testing version';
 is $dist->version_for('unstable'), undef, 'Should have no unstable version';
+
+is $dist->date_for('stable'), '2010-10-29T22:44:42Z', 'Should have proper stable date';
+is $dist->date_for('testing'), '2010-10-27T23:12:51Z', 'Should have proper testing date';
+is $dist->date_for('unstable'), undef, 'Should have no unstable date';
 
 is_deeply [$dist->versions_for('stable')], [qw(0.1.2 0.1.0)],
     'Should have stable versions';
