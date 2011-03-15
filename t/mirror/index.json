@@ -7,5 +7,6 @@
    "meta": "/dist/{dist}/{dist}-{version}.json",
    "readme": "/dist/{dist}/{dist}-{version}.readme",
    "mirrors": "/meta/mirrors.json",
-   "source": "/src/{dist}/{dist}-{version}/"
+   "source": "/src/{dist}/{dist}-{version}/",
+   "doc": "/dist/{dist}/{dist}-{version}/{doc}.html"
 }

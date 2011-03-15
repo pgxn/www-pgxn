@@ -17,3 +17,5 @@ SHA
 Prereq
 lifecycle
 browsable
+UTF
+pgxn

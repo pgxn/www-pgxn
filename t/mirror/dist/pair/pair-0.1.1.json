@@ -6,6 +6,10 @@
    "maintainer": [
       "David E. Wheeler <david@justatheory.com>"
    ],
+   "docs": {
+      "README": "pair 0.1.0",
+      "doc/pair": "A key/value pair data type"
+   },
    "date": "2010-10-29T22:46:45Z",
    "release_status": "testing",
    "user": "theory",

@@ -35,6 +35,7 @@ BEGIN {
         prereqs
         provides
         resources
+        docs
     )) {
         no strict 'refs';
         *{$attr} = sub { +{ %{ shift->{$attr} || {} } } };
@@ -124,6 +125,20 @@ sub relative_source_url {
         dist    => $self->name,
         version => $self->version
     );
+}
+
+sub body_for_doc {
+    my $self = shift;
+    my $tmpl = $self->{_pgxn}->_uri_templates->{doc} or return;
+    my $uri = $tmpl->process(
+        dist    => $self->name,
+        version => $self->version,
+        doc     => shift,
+    ) or return;
+
+    my $res = $self->{_pgxn}->_fetch(URI->new($self->{_pgxn}->url . $uri))
+        or return;
+    return $res->{content};
 }
 
 1;
@@ -298,6 +313,15 @@ an email.
 Returns a list of special files in the distribution, such as C<Changes>,
 C<README>, C<Makefile>, and C<META.json>, among others. Available only from an
 API server. Returns an empty list for distributions fetched from a mirror.
+
+=head3 C<docs>
+
+  my $docs = $distribution->docs;
+
+Returns a hash reference describing the documentation in the distribution. The
+keys are paths to documentation files, and the values are titles. The
+documentation files are stored as HTML and may be fetched via
+C<body_for_doc()>.
 
 =head3 C<no_index>
 
@@ -608,6 +632,39 @@ for the given release status. The supported release statuses are:
 
 Returns a list of the versions for a particular release status, if any. The
 are returned in order from most to least recent.
+
+=head3 C<body_for_doc>
+
+  my $body = $distribution->body_for_doc('README');
+
+Returns the body of an HTML document. Pass in the path to the doc (minus a
+suffix) to retrieve its contents. They keys in the hash returned by C<docs>
+provide the paths for all docs included in a distribution.
+
+Note that docs are formatted as HTML fragments with no C<< <head> >> or
+C<< <body> >> element, though they may be assumed to constitute the contents
+of a C<< <body> >> element. They are also always encoded as UTF-8.
+
+The contents are all contained within a single C<< <div> >> element with the
+ID C<pgxndoc>, and include a table of contents. Here's a simple example of the
+body of a document:
+
+  <div id="pgxndoc">
+    <div id="pgxntoc">
+      <h3>Contents</h3>
+      <ul class="pgxntocroot">
+        <li><a href="#Title">Title</a></li>
+      </ul>
+    </div>
+    <div id="pgxnbod">
+      <h1 id="Title"><a href="/">Title</a></h1>
+      <p>Blah blah blah</p>
+      <p>Body</p>
+    </div>
+  </div>
+
+The IDs used for contents are generated from C<h1>, C<h2>, and C<h3> elements;
+all other IDs and classes begin with "pgxn" as seen in this example.
 
 =head1 See Also
 
