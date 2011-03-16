@@ -8,5 +8,5 @@
    "readme": "/dist/{dist}/{dist}-{version}.readme",
    "mirrors": "/meta/mirrors.json",
    "source": "/src/{dist}/{dist}-{version}/",
-   "doc": "/dist/{dist}/{dist}-{version}/{doc}.html"
+   "doc": "/dist/{dist}/{dist}-{version}/{+path}.html"
 }

@@ -141,10 +141,13 @@ sub relative_url_for_doc {
         . ' ' . $self->version unless exists $self->{docs}{$path};
 
     my $tmpl = $self->{_pgxn}->_uri_templates->{doc} or return;
-    return $tmpl->process(
+    # XXX Nasty hack until we get + operator in URI Template v4.
+    local $URI::Escape::escapes{'/'} = '/';
+    $tmpl->process(
         dist    => $self->name,
         version => $self->version,
-        doc     => $path,
+        path    => $path,
+        '+path' => $path, # XXX Part of above-mentioned hack.
     );
 }
 

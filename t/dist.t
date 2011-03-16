@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 use utf8;
-use Test::More tests => 79;
+use Test::More tests => 81;
 #use Test::More 'no_plan';
 use WWW::PGXN;
 use File::Spec::Functions qw(catfile);
@@ -161,8 +161,12 @@ is $doc, do {
 
 is $dist->url_for_doc('README'), 'file:t/mirror/dist/pair/pair-0.1.1/README.html',
     'Should have README URL';
+is $dist->url_for_doc('doc/pair'), 'file:t/mirror/dist/pair/pair-0.1.1/doc/pair.html',
+    'Should have doc/pair URL';
 is $dist->relative_url_for_doc('README'), '/dist/pair/pair-0.1.1/README.html',
     'Should have relative README URL';
+is $dist->relative_url_for_doc('doc/pair'), '/dist/pair/pair-0.1.1/doc/pair.html',
+    'Should have relative doc/pair URL';
 
 # Make sure we have no errors if there's no doc URI template.
 delete $pgxn->_uri_templates->{doc};
