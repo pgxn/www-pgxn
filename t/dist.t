@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 use utf8;
-use Test::More tests => 73;
+use Test::More tests => 79;
 #use Test::More 'no_plan';
 use WWW::PGXN;
 use File::Spec::Functions qw(catfile);
@@ -49,6 +49,8 @@ can_ok $dist => qw(
     relative_source_url
     download_to
     body_for_doc
+    url_for_doc
+    relative_url_for_doc
 );
 is $dist->{_pgxn}, $pgxn, 'It should contain the WWW::PGXN object';
 
@@ -123,6 +125,9 @@ is_deeply $dist->resources, {
 # Should get nothing for docs.
 is $dist->body_for_doc('README'), undef, 'Should have no README.html';
 is $dist->body_for_doc('doc/pair'), undef, 'Should have no doc/pair.html';
+is $dist->url_for_doc('README'), undef, 'Should have no README URL';
+is $dist->relative_url_for_doc('README'), undef,
+    'Should have no relative README URL';
 
 ##############################################################################
 # Have a look at the docs in 0.1.1.
@@ -154,10 +159,18 @@ is $doc, do {
     <$fh>;
 }, 'Should have the encoded contents of the doc/pair file';
 
+is $dist->url_for_doc('README'), 'file:t/mirror/dist/pair/pair-0.1.1/README.html',
+    'Should have README URL';
+is $dist->relative_url_for_doc('README'), '/dist/pair/pair-0.1.1/README.html',
+    'Should have relative README URL';
+
 # Make sure we have no errors if there's no doc URI template.
 delete $pgxn->_uri_templates->{doc};
 is $dist->body_for_doc('README'), undef,
     'Should get no errors when no doc URI template';
+is $dist->url_for_doc('README'), undef, 'Should again have no README URL';
+is $dist->relative_url_for_doc('README'), undef,
+    'Should again have no relative README URL';
 
 ##############################################################################
 # Test merging.

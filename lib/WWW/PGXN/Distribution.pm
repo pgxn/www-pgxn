@@ -127,17 +127,31 @@ sub relative_source_url {
     );
 }
 
-sub body_for_doc {
+sub url_for_doc {
     my $self = shift;
+    my $uri = $self->relative_url_for_doc(shift) or return;
+    return URI->new($self->{_pgxn}->url . $uri);
+}
+
+sub relative_url_for_doc {
+    my ($self, $path) = @_;
+    return unless $self->{docs};
+
+    croak "$path is not a known document path in " . $self->name
+        . ' ' . $self->version unless exists $self->{docs}{$path};
+
     my $tmpl = $self->{_pgxn}->_uri_templates->{doc} or return;
-    my $uri = $tmpl->process(
+    return $tmpl->process(
         dist    => $self->name,
         version => $self->version,
-        doc     => shift,
-    ) or return;
+        doc     => $path,
+    );
+}
 
-    my $res = $self->{_pgxn}->_fetch(URI->new($self->{_pgxn}->url . $uri))
-        or return;
+sub body_for_doc {
+    my $self = shift;
+    my $url = $self->url_for_doc(shift) or return;
+    my $res = $self->{_pgxn}->_fetch($url) or return;
     return $res->{content};
 }
 
@@ -632,6 +646,28 @@ for the given release status. The supported release statuses are:
 
 Returns a list of the versions for a particular release status, if any. The
 are returned in order from most to least recent.
+
+=head3 C<url_for_doc>
+
+  # returns http://api.pgxn.org/dist/pair/pair-0.1.1/doc/pair.html
+  my $doc_url = $distribution->url_for_doc('doc/pair');
+
+The absolute URL to a documentation file. Pass the path to a document path to
+get its URL. The keys in the C<docs> hash reference represent all known
+document paths. If connected to a mirror, rather than an API server, C<undef>
+will be returned. Otherwise, if not document exists at that path, an exception
+will be thrown.
+
+=head3 C<relative_url_for_doc>
+
+  # returns /dist/pair/pair-0.1.1/doc/pair.html
+  my $relative_doc_url = $distribution->relative_url_for_doc('doc/pair');
+
+The relative URL to a documentation file. Pass the path to a document path to
+get its URL. The keys in the C<docs> hash reference represent all known
+document paths. If connected to a mirror, rather than an API server, C<undef>
+will be returned. Otherwise, if not document exists at that path, an exception
+will be thrown.
 
 =head3 C<body_for_doc>
 
