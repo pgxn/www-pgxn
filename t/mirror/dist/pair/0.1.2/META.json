@@ -2,6 +2,10 @@
    "name": "pair",
    "abstract": "A key/value pair dåtå type",
    "description": "This library contains a single PostgreSQL extension called `pair`.",
+   "docs": {
+      "README": "pair 0.1.2",
+      "doc/pair": "A key/value pair data type"
+   },
    "version": "0.1.2",
    "maintainer": [
       "David E. Wheeler <david@justatheory.com>"

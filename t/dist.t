@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 use utf8;
-use Test::More tests => 81;
+use Test::More tests => 84;
 #use Test::More 'no_plan';
 use WWW::PGXN;
 use File::Spec::Functions qw(catfile);
@@ -99,7 +99,6 @@ is_deeply [$dist->tags], ['ordered pair', 'pair', 'key value'],
     'Should have tags';
 is_deeply [$dist->special_files], ["Changes","Makefile","README.md","META.json"],
     'Should have special files';
-is_deeply $dist->docs, {}, 'Should have no docs';
 is $dist->generated_by, undef, 'generated_by should be undef';
 is_deeply $dist->no_index, {}, 'Should have empty no-index';
 is_deeply $dist->prereqs, {}, 'Should have empty prereqs';
@@ -122,19 +121,12 @@ is_deeply $dist->resources, {
     }
 }, 'Should have resources';
 
-# Should get nothing for docs.
-is $dist->body_for_doc('README'), undef, 'Should have no README.html';
-is $dist->body_for_doc('doc/pair'), undef, 'Should have no doc/pair.html';
-is $dist->url_for_doc('README'), undef, 'Should have no README URL';
-is $dist->relative_url_for_doc('README'), undef,
-    'Should have no relative README URL';
-
 ##############################################################################
 # Have a look at the docs in 0.1.1.
 ok $dist = $pgxn->find_distribution(name => 'pair', version => '0.1.1'),
     'Find pair 0.1.1';
 is_deeply $dist->docs, {
-    'README' => 'pair 0.1.0',
+    'README' => 'pair 0.1.1',
     'doc/pair' => 'A key/value pair data type'
 }, 'Should have docs hash';
 
@@ -175,6 +167,23 @@ is $dist->body_for_doc('README'), undef,
 is $dist->url_for_doc('README'), undef, 'Should again have no README URL';
 is $dist->relative_url_for_doc('README'), undef,
     'Should again have no relative README URL';
+
+ok $dist = $pgxn->find_distribution(name => 'pair'), 'Find current pair (0.1.2)';
+is_deeply $dist->docs, {
+    'README' => 'pair 0.1.2',
+    'doc/pair' => 'A key/value pair data type'
+}, 'Should have 0.1.2 merged docs hash';
+
+# Should get nothing for 0.1.0.
+ok $dist = $pgxn->find_distribution(name => 'pair', version => '0.1.0'),
+    'Find pair 0.1.0';
+is_deeply $dist->docs, {}, 'Should have no docs';
+is $dist->body_for_doc('README'), undef, 'Should have no README.html';
+is $dist->body_for_doc('doc/pair'), undef, 'Should have no doc/pair.html';
+is $dist->url_for_doc('README'), undef, 'Should have no README URL';
+is $dist->relative_url_for_doc('README'), undef,
+    'Should have no relative README URL';
+
 
 ##############################################################################
 # Test merging.
