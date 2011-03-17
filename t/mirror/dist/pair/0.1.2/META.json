@@ -3,8 +3,8 @@
    "abstract": "A key/value pair dåtå type",
    "description": "This library contains a single PostgreSQL extension called `pair`.",
    "docs": {
-      "README": "pair 0.1.2",
-      "doc/pair": "A key/value pair data type"
+      "README": { "title": "pair 0.1.2" },
+      "doc/pair": { "title": "pair", "abstract": "A key/value pair data type" }
    },
    "version": "0.1.2",
    "maintainer": [

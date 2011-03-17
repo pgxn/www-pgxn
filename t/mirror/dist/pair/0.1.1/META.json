@@ -7,8 +7,8 @@
       "David E. Wheeler <david@justatheory.com>"
    ],
    "docs": {
-      "README": "pair 0.1.1",
-      "doc/pair": "A key/value pair data type"
+      "README": { "title": "pair 0.1.1" },
+      "doc/pair": { "title": "pair", "abstract": "A key/value pair data type" }
    },
    "date": "2010-10-29T22:46:45Z",
    "release_status": "testing",

@@ -126,8 +126,8 @@ is_deeply $dist->resources, {
 ok $dist = $pgxn->find_distribution(name => 'pair', version => '0.1.1'),
     'Find pair 0.1.1';
 is_deeply $dist->docs, {
-    'README' => 'pair 0.1.1',
-    'doc/pair' => 'A key/value pair data type'
+    'README'   => { title => 'pair 0.1.1' },
+    'doc/pair' => { title => 'pair', abstract => 'A key/value pair data type' }
 }, 'Should have docs hash';
 
 ok my $doc = $dist->body_for_doc('README'),
@@ -170,8 +170,8 @@ is $dist->relative_url_for_doc('README'), undef,
 
 ok $dist = $pgxn->find_distribution(name => 'pair'), 'Find current pair (0.1.2)';
 is_deeply $dist->docs, {
-    'README' => 'pair 0.1.2',
-    'doc/pair' => 'A key/value pair data type'
+    'README'   => { title => 'pair 0.1.2' },
+    'doc/pair' => { title => 'pair', abstract => 'A key/value pair data type' }
 }, 'Should have 0.1.2 merged docs hash';
 
 # Should get nothing for 0.1.0.

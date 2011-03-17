@@ -342,7 +342,9 @@ API server. Returns an empty list for distributions fetched from a mirror.
   my $docs = $distribution->docs;
 
 Returns a hash reference describing the documentation in the distribution. The
-keys are paths to documentation files, and the values are titles. The
+keys are paths to documentation files, and the values are hashes with at least
+one key, C<title> which contains the title, of course. A second key,
+C<abstract>, is optional and contains an abtract of the document. The
 documentation files are stored as HTML and may be fetched via
 C<body_for_doc()>.
 
