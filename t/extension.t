@@ -70,10 +70,12 @@ is $dist->name, 'pair', 'It should be the "pair" distribution';
 is $dist->version, '0.1.0', 'It should be v0.1.0';
 
 # Check status data.
-is_deeply $ext->stable_info, { dist => 'pair', version => '0.1.1' },
-    'Should have stable data';
-is_deeply $ext->latest_info, { dist => 'pair', version => '0.1.1' },
-    'Should have latest data';
+is_deeply $ext->stable_info, {
+    dist => 'pair',
+    version => '0.1.1',
+    sha1 => 'c552c961400253e852250c5d2f3def183c81adb3',
+}, 'Should have stable data';
+is_deeply $ext->latest_info, $ext->stable_info, 'Should have latest data';
 is_deeply $ext->testing_info, {}, 'Should have empty testing info';
 is_deeply $ext->unstable_info, {}, 'Should have empty unstable info';
 
