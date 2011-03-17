@@ -35,7 +35,6 @@ BEGIN {
         prereqs
         provides
         resources
-        docs
     )) {
         no strict 'refs';
         *{$attr} = sub { +{ %{ shift->{$attr} || {} } } };
@@ -48,11 +47,17 @@ sub new {
     bless $data, $class;
 }
 
-# Merging accessor.
+# Merging accessors.
 sub releases {
     my $self = shift;
     $self->_merge_by_dist unless $self->{releases};
     return +{ %{ $self->{releases} } };
+}
+
+sub docs {
+    my $self = shift;
+    $self->_merge_meta unless $self->{version};
+    return +{ %{ $self->{docs} || {} } };
 }
 
 # List accessors.
@@ -135,6 +140,7 @@ sub url_for_doc {
 
 sub relative_url_for_doc {
     my ($self, $path) = @_;
+    $self->_merge_meta unless $self->{version};
     return unless $self->{docs};
 
     croak "$path is not a known document path in " . $self->name
