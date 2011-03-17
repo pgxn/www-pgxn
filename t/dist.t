@@ -143,7 +143,7 @@ ok my $doc = $dist->body_for_doc('README'),
 
 # Contents should be the encoded HTML.
 is $doc, do {
-    my $fn = catfile qw(t mirror dist pair pair-0.1.1 README.html);
+    my $fn = catfile qw(t mirror dist pair 0.1.1 README.html);
     open my $fh, '<:raw', $fn or die "Cannot open $fn: $!\n";
     local $/;
     <$fh>;
@@ -153,19 +153,19 @@ is $doc, do {
 ok $doc = $dist->body_for_doc('doc/pair'),
     'Fetch the doc/pair body';
 is $doc, do {
-    my $fn = catfile qw(t mirror dist pair pair-0.1.1 doc pair.html);
+    my $fn = catfile qw(t mirror dist pair 0.1.1 doc pair.html);
     open my $fh, '<:raw', $fn or die "Cannot open $fn: $!\n";
     local $/;
     <$fh>;
 }, 'Should have the encoded contents of the doc/pair file';
 
-is $dist->url_for_doc('README'), 'file:t/mirror/dist/pair/pair-0.1.1/README.html',
+is $dist->url_for_doc('README'), 'file:t/mirror/dist/pair/0.1.1/README.html',
     'Should have README URL';
-is $dist->url_for_doc('doc/pair'), 'file:t/mirror/dist/pair/pair-0.1.1/doc/pair.html',
+is $dist->url_for_doc('doc/pair'), 'file:t/mirror/dist/pair/0.1.1/doc/pair.html',
     'Should have doc/pair URL';
-is $dist->relative_url_for_doc('README'), '/dist/pair/pair-0.1.1/README.html',
+is $dist->relative_url_for_doc('README'), '/dist/pair/0.1.1/README.html',
     'Should have relative README URL';
-is $dist->relative_url_for_doc('doc/pair'), '/dist/pair/pair-0.1.1/doc/pair.html',
+is $dist->relative_url_for_doc('doc/pair'), '/dist/pair/0.1.1/doc/pair.html',
     'Should have relative doc/pair URL';
 
 # Make sure we have no errors if there's no doc URI template.
@@ -207,8 +207,8 @@ is $dist->version, '0.1.2', 'Version should be "0.1.2"';
 ok $dist = $pgxn->find_distribution(name => 'pair', version => '0.1.1'),
     'Find pair 1.0.1';
 
-is $dist->url, 'file:t/mirror/dist/pair/pair-0.1.1.pgz','Should have URL';
-is $dist->relative_url, '/dist/pair/pair-0.1.1.pgz','Should have relative URL';
+is $dist->url, 'file:t/mirror/dist/pair/0.1.1/pair-0.1.1.pgz','Should have URL';
+is $dist->relative_url, '/dist/pair/0.1.1/pair-0.1.1.pgz','Should have relative URL';
 
 # Check source URLs.
 is $dist->source_url, 'file:t/mirror/src/pair/pair-0.1.1/','Should have source URL';
