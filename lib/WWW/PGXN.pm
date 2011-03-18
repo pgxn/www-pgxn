@@ -84,7 +84,7 @@ BEGIN {
             $_[0]->_url_for( $key => { dist => $_[1], version => $_[2] });
         };
         *{"$thing\_path_for"} = sub {
-            $_[0]->_uri_for( $key => { dist => $_[1], version => $_[2] });
+            $_[0]->_path_for( $key => { dist => $_[1], version => $_[2] });
         };
     }
 
@@ -94,7 +94,7 @@ BEGIN {
             $_[0]->_url_for( "by-$thing" => { $thing => $_[1] });
         };
         *{"$thing\_path_for"} = sub {
-            $_[0]->_uri_for( "by-$thing" => { $thing => $_[1] });
+            $_[0]->_path_for( "by-$thing" => { $thing => $_[1] });
         };
     }
 }
@@ -112,7 +112,7 @@ sub _uri_templates {
     }};
 }
 
-sub _uri_for {
+sub _path_for {
     my ($self, $name) = (shift, shift);
     my $tmpl = $self->_uri_templates->{$name}
         or croak qq{No URI template named "$name"};
@@ -121,7 +121,7 @@ sub _uri_for {
 
 sub _url_for {
     my $self = shift;;
-    return URI->new($self->url . $self->_uri_for(@_));
+    return URI->new($self->url . $self->_path_for(@_));
 }
 
 sub _request {

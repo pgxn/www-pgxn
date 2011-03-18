@@ -101,7 +101,7 @@ sub url {
 
 sub relative_url {
     my $self = shift;
-    $self->{_pgxn}->_uri_for(
+    $self->{_pgxn}->_path_for(
         'dist',
         dist    => $self->name,
         version => $self->version
