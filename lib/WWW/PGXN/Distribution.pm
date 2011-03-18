@@ -99,7 +99,7 @@ sub url {
     );
 }
 
-sub relative_url {
+sub path {
     my $self = shift;
     $self->{_pgxn}->_path_for(
         'dist',
@@ -119,11 +119,11 @@ sub download_to {
 
 sub source_url {
     my $self = shift;
-    my $uri = $self->relative_source_url or return;
+    my $uri = $self->source_path or return;
     return URI->new($self->{_pgxn}->url . $uri);
 }
 
-sub relative_source_url {
+sub source_path {
     my $self = shift;
     my $tmpl = $self->{_pgxn}->_uri_templates->{source} or return;
     return $tmpl->process(
@@ -134,11 +134,11 @@ sub relative_source_url {
 
 sub url_for_doc {
     my $self = shift;
-    my $uri = $self->relative_url_for_doc(shift) or return;
+    my $uri = $self->path_for_doc(shift) or return;
     return URI->new($self->{_pgxn}->url . $uri);
 }
 
-sub relative_url_for_doc {
+sub path_for_doc {
     my ($self, $path) = @_;
     $self->_merge_meta unless $self->{version};
     return unless $self->{docs};
@@ -561,14 +561,14 @@ Or, for a file system URL:
 
   file:/path/to/mirror/dist/pair/pair-0.1.1.pgz
 
-=head3 C<relative_url>
+=head3 C<path>
 
-  my $uri = $distribution->relative_uri;
+  my $uri = $distribution->path;
 
-The relative URL of the distribution archive file. That is, just the path
-relative to any PGXN mirror root. So rather than the full URL you'd get from
-the C<url> method, you just get the path as derived from the distribution URI
-template, for example:
+The path to the distribution archive file. That is, the path relative to any
+PGXN mirror root. So rather than the full URL you'd get from the C<url>
+method, you just get the path as derived from the distribution URI template,
+for example:
 
   /dist/pair/pair-0.1.1.pgz
 
@@ -588,14 +588,14 @@ Or, for a file system URL:
 If connected to a mirror, rather than an API server, C<undef> will be
 returned.
 
-=head3 C<relative_source_url>
+=head3 C<source_path>
 
-  my $relative_source_url = $distribution->relative_source_url;
+  my $source_path = $distribution->source_path;
 
-The relative URL of unzipped, browsable distribution. That is, just the path
-relative to any PGXN mirror root. So rather than the full URL you'd get from
-the C<source_url> method, you just get the path as derived from the
-distribution URI template, for example:
+The path to the unzipped, browsable distribution. That is, the path relative
+to any PGXN mirror root. So rather than the full URL you'd get from the
+C<source_url> method, you just get the path as derived from the distribution
+URI template, for example:
 
   /src/pair/pair-0.1.1/
 
@@ -669,16 +669,16 @@ document paths. If connected to a mirror, rather than an API server, C<undef>
 will be returned. Otherwise, if not document exists at that path, an exception
 will be thrown.
 
-=head3 C<relative_url_for_doc>
+=head3 C<path_for_doc>
 
   # returns /dist/pair/pair-0.1.1/doc/pair.html
-  my $relative_doc_url = $distribution->relative_url_for_doc('doc/pair');
+  my $doc_url = $distribution->path_for_doc('doc/pair');
 
-The relative URL to a documentation file. Pass the path to a document path to
-get its URL. The keys in the C<docs> hash reference represent all known
-document paths. If connected to a mirror, rather than an API server, C<undef>
-will be returned. Otherwise, if not document exists at that path, an exception
-will be thrown.
+The path to a documentation file. Pass the path to a document path to get its
+URL. The keys in the C<docs> hash reference represent all known document
+paths. If connected to a mirror, rather than an API server, C<undef> will be
+returned. Otherwise, if not document exists at that path, an exception will be
+thrown.
 
 =head3 C<body_for_doc>
 

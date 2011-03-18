@@ -44,13 +44,13 @@ can_ok $dist => qw(
     versions_for
     version_for
     url
-    relative_url
+    path
     source_url
-    relative_source_url
+    source_path
     download_to
     body_for_doc
     url_for_doc
-    relative_url_for_doc
+    path_for_doc
 );
 is $dist->{_pgxn}, $pgxn, 'It should contain the WWW::PGXN object';
 
@@ -155,18 +155,18 @@ is $dist->url_for_doc('README'), 'file:t/mirror/dist/pair/0.1.1/README.html',
     'Should have README URL';
 is $dist->url_for_doc('doc/pair'), 'file:t/mirror/dist/pair/0.1.1/doc/pair.html',
     'Should have doc/pair URL';
-is $dist->relative_url_for_doc('README'), '/dist/pair/0.1.1/README.html',
-    'Should have relative README URL';
-is $dist->relative_url_for_doc('doc/pair'), '/dist/pair/0.1.1/doc/pair.html',
-    'Should have relative doc/pair URL';
+is $dist->path_for_doc('README'), '/dist/pair/0.1.1/README.html',
+    'Should have README path';
+is $dist->path_for_doc('doc/pair'), '/dist/pair/0.1.1/doc/pair.html',
+    'Should have doc/pair path';
 
 # Make sure we have no errors if there's no doc URI template.
 delete $pgxn->_uri_templates->{doc};
 is $dist->body_for_doc('README'), undef,
     'Should get no errors when no doc URI template';
 is $dist->url_for_doc('README'), undef, 'Should again have no README URL';
-is $dist->relative_url_for_doc('README'), undef,
-    'Should again have no relative README URL';
+is $dist->path_for_doc('README'), undef,
+    'Should again have no README path';
 
 ok $dist = $pgxn->find_distribution(name => 'pair'), 'Find current pair (0.1.2)';
 is_deeply $dist->docs, {
@@ -181,8 +181,8 @@ is_deeply $dist->docs, {}, 'Should have no docs';
 is $dist->body_for_doc('README'), undef, 'Should have no README.html';
 is $dist->body_for_doc('doc/pair'), undef, 'Should have no doc/pair.html';
 is $dist->url_for_doc('README'), undef, 'Should have no README URL';
-is $dist->relative_url_for_doc('README'), undef,
-    'Should have no relative README URL';
+is $dist->path_for_doc('README'), undef,
+    'Should have no README path';
 
 
 ##############################################################################
@@ -217,16 +217,16 @@ ok $dist = $pgxn->find_distribution(name => 'pair', version => '0.1.1'),
     'Find pair 1.0.1';
 
 is $dist->url, 'file:t/mirror/dist/pair/0.1.1/pair-0.1.1.pgz','Should have URL';
-is $dist->relative_url, '/dist/pair/0.1.1/pair-0.1.1.pgz','Should have relative URL';
+is $dist->path, '/dist/pair/0.1.1/pair-0.1.1.pgz','Should have path';
 
 # Check source URLs.
 is $dist->source_url, 'file:t/mirror/src/pair/pair-0.1.1/','Should have source URL';
-is $dist->relative_source_url, '/src/pair/pair-0.1.1/','Should have relative source URL';
+is $dist->source_path, '/src/pair/pair-0.1.1/','Should have source path';
 
 # They should be undef if no "source" template.
 delete $pgxn->_uri_templates->{source};
 is $dist->source_url, undef, 'Should have no source URL when no tmplate';
-is $dist->relative_source_url, undef, 'Should have no relative  source URL when no tmplate';
+is $dist->source_path, undef, 'Should have no source path when no tmplate';
 
 # Download to a file.
 my $zip = catfile qw(t pair-0.1.1.zip);
