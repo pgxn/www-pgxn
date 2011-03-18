@@ -90,7 +90,7 @@ sub _merge_by_dist {
     @{$self}{keys %{ $by_dist }} = values %{ $by_dist };
 }
 
-sub url {
+sub download_url {
     my $self = shift;
     $self->{_pgxn}->_url_for(
         'dist',
@@ -99,7 +99,7 @@ sub url {
     );
 }
 
-sub path {
+sub download_path {
     my $self = shift;
     $self->{_pgxn}->_path_for(
         'dist',
@@ -548,9 +548,9 @@ like so:
       say $tag->name;
   }
 
-=head3 C<url>
+=head3 C<download_url>
 
-  my $url = $distribution->url;
+  my $url = $distribution->download_url;
 
 The absolute URL for the distribution archive file on the mirror or API sever,
 such as
@@ -561,7 +561,7 @@ Or, for a file system URL:
 
   file:/path/to/mirror/dist/pair/pair-0.1.1.pgz
 
-=head3 C<path>
+=head3 C<download_path>
 
   my $uri = $distribution->path;
 

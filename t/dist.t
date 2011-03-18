@@ -43,8 +43,8 @@ can_ok $dist => qw(
     docs
     versions_for
     version_for
-    url
-    path
+    download_url
+    download_path
     source_url
     source_path
     download_to
@@ -216,8 +216,10 @@ is $dist->version, '0.1.2', 'Version should be "0.1.2"';
 ok $dist = $pgxn->find_distribution(name => 'pair', version => '0.1.1'),
     'Find pair 1.0.1';
 
-is $dist->url, 'file:t/mirror/dist/pair/0.1.1/pair-0.1.1.pgz','Should have URL';
-is $dist->path, '/dist/pair/0.1.1/pair-0.1.1.pgz','Should have path';
+is $dist->download_url, 'file:t/mirror/dist/pair/0.1.1/pair-0.1.1.pgz',
+    'Should have donload URL';
+is $dist->download_path, '/dist/pair/0.1.1/pair-0.1.1.pgz',
+    'Should have download path';
 
 # Check source URLs.
 is $dist->source_url, 'file:t/mirror/src/pair/pair-0.1.1/','Should have source URL';
