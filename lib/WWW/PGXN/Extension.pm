@@ -43,7 +43,7 @@ sub latest_distribution   {
 sub distribution_for_version {
     my $self = shift;
     my $vdata = $self->info_for_version(shift) or return;
-    return $self->{_pgxn}->find_distribution(%{ $vdata->[0] });
+    return $self->{_pgxn}->find_distribution(@{ $vdata->[0] }{qw(dist version)});
 }
 
 sub info_for_version {
@@ -54,7 +54,7 @@ sub info_for_version {
 sub _dist_for_status {
     my ($self, $status) = @_;
     my $vdata = $self->{$status} or return;
-    return $self->{_pgxn}->find_distribution(%{ $vdata });
+    return $self->{_pgxn}->find_distribution(@{ $vdata }{qw(dist version)});
 }
 
 sub download_stable_to {

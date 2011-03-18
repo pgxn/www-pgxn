@@ -13,11 +13,11 @@ my $pgxn = new_ok 'WWW::PGXN', [ url => 'file:t/mirror' ];
 
 ##############################################################################
 # Try to get a nonexistent distribution.
-ok !$pgxn->find_distribution(name => 'nonexistent'),
+ok !$pgxn->find_distribution('nonexistent'),
     'Should get nothing when searching for a nonexistent distribution';
 
 # Fetch distribution data.
-ok my $dist = $pgxn->find_distribution(name => 'pair'),
+ok my $dist = $pgxn->find_distribution('pair'),
     'Find distribution "pair"';
 isa_ok $dist, 'WWW::PGXN::Distribution', 'It';
 can_ok $dist => qw(
@@ -80,7 +80,7 @@ is_deeply [ $dist->versions_for('unstable') ], [],
 
 ##############################################################################
 # Now find for a particular version number.
-ok $dist = $pgxn->find_distribution(name => 'pair', version => '0.1.2'),
+ok $dist = $pgxn->find_distribution('pair' => '0.1.2'),
     'Find pair 0.1.2';
 isa_ok $dist, 'WWW::PGXN::Distribution', 'It';
 is $dist->name, 'pair', 'Name should be "pair"';
@@ -123,7 +123,7 @@ is_deeply $dist->resources, {
 
 ##############################################################################
 # Have a look at the docs in 0.1.1.
-ok $dist = $pgxn->find_distribution(name => 'pair', version => '0.1.1'),
+ok $dist = $pgxn->find_distribution('pair' => '0.1.1'),
     'Find pair 0.1.1';
 is_deeply $dist->docs, {
     'README'   => { title => 'pair 0.1.1' },
@@ -168,14 +168,14 @@ is $dist->url_for_doc('README'), undef, 'Should again have no README URL';
 is $dist->path_for_doc('README'), undef,
     'Should again have no README path';
 
-ok $dist = $pgxn->find_distribution(name => 'pair'), 'Find current pair (0.1.2)';
+ok $dist = $pgxn->find_distribution('pair'), 'Find current pair (0.1.2)';
 is_deeply $dist->docs, {
     'README'   => { title => 'pair 0.1.2' },
     'doc/pair' => { title => 'pair', abstract => 'A key/value pair data type' }
 }, 'Should have 0.1.2 merged docs hash';
 
 # Should get nothing for 0.1.0.
-ok $dist = $pgxn->find_distribution(name => 'pair', version => '0.1.0'),
+ok $dist = $pgxn->find_distribution('pair' => '0.1.0'),
     'Find pair 0.1.0';
 is_deeply $dist->docs, {}, 'Should have no docs';
 is $dist->body_for_doc('README'), undef, 'Should have no README.html';
@@ -187,33 +187,33 @@ is $dist->path_for_doc('README'), undef,
 
 ##############################################################################
 # Test merging.
-ok $dist = $pgxn->find_distribution(name => 'pair'),
+ok $dist = $pgxn->find_distribution('pair'),
     'Find "pair" again';
 ok $dist->_merge_meta, 'Merge distmeta';
 
 is $dist->version_for('stable'), '0.1.2', 'Should have proper stable version';
 is $dist->version, '0.1.2', 'Version should be "0.1.2"';
 
-ok $dist = $pgxn->find_distribution(name => 'pair', version => '0.1.2'),
+ok $dist = $pgxn->find_distribution('pair' => '0.1.2'),
     'Find "pair" 0.1.2 again';
 ok $dist->_merge_by_dist, 'Merge by-dist';
 is $dist->version_for('stable'), '0.1.2', 'Should have proper stable version';
 is $dist->version, '0.1.2', 'Version should be "0.1.2"';
 
 # Test implicit merging.
-ok $dist = $pgxn->find_distribution(name => 'pair'),
+ok $dist = $pgxn->find_distribution( 'pair'),
     'Find "pair" once more';
 is $dist->version_for('stable'), '0.1.2', 'Should have proper stable version';
 is $dist->version, '0.1.2', 'Version should be "0.1.2"';
 
-ok $dist = $pgxn->find_distribution(name => 'pair', version => '0.1.2'),
+ok $dist = $pgxn->find_distribution('pair' => '0.1.2'),
     'Find "pair" 0.1.2 once more';
 is $dist->version_for('stable'), '0.1.2', 'Should have proper stable version';
 is $dist->version, '0.1.2', 'Version should be "0.1.2"';
 
 ##############################################################################
 # Test other methods.
-ok $dist = $pgxn->find_distribution(name => 'pair', version => '0.1.1'),
+ok $dist = $pgxn->find_distribution('pair' => '0.1.1'),
     'Find pair 1.0.1';
 
 is $dist->download_url, 'file:t/mirror/dist/pair/0.1.1/pair-0.1.1.pgz',

@@ -24,10 +24,10 @@ sub new {
 }
 
 sub find_distribution {
-    my ($self, %p) = @_;
-    $p{dist} = delete $p{name} unless exists $p{dist};
+    my ($self, $dist, $version) = @_;
     my $data = $self->_fetch_json(
-        (defined $p{version} ? 'meta' : 'by-dist'), %p
+        (defined $version ? 'meta' : 'by-dist'),
+        dist => $dist, version => $version || ''
     ) or return;
     WWW::PGXN::Distribution->new($self, $data);
 }
@@ -216,7 +216,7 @@ WWW::PGXN - Interface to PGXN mirrors and the PGXN API
 =head1 Synopsis
 
   my $pgxn = WWW::PGXN->new( url => 'http://api.pgxn.org/' );
-  my $dist = $pgxn->find_distribution(name => 'pgTAP');
+  my $dist = $pgxn->find_distribution('pgTAP');
   $dist->download_to('.');
 
 =head1 Description
@@ -283,22 +283,12 @@ URL.
 
 =head3 C<find_distribution>
 
-  my $dist = $pgxn->find_distribution(name => $dist_name);
+  my $dist = $pgxn->find_distribution($dist_name, $version);
 
 Finds the data for a distribution. Returns a L<WWW::PGXN::Distribution>
-object. The supported parameters are:
-
-=over
-
-=item C<name>
-
-The name of the distribution. Required.
-
-=item C<version>
-
-The version of the distribution. Optional.
-
-=back
+object. The first argument, the name of the distribution, is required. The
+second argument, the version, is optional. If not present, the current stable
+release will be retrieved.
 
 If the distribution cannot be found, C<undef> will be returned. For any other
 errors, an exception will be thrown.

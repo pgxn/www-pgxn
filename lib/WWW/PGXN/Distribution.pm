@@ -175,7 +175,7 @@ WWW::PGXN::Distribution - Distribution metadata fetched from PGXN
 =head1 Synopsis
 
   my $pgxn = WWW::PGXN->new( url => 'http://api.pgxn.org/' );
-  my $dist = $pgxn->find_distribution(name => 'pgTAP');
+  my $dist = $pgxn->find_distribution('pgTAP');
   $dist->download_to('.');
 
 =head1 Description
@@ -630,8 +630,8 @@ supported release statuses are:
 These version numbers can be used to fetch information specific to a version:
 
   my $test_dist = $pgxn->find_distribution(
-      name    => $distribution->name,
-      version => $distribution->version_for('testing'),
+      $distribution->name,
+      $distribution->version_for('testing'),
   );
 
 =head3 C<date_for>
