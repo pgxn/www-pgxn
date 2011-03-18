@@ -72,6 +72,33 @@ sub proxy {
     $self->{proxy} = shift;
 }
 
+BEGIN {
+    for my $spec (
+        [ meta     => 'meta'   ],
+        [ download => 'dist'   ],
+        [ source   => 'source' ],
+    ) {
+        my ($thing, $key) = @{ $spec };
+        no strict 'refs';
+        *{"$thing\_url_for"} = sub {
+            $_[0]->_url_for( $key => { dist => $_[1], version => $_[2] });
+        };
+        *{"$thing\_path_for"} = sub {
+            $_[0]->_uri_for( $key => { dist => $_[1], version => $_[2] });
+        };
+    }
+
+    for my $thing (qw(tag extension user)) {
+        no strict 'refs';
+        *{"$thing\_url_for"} = sub {
+            $_[0]->_url_for( "by-$thing" => { $thing => $_[1] });
+        };
+        *{"$thing\_path_for"} = sub {
+            $_[0]->_uri_for( "by-$thing" => { $thing => $_[1] });
+        };
+    }
+}
+
 sub _uri_templates {
     my $self = shift;
     return $self->{uri_templates} ||= { do {
@@ -306,6 +333,85 @@ exception will be thrown.
 
 Returns a list of L<WWW::PGXN::Mirror> objects representing all of the mirrors
 in the network to which the PGXN API or mirror server belongs.
+
+=head3 C<meta_url_for>
+
+  my $meta_url = $pgxn->meta_url_for($dist_name, $dist_version);
+
+Returns the URL for a distribution meta file. This is the file fetched by
+C<find_distribution()>.
+
+=head3 C<download_url_for>
+
+  my $download_url = $pgxn->download_url_for($dist_name, $dist_version);
+
+Returns the download URL for a distribution and version. This is the zipped
+archive file containing the distribution itself.
+
+=head3 C<source_url_for>
+
+  my $source_url = $pgxn->source_url_for($dist_name, $dist_version);
+
+Returns the URL for a distribution source file. This URL is available only
+from an API server, not a mirror.
+
+=head3 C<extension_url_for>
+
+  my $extension_url = $pgxn->extension_url_for($extension_name);
+
+Returns the URL for an extension metadata file. This is the file fetched by
+C<find_extension()>.
+
+=head3 C<user_url_for>
+
+  my $user_url = $pgxn->user_url_for($nickname);
+
+Returns the URL for an user metadata file. This is the file fetched by
+C<find_user()>.
+
+=head3 C<tag_url_for>
+
+  my $tag_url = $pgxn->tag_url_for($tag_name);
+
+Returns the URL for an tag metadata file. This is the file fetched by
+C<find_tag()>.
+
+=head3 C<meta_path_for>
+
+  my $meta_path = $pgxn->meta_path_for($dist_name, $dist_version);
+
+Returns the path for a distribution meta file.
+
+=head3 C<download_path_for>
+
+  my $download_path = $pgxn->download_path_for($dist_name, $dist_version);
+
+Returns the download path for a distribution and version.
+
+=head3 C<source_path_for>
+
+  my $source_path = $pgxn->source_path_for($dist_name, $dist_version);
+
+Returns the path for a distribution source file. This path is available only
+from an API server, not a mirror.
+
+=head3 C<extension_path_for>
+
+  my $extension_path = $pgxn->extension_path_for($extension_name);
+
+Returns the path for an extension metadata file.
+
+=head3 C<user_path_for>
+
+  my $user_path = $pgxn->user_path_for($nickname);
+
+Returns the path for an user metadata file.
+
+=head3 C<tag_path_for>
+
+  my $tag_path = $pgxn->tag_path_for($tag_name);
+
+Returns the path for an tag metadata file.
 
 =head1 See Also
 

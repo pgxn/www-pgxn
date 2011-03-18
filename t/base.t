@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::More tests => 16;
+use Test::More tests => 28;
 #use Test::More 'no_plan';
 use File::Spec::Functions qw(catfile);
 
@@ -77,3 +77,54 @@ local $@;
 eval { $pgxn->_url_for('nonexistent') };
 like $@, qr{No URI template named "nonexistent"},
     'Should get error for nonexistent URI template';
+
+##############################################################################
+# Test url generation methods.
+is $pgxn->meta_url_for('pair', '1.2.0'),
+    'file:t/mirror/dist/pair/1.2.0/META.json',
+    'meta_url_for() shuld work';
+
+is $pgxn->download_url_for('pair', '1.2.0'),
+    'file:t/mirror/dist/pair/1.2.0/pair-1.2.0.pgz',
+    'download_url_for() shuld work';
+
+is $pgxn->source_url_for('pair', '1.2.0'),
+    'file:t/mirror/src/pair/pair-1.2.0/',
+    'source_url_for() shuld work';
+
+is $pgxn->tag_url_for('whatever'),
+    'file:t/mirror/by/tag/whatever.json',
+    'tag_url_for() should work';
+
+is $pgxn->extension_url_for('explanation'),
+    'file:t/mirror/by/extension/explanation.json',
+    'extension_url_for() should work';
+
+is $pgxn->user_url_for('theory'),
+    'file:t/mirror/by/user/theory.json',
+    'user_url_for() should work';
+
+is $pgxn->meta_path_for('pair', '1.2.0'),
+    '/dist/pair/1.2.0/META.json',
+    'meta_path_for() shuld work';
+
+is $pgxn->download_path_for('pair', '1.2.0'),
+    '/dist/pair/1.2.0/pair-1.2.0.pgz',
+    'download_path_for() shuld work';
+
+is $pgxn->source_path_for('pair', '1.2.0'),
+    '/src/pair/pair-1.2.0/',
+    'source_path_for() shuld work';
+
+is $pgxn->tag_path_for('whatever'),
+    '/by/tag/whatever.json',
+    'tag_path_for() should work';
+
+is $pgxn->extension_path_for('explanation'),
+    '/by/extension/explanation.json',
+    'extension_path_for() should work';
+
+is $pgxn->user_path_for('theory'),
+    '/by/user/theory.json',
+    'user_path_for() should work';
+
