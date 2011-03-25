@@ -31,7 +31,7 @@ isa_ok my $req = $pgxn->_request, 'WWW::PGXN::FileReq', 'The request object';
 
 ##############################################################################
 # Test FileReq.
-ok my $res = $req->get('file:t/nonexistent.txt'),
+ok my $res = $req->get(URI->new('file:t/nonexistent.txt')),
     'Fetch nonexisent file';
 is_deeply $res, {
     success => 0,
@@ -48,7 +48,8 @@ my $json = do {
 };
 close $fh;
 
-ok $res = $req->get('file:t/mirror/index.json'), 'Fetch index.html';
+ok $res = $req->get(URI->new('file:t/mirror/index.json')),
+    'Fetch mirror/index.json';
 is_deeply $res, {
     success => 1,
     status  => 200,

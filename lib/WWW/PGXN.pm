@@ -51,6 +51,25 @@ sub find_tag {
     WWW::PGXN::Tag->new($data);
 }
 
+sub search {
+    my ($self, $for, $params) = @_;
+    ($for, $params) = ('', $for) if ref $for;
+    my $url = $self->url;
+
+    if ($url->scheme eq 'file') {
+        # Fetch it via PGXN::API::Searcher.
+        my $searcher = PGXN::API::Searcher->new(File::Spec->catdir($url), '_index');
+        return $searcher->search($for || 'doc', $params);
+    }
+
+    my $qurl = URI->new($url . "/by/$for");
+    $qurl->query_form({
+        map { substr($_, 0, 1) => $params->{$_} } keys %{ $params }
+    });
+    my $res = $self->_fetch($qurl) or return;
+    return JSON->new->utf8->decode($res->{content});
+}
+
 sub mirrors {
     my $self = shift;
     return @{ $self->{mirrors} ||= do {
@@ -62,8 +81,9 @@ sub mirrors {
 sub url {
     my $self = shift;
     return $self->{url} unless @_;
-    ($self->{url} = shift) =~ s{/+$}{}g;
-    require PGXN::API::Searcher if $self->{url} =~ m{^file:};
+    (my $url = shift) =~ s{/+$}{}g;
+    $self->{url} = URI->new($url);
+    require PGXN::API::Searcher if $self->{url}->scheme eq 'file';
     delete $self->{_req};
     $self->{url};
 }
@@ -105,7 +125,7 @@ sub _uri_templates {
     my $self = shift;
     return $self->{uri_templates} ||= { do {
         my $req = $self->_request;
-        my $url = $self->url . '/index.json';
+        my $url = URI->new($self->url . '/index.json');
         my $res = $req->get($url);
         croak "Request for $url failed: $res->{status}: $res->{reason}\n"
             unless $res->{success};
@@ -181,8 +201,7 @@ sub new {
 
 sub get {
     my $self = shift;
-    (my $file = shift) =~ s{^file:}{};
-    $file = URI::Escape::uri_unescape(File::Spec->catfile(split m{/}, $file));
+    my $file = File::Spec->catfile(shift->path_segments);
 
     return {
         success => 0,
@@ -325,6 +344,36 @@ exception will be thrown.
 
 Returns a list of L<WWW::PGXN::Mirror> objects representing all of the mirrors
 in the network to which the PGXN API or mirror server belongs.
+
+=head3 C<search>
+
+  my $results = $pgxn->search({ query => 'tap' });
+  $results    = $pgxn->search(dist => { query => 'wicked' });
+
+Sends a search query to the API server (not supported for mirrors). For an API
+server accessed via a C<file:> URL, L<PGXN::API::Searcher> is required and
+used to fetch the results directly. Otherwise, an HTTP request is sent to the
+server as usual.
+
+By default, all of the documentation indexed by the API is searched. Pass a
+string as the first argument to specify that the search be against another
+index. The supported indexes are:
+
+=over
+
+=item dist
+
+=item extension
+
+=item user
+
+=item tag
+
+=back
+
+Currently the return value is a hash composed directly from the JSON returned
+by the search request. See L<PGXN::API::Searcher> for details on its
+structure.
 
 =head3 C<meta_url_for>
 

@@ -10,6 +10,7 @@ Module::Build->new(
     build_requires     => {
         'File::Spec::Functions' => 0,
         'Module::Build'         => '0.30',
+        'Test::MockModule'      => '0.05',
         'Test::More'            => '0.96',
     },
     requires => {
