@@ -27,26 +27,27 @@ sub find_distribution {
     my ($self, $dist, $version) = @_;
     my $data = $self->_fetch_json(
         (defined $version ? 'meta' : 'by-dist'),
-        dist => $dist, version => $version || ''
+        { dist => $dist, version => $version || '' }
     ) or return;
     WWW::PGXN::Distribution->new($self, $data);
 }
 
 sub find_extension {
     my ($self, $ext) = @_;
-    my $data = $self->_fetch_json('by-extension', extension => $ext) or return;
+    my $data = $self->_fetch_json('by-extension', { extension => $ext })
+        or return;
     WWW::PGXN::Extension->new($self, $data);
 }
 
 sub find_user {
     my ($self, $user) = @_;
-    my $data = $self->_fetch_json('by-user', user => $user) or return;
+    my $data = $self->_fetch_json('by-user', { user => $user }) or return;
     WWW::PGXN::User->new($data);
 }
 
 sub find_tag {
     my ($self, $tag) = @_;
-    my $data = $self->_fetch_json('by-tag', tag => $tag) or return;
+    my $data = $self->_fetch_json('by-tag', { tag => $tag }) or return;
     WWW::PGXN::Tag->new($data);
 }
 
@@ -114,14 +115,14 @@ sub _uri_templates {
 }
 
 sub _path_for {
-    my ($self, $name) = (shift, shift);
+    my ($self, $name, $vars) = @_;
     my $tmpl = $self->_uri_templates->{$name}
         or croak qq{No URI template named "$name"};
-    return $tmpl->process(@_);
+    return $tmpl->process($vars);
 }
 
 sub _url_for {
-    my $self = shift;;
+    my $self = shift;
     return URI->new($self->url . $self->_path_for(@_));
 }
 

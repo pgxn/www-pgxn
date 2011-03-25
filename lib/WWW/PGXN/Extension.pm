@@ -86,11 +86,10 @@ sub download_version_to {
 sub _download_to {
     my ($self, $file, $info) = @_;
     return unless $info;
-    $self->{_pgxn}->_download_to(
-        $file,
+    $self->{_pgxn}->_download_to($file => {
         dist    => $info->{dist},
         version => $info->{version},
-    );
+    });
 }
 
 1;

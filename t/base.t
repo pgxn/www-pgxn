@@ -74,7 +74,7 @@ is_deeply $tmpl, { map { $_ => URI::Template->new($data->{$_}) } keys %{ $data }
 
 ##############################################################################
 # Test url formatting.
-is $pgxn->_url_for('by-dist', dist => 'pair'),
+is $pgxn->_url_for('by-dist', {dist => 'pair'}),
     'file:t/mirror/by/dist/pair.json',
     '_url_for() should work';
 
