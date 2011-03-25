@@ -16,11 +16,11 @@ my $pgxn = new_ok 'WWW::PGXN', [ url => 'file:t/mirror' ];
 
 ##############################################################################
 # Try to get a nonexistent user.
-ok !$pgxn->find_user('nonexistent'),
+ok !$pgxn->get_user('nonexistent'),
     'Should get nothing when searching for a nonexistent user';
 
 # Fetch user data.
-ok my $user = $pgxn->find_user('theory'),
+ok my $user = $pgxn->get_user('theory'),
     'Find user "theory"';
 isa_ok $user, 'WWW::PGXN::User', 'It';
 can_ok $user, qw(

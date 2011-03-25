@@ -18,11 +18,11 @@ my $pgxn = new_ok 'WWW::PGXN', [ url => 'file:t/mirror' ];
 
 ##############################################################################
 # Try to get a nonexistent distribution.
-ok !$pgxn->find_extension('nonexistent'),
+ok !$pgxn->get_extension('nonexistent'),
     'Should get nothing when searching for a nonexistent extension';
 
 # Fetch extension data.
-ok my $ext = $pgxn->find_extension('pair'),
+ok my $ext = $pgxn->get_extension('pair'),
     'Find extension "pair"';
 isa_ok $ext, 'WWW::PGXN::Extension', 'It';
 can_ok $ext, qw(

@@ -43,7 +43,7 @@ sub latest_distribution   {
 sub distribution_for_version {
     my $self = shift;
     my $vdata = $self->info_for_version(shift) or return;
-    return $self->{_pgxn}->find_distribution(@{ $vdata->[0] }{qw(dist version)});
+    return $self->{_pgxn}->get_distribution(@{ $vdata->[0] }{qw(dist version)});
 }
 
 sub info_for_version {
@@ -54,7 +54,7 @@ sub info_for_version {
 sub _dist_for_status {
     my ($self, $status) = @_;
     my $vdata = $self->{$status} or return;
-    return $self->{_pgxn}->find_distribution(@{ $vdata }{qw(dist version)});
+    return $self->{_pgxn}->get_distribution(@{ $vdata }{qw(dist version)});
 }
 
 sub download_stable_to {
@@ -103,13 +103,13 @@ WWW::PGXN::Extension - Extension metadata fetched from PGXN
 =head1 Synopsis
 
   my $pgxn = WWW::PGXN->new( url => 'http://api.pgxn.org/' );
-  my $ext  = $pgxn->find_extension('pgTAP');
+  my $ext  = $pgxn->get_extension('pgTAP');
   $ext->download_stable_to('.');
 
 =head1 Description
 
 This module represents PGXN extension metadata fetched from PGXN>. It is not
-intended to be constructed directly, but via the L<WWW::PGXN/find_extension>
+intended to be constructed directly, but via the L<WWW::PGXN/get_extension>
 method of L<WWW::PGXN>.
 
 =head1 Interface

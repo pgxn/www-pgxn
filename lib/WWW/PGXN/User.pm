@@ -36,14 +36,14 @@ WWW::PGXN::User - User metadata fetched from PGXN
 =head1 Synopsis
 
   my $pgxn  = WWW::PGXN->new( url => 'http://api.pgxn.org/' );
-  my $user = $pgxn->find_user('theory');
+  my $user = $pgxn->get_user('theory');
   say $user->name, '<', $user->email, '>';
 
 
 =head1 Description
 
 This module represents PGXN user metadata fetched from PGXN>. It is not
-intended to be constructed directly, but via the L<WWW::PGXN/find_user> method
+intended to be constructed directly, but via the L<WWW::PGXN/get_user> method
 of L<WWW::PGXN>.
 
 =head1 Interface

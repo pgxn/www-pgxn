@@ -171,14 +171,14 @@ WWW::PGXN::Distribution - Distribution metadata fetched from PGXN
 =head1 Synopsis
 
   my $pgxn = WWW::PGXN->new( url => 'http://api.pgxn.org/' );
-  my $dist = $pgxn->find_distribution('pgTAP');
+  my $dist = $pgxn->get_distribution('pgTAP');
   $dist->download_to('.');
 
 =head1 Description
 
 This module represents PGXN distribution metadata fetched from PGXN>. It is
 not intended to be constructed directly, but via the
-L<WWW::PGXN/find_distribution> method of L<WWW::PGXN>.
+L<WWW::PGXN/get_distribution> method of L<WWW::PGXN>.
 
 =head1 Interface
 
@@ -241,9 +241,9 @@ for details.
   $distribution->user($user);
 
 The nickname of the user who released the distribution. Use the
-L<WWW::PGXN/find_user> method of L<WWW::PGXN> to get more info on the user:
+L<WWW::PGXN/get_user> method of L<WWW::PGXN> to get more info on the user:
 
-  my $user = $pgxn->find_user( $distribution->user );
+  my $user = $pgxn->get_user( $distribution->user );
   say "Released by ", $user->name, ' <', $user->email, '>';
 
 =head3 C<description>
@@ -540,7 +540,7 @@ Returns a list of the tags associated with the distribution. Each may be used
 to look up further information about the tag via L<WWW::PGXN::Tag> objects
 like so:
 
-  for my $tag ( map { $pgxn->find_tag($_) } $distribution->tags ) {
+  for my $tag ( map { $pgxn->get_tag($_) } $distribution->tags ) {
       say $tag->name;
   }
 
@@ -625,7 +625,7 @@ supported release statuses are:
 
 These version numbers can be used to fetch information specific to a version:
 
-  my $test_dist = $pgxn->find_distribution(
+  my $test_dist = $pgxn->get_distribution(
       $distribution->name,
       $distribution->version_for('testing'),
   );

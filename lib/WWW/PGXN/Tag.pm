@@ -25,13 +25,13 @@ WWW::PGXN::Tag - Tag metadata fetched from PGXN
 =head1 Synopsis
 
   my $pgxn = WWW::PGXN->new( url => 'http://api.pgxn.org/' );
-  my $tag  = $pgxn->find_tag('unit testing');
+  my $tag  = $pgxn->get_tag('unit testing');
   say $tag->name;
 
 =head1 Description
 
 This module represents PGXN tag metadata fetched from PGXN>. It is not
-intended to be constructed directly, but via the L<WWW::PGXN/find_tag> method
+intended to be constructed directly, but via the L<WWW::PGXN/get_tag> method
 of L<WWW::PGXN>.
 
 =head1 Interface

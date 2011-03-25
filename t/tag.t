@@ -18,11 +18,11 @@ my $pgxn = new_ok 'WWW::PGXN', [ url => 'file:t/mirror' ];
 
 ##############################################################################
 # Try to get a nonexistent tag.
-ok !$pgxn->find_tag('nonexistent'),
+ok !$pgxn->get_tag('nonexistent'),
     'Should get nothing when searching for a nonexistent tag';
 
 # Fetch tag data.
-ok my $tag = $pgxn->find_tag('key value'),
+ok my $tag = $pgxn->get_tag('key value'),
     'Find tag "key value"';
 isa_ok $tag, 'WWW::PGXN::Tag', 'It';
 can_ok $tag, qw(

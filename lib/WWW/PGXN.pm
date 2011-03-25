@@ -23,7 +23,7 @@ sub new {
     return $self;
 }
 
-sub find_distribution {
+sub get_distribution {
     my ($self, $dist, $version) = @_;
     my $data = $self->_fetch_json(
         (defined $version ? 'meta' : 'by-dist'),
@@ -32,20 +32,20 @@ sub find_distribution {
     WWW::PGXN::Distribution->new($self, $data);
 }
 
-sub find_extension {
+sub get_extension {
     my ($self, $ext) = @_;
     my $data = $self->_fetch_json('by-extension', { extension => $ext })
         or return;
     WWW::PGXN::Extension->new($self, $data);
 }
 
-sub find_user {
+sub get_user {
     my ($self, $user) = @_;
     my $data = $self->_fetch_json('by-user', { user => $user }) or return;
     WWW::PGXN::User->new($data);
 }
 
-sub find_tag {
+sub get_tag {
     my ($self, $tag) = @_;
     my $data = $self->_fetch_json('by-tag', { tag => $tag }) or return;
     WWW::PGXN::Tag->new($data);
@@ -237,7 +237,7 @@ WWW::PGXN - Interface to PGXN mirrors and the PGXN API
 =head1 Synopsis
 
   my $pgxn = WWW::PGXN->new( url => 'http://api.pgxn.org/' );
-  my $dist = $pgxn->find_distribution('pgTAP');
+  my $dist = $pgxn->get_distribution('pgTAP');
   $dist->download_to('.');
 
 =head1 Description
@@ -302,9 +302,9 @@ URL.
 
 =head2 Instance Methods
 
-=head3 C<find_distribution>
+=head3 C<get_distribution>
 
-  my $dist = $pgxn->find_distribution($dist_name, $version);
+  my $dist = $pgxn->get_distribution($dist_name, $version);
 
 Finds the data for a distribution. Returns a L<WWW::PGXN::Distribution>
 object. The first argument, the name of the distribution, is required. The
@@ -314,25 +314,25 @@ release will be retrieved.
 If the distribution cannot be found, C<undef> will be returned. For any other
 errors, an exception will be thrown.
 
-=head3 C<find_extension>
+=head3 C<get_extension>
 
-  my $dist = $pgxn->find_extension($extension_name);
+  my $dist = $pgxn->get_extension($extension_name);
 
 Finds the data for the named extension. Returns a L<WWW::PGXN::Extension>
 object. If the extension cannot be found, C<undef> will be returned. For any
 other errors, an exception will be thrown.
 
-=head3 C<find_user>
+=head3 C<get_user>
 
-  my $dist = $pgxn->find_user($user_name);
+  my $dist = $pgxn->get_user($user_name);
 
 Finds the data for the named user. Returns a L<WWW::PGXN::User> object. If the
 user cannot be found, C<undef> will be returned. For any other errors, an
 exception will be thrown.
 
-=head3 C<find_tag>
+=head3 C<get_tag>
 
-  my $dist = $pgxn->find_tag($tag_name);
+  my $dist = $pgxn->get_tag($tag_name);
 
 Finds the data for the named tag. Returns a L<WWW::PGXN::Tag> object. If the
 tag cannot be found, C<undef> will be returned. For any other errors, an
@@ -384,7 +384,7 @@ structure.
   my $meta_url = $pgxn->meta_url_for($dist_name, $dist_version);
 
 Returns the URL for a distribution meta file. This is the file fetched by
-C<find_distribution()>.
+C<get_distribution()>.
 
 =head3 C<download_url_for>
 
@@ -405,21 +405,21 @@ from an API server, not a mirror.
   my $extension_url = $pgxn->extension_url_for($extension_name);
 
 Returns the URL for an extension metadata file. This is the file fetched by
-C<find_extension()>.
+C<get_extension()>.
 
 =head3 C<user_url_for>
 
   my $user_url = $pgxn->user_url_for($nickname);
 
 Returns the URL for an user metadata file. This is the file fetched by
-C<find_user()>.
+C<get_user()>.
 
 =head3 C<tag_url_for>
 
   my $tag_url = $pgxn->tag_url_for($tag_name);
 
 Returns the URL for an tag metadata file. This is the file fetched by
-C<find_tag()>.
+C<get_tag()>.
 
 =head3 C<meta_path_for>
 
