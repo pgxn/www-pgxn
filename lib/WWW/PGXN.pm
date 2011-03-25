@@ -15,10 +15,10 @@ use Carp;
 our $VERSION = '0.10';
 
 sub new {
-    my($class, %args) = @_;
+    my($class, %params) = @_;
     my $self = bless {} => $class;
     for my $key (qw(url proxy)) {
-        $self->$key($args{$key}) if exists $args{$key}
+        $self->$key($params{$key}) if exists $params{$key}
     }
     return $self;
 }
@@ -62,6 +62,7 @@ sub url {
     my $self = shift;
     return $self->{url} unless @_;
     ($self->{url} = shift) =~ s{/+$}{}g;
+    require PGXN::API::Searcher if $self->{url} =~ m{^file:};
     delete $self->{_req};
     $self->{url};
 }

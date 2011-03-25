@@ -8,6 +8,11 @@ use Test::More tests => 41;
 use WWW::PGXN;
 use File::Spec::Functions qw(catfile);
 
+SEARCHER: {
+    package PGXN::API::Searcher;
+    $INC{'PGXN/API/Searcher.pm'} = __FILE__;
+}
+
 # Set up the WWW::PGXN object.
 my $pgxn = new_ok 'WWW::PGXN', [ url => 'file:t/mirror' ];
 

@@ -6,6 +6,11 @@ use Test::More tests => 11;
 #use Test::More 'no_plan';
 use WWW::PGXN;
 
+SEARCHER: {
+    package PGXN::API::Searcher;
+    $INC{'PGXN/API/Searcher.pm'} = __FILE__;
+}
+
 # Set up the WWW::PGXN object.
 my $pgxn = new_ok 'WWW::PGXN', [ url => 'file:t/mirror' ];
 

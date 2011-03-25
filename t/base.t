@@ -12,6 +12,11 @@ BEGIN {
     use_ok $CLASS or die;
 }
 
+SEARCHER: {
+    package PGXN::API::Searcher;
+    $INC{'PGXN/API/Searcher.pm'} = __FILE__;
+}
+
 my $pgxn = new_ok $CLASS, [ url => 'http://api.pgxn.org/' ];
 is $pgxn->url, 'http://api.pgxn.org', 'Should have the URL';
 is $pgxn->proxy, undef, 'Should have no proxy';
