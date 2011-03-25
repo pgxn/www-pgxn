@@ -361,6 +361,8 @@ index. The supported indexes are:
 
 =over
 
+=item doc
+
 =item dist
 
 =item extension
@@ -370,6 +372,8 @@ index. The supported indexes are:
 =item tag
 
 =back
+
+If no index is specified, the default is C<doc>.
 
 Currently the return value is a hash composed directly from the JSON returned
 by the search request. See L<PGXN::API::Searcher> for details on its
