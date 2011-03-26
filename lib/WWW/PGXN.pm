@@ -62,7 +62,7 @@ sub search {
         return $searcher->search($for || 'doc', $params);
     }
 
-    my $qurl = URI->new($url . "/by/$for");
+    my $qurl = URI->new($url . "/search/$for");
     $qurl->query_form({
         map { substr($_, 0, 1) => $params->{$_} } keys %{ $params }
     });
