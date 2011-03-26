@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::More tests => 28;
+use Test::More tests => 30;
 #use Test::More 'no_plan';
 use File::Spec::Functions qw(catfile);
 
@@ -110,6 +110,10 @@ is $pgxn->user_url_for('theory'),
     'file:t/mirror/by/user/theory.json',
     'user_url_for() should work';
 
+is $pgxn->doc_url_for('pair', '0.1.2', 'doc/foo'),
+    'file:t/mirror/dist/pair/0.1.2/doc/foo.html',
+    'doc_url_for() should work';
+
 is $pgxn->meta_path_for('pair', '1.2.0'),
     '/dist/pair/1.2.0/META.json',
     'meta_path_for() shuld work';
@@ -134,3 +138,6 @@ is $pgxn->user_path_for('theory'),
     '/by/user/theory.json',
     'user_path_for() should work';
 
+is $pgxn->doc_path_for('pair', '0.1.2', 'doc/foo'),
+    '/dist/pair/0.1.2/doc/foo.html',
+    'doc_path_for() should work';

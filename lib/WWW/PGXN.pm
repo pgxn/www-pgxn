@@ -121,6 +121,23 @@ BEGIN {
     }
 }
 
+sub doc_path_for {
+    my ($self, $dist, $version, $path) = @_;
+    # XXX Nasty hack until we get + operator in URI Template v4.
+    local $URI::Escape::escapes{'/'} = '/';
+    $self->_path_for(doc => {
+        dist    => $dist,
+        version => $version,
+        path    => $path,
+        '+path' => $path,
+    });
+}
+
+sub doc_url_for {
+    my $self = shift;
+    return URI->new($self->url . $self->doc_path_for(@_));
+}
+
 sub _uri_templates {
     my $self = shift;
     return $self->{uri_templates} ||= { do {
@@ -400,6 +417,13 @@ archive file containing the distribution itself.
 Returns the URL for a distribution source file. This URL is available only
 from an API server, not a mirror.
 
+=head3 C<doc_url_for>
+
+  my $doc_url = $pgxn->doc_url_for($dist_name, $dist_version, $doc_path);
+
+Returns the URL for a distribution documentation file. This URL is available
+only from an API server, not a mirror.
+
 =head3 C<extension_url_for>
 
   my $extension_url = $pgxn->extension_url_for($extension_name);
@@ -439,6 +463,13 @@ Returns the download path for a distribution and version.
 
 Returns the path for a distribution source file. This path is available only
 from an API server, not a mirror.
+
+=head3 C<doc_path_for>
+
+  my $doc_path = $pgxn->doc_path_for($dist_name, $dist_version, $doc_path);
+
+Returns the PATH for a distribution documentation file. This PATH is available
+only from an API server, not a mirror.
 
 =head3 C<extension_path_for>
 
