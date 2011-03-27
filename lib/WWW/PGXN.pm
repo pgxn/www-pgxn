@@ -266,7 +266,7 @@ It's designed to make it dead simple for applications such as web apps and
 command-line clients to get the data they need from a PGXN mirror with a
 minimum of hassle, including via the file system, if there is a local mirror.
 
-L<PGXN|http://pgxn.org> is a C<CPAN|http://cpan.org>-inspired network for
+L<PGXN|http://pgxn.org> is a L<CPAN|http://cpan.org>-inspired network for
 distributing extensions for the L<PostgreSQL RDBMS|http://www.postgresql.org>.
 All of the infrastructure tools, however, have been designed to be used to
 create networks for distributing any kind of release distributions. As such,
@@ -280,7 +280,7 @@ and with any L<PGXN::API|http://github.com/theory/pgxn-api>-powered server.
 
 =head3 C<new>
 
-  my $pgxn = WWW::PGXN->new( url => 'http://api.pgxn.org/');
+  my $pgxn = WWW::PGXN->new(url => 'http://api.pgxn.org/');
 
 Construct a new WWW::PGXN object. The only required attribute is C<url>. The
 supported parameters are:
