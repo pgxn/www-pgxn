@@ -52,19 +52,20 @@ sub get_tag {
 }
 
 sub search {
-    my ($self, $for, $params) = @_;
-    ($for, $params) = ('', $for) if ref $for;
+    my ($self, %params) = @_;
     my $url = $self->url;
 
     if ($url->scheme eq 'file') {
         # Fetch it via PGXN::API::Searcher.
-        my $searcher = PGXN::API::Searcher->new(File::Spec->catdir($url), '_index');
-        return $searcher->search($for || 'doc', $params);
+        return PGXN::API::Searcher->new(
+            File::Spec->catdir($url), '_index'
+        )->search(%params);
     }
 
-    my $qurl = URI->new($url . "/search/$for");
+    my $qurl = URI->new($url . "/search");
     $qurl->query_form({
-        map { substr($_, 0, 1) => $params->{$_} } keys %{ $params }
+        in => delete $params{index},
+        map { substr($_, 0, 1) => $params{$_} } keys %params
     });
     my $res = $self->_fetch($qurl) or return;
     return JSON->new->utf8->decode($res->{content});

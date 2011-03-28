@@ -7,12 +7,12 @@ use Test::More tests => 41;
 use Test::MockModule;
 use WWW::PGXN;
 
-my @params;
+my %params;
 SEARCHER: {
     package PGXN::API::Searcher;
     $INC{'PGXN/API/Searcher.pm'} = __FILE__;
     sub new { bless {} => shift }
-    sub search { shift; @params = @_; return { foo => 1 } };
+    sub search { shift; %params = @_; return { foo => 1 } };
 }
 
 # Set up the WWW::PGXN object.
@@ -26,35 +26,36 @@ $mocker->mock(_fetch => sub {
     return { content => '{"foo":"bar"}' };
 });
 
-my $query = { query  => 'whü', offset => 2, limit  => 10 };
-ok my $res = $pgxn->search($query), 'Search';
+my @query = ( query  => 'whü', offset => 2, limit  => 10 );
+ok my $res = $pgxn->search(@query), 'Search';
 is_deeply $res, {foo => 'bar'}, 'Should have the results';
-is $fetched_url, 'http://api.pgxn.org/search/?l=10&q=wh%C3%BC&o=2',
+is $fetched_url, 'http://api.pgxn.org/search?l=10&q=wh%C3%BC&in=&o=2',
     'Should have requested the proper URL';
 
 # Track types.
-for my $by (qw(doc dist extension user tag)) {
-    ok my $res = $pgxn->search($by => $query), "Search by $by";
-    is_deeply $res, {foo => 'bar'}, "Should have the  $by results";
-    is $fetched_url, "http://api.pgxn.org/search/$by?l=10&q=wh%C3%BC&o=2",
-        "Should have requested the proper $by URL";
+for my $in (qw(doc dist extension user tag)) {
+    ok my $res = $pgxn->search(index => $in, @query), "Search in $in";
+    is_deeply $res, {foo => 'bar'}, "Should have the  $in results";
+    is $fetched_url, "http://api.pgxn.org/search?l=10&q=wh%C3%BC&in=$in&o=2",
+        "Should have requested the proper $in URL";
 }
 
-ok $res = $pgxn->search($query), 'Search';
+ok $res = $pgxn->search(@query), 'Search';
 is_deeply $res, {foo => 'bar'}, 'Should have the results';
-is $fetched_url, 'http://api.pgxn.org/search/?l=10&q=wh%C3%BC&o=2',
+is $fetched_url, 'http://api.pgxn.org/search?l=10&q=wh%C3%BC&in=&o=2',
     'Should have requested the proper URL';
 
 # Now make sure that the file system does the right thing.
 ok $pgxn->url('file:t/mirror'), 'Set a file: URL';
 $mocker->unmock_all;
 
-ok $res = $pgxn->search($query), 'Search via file: URL';
+ok $res = $pgxn->search(@query), 'Search via file: URL';
 is_deeply $res, {foo => 1}, 'Should have the results';
-is_deeply \@params, [doc => $query], 'Searcher shoudld have got proper args';
+is_deeply \%params, {@query},
+    'Searcher shoudld have got proper args';
 
-for my $by (qw(doc dist extension user tag)) {
-    ok $res = $pgxn->search($by => $query), "Search via file:/search/$by";
-    is_deeply $res, {foo => 1}, "Should have the $by results";
-    is_deeply \@params, [$by => $query], "Searcher shoudld have got $by args";
+for my $in (qw(doc dist extension user tag)) {
+    ok $res = $pgxn->search(index => $in, @query), "Search via file:/search/$in";
+    is_deeply $res, {foo => 1}, "Should have the $in results";
+    is_deeply \%params, {index => $in, @query}, "Searcher shoudld have got $in args";
 }
