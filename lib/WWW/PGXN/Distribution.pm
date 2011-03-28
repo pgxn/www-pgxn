@@ -83,7 +83,7 @@ sub _merge_meta {
 
 sub _merge_by_dist {
     my $self = shift;
-    my $by_dist = $self->{_pgxn}->_fetch_json('by-dist' => {
+    my $by_dist = $self->{_pgxn}->_fetch_json(dist => {
         dist => $self->{name}
     }) || {};
     @{$self}{keys %{ $by_dist }} = values %{ $by_dist };
@@ -91,7 +91,7 @@ sub _merge_by_dist {
 
 sub download_url {
     my $self = shift;
-    $self->{_pgxn}->_url_for(dist => {
+    $self->{_pgxn}->_url_for(download => {
         dist    => $self->name,
         version => $self->version
     });
@@ -99,7 +99,7 @@ sub download_url {
 
 sub download_path {
     my $self = shift;
-    $self->{_pgxn}->_path_for(dist => {
+    $self->{_pgxn}->_path_for(download => {
         dist    => $self->name,
         version => $self->version
     });

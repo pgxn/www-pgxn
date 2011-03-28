@@ -75,8 +75,8 @@ is_deeply $tmpl, { map { $_ => URI::Template->new($data->{$_}) } keys %{ $data }
 
 ##############################################################################
 # Test url formatting.
-is $pgxn->_url_for('by-dist', {dist => 'pair'}),
-    'file:t/mirror/by/dist/pair.json',
+is $pgxn->_url_for(dist => {dist => 'pair'}),
+    'file:t/mirror/dist/pair.json',
     '_url_for() should work';
 
 local $@;
@@ -99,15 +99,15 @@ is $pgxn->source_url_for('pair', '1.2.0'),
     'source_url_for() shuld work';
 
 is $pgxn->tag_url_for('whatever'),
-    'file:t/mirror/by/tag/whatever.json',
+    'file:t/mirror/tag/whatever.json',
     'tag_url_for() should work';
 
 is $pgxn->extension_url_for('explanation'),
-    'file:t/mirror/by/extension/explanation.json',
+    'file:t/mirror/extension/explanation.json',
     'extension_url_for() should work';
 
 is $pgxn->user_url_for('theory'),
-    'file:t/mirror/by/user/theory.json',
+    'file:t/mirror/user/theory.json',
     'user_url_for() should work';
 
 is $pgxn->doc_url_for('pair', '0.1.2', 'doc/foo'),
@@ -127,15 +127,15 @@ is $pgxn->source_path_for('pair', '1.2.0'),
     'source_path_for() shuld work';
 
 is $pgxn->tag_path_for('whatever'),
-    '/by/tag/whatever.json',
+    '/tag/whatever.json',
     'tag_path_for() should work';
 
 is $pgxn->extension_path_for('explanation'),
-    '/by/extension/explanation.json',
+    '/extension/explanation.json',
     'extension_path_for() should work';
 
 is $pgxn->user_path_for('theory'),
-    '/by/user/theory.json',
+    '/user/theory.json',
     'user_path_for() should work';
 
 is $pgxn->doc_path_for('pair', '0.1.2', 'doc/foo'),

@@ -201,7 +201,7 @@ is $dist->version, '0.1.2', 'Version should be "0.1.2"';
 
 ok $dist = $pgxn->get_distribution('pair' => '0.1.2'),
     'Find "pair" 0.1.2 again';
-ok $dist->_merge_by_dist, 'Merge by-dist';
+ok $dist->_merge_by_dist, 'Merge dist';
 is $dist->version_for('stable'), '0.1.2', 'Should have proper stable version';
 is $dist->version, '0.1.2', 'Version should be "0.1.2"';
 

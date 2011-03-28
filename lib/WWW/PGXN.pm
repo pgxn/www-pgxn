@@ -26,7 +26,7 @@ sub new {
 sub get_distribution {
     my ($self, $dist, $version) = @_;
     my $data = $self->_fetch_json(
-        (defined $version ? 'meta' : 'by-dist'),
+        (defined $version ? 'meta' : 'dist'),
         { dist => $dist, version => $version || '' }
     ) or return;
     WWW::PGXN::Distribution->new($self, $data);
@@ -34,20 +34,20 @@ sub get_distribution {
 
 sub get_extension {
     my ($self, $ext) = @_;
-    my $data = $self->_fetch_json('by-extension', { extension => $ext })
+    my $data = $self->_fetch_json(extension => { extension => $ext })
         or return;
     WWW::PGXN::Extension->new($self, $data);
 }
 
 sub get_user {
     my ($self, $user) = @_;
-    my $data = $self->_fetch_json('by-user', { user => $user }) or return;
+    my $data = $self->_fetch_json(user => { user => $user }) or return;
     WWW::PGXN::User->new($data);
 }
 
 sub get_tag {
     my ($self, $tag) = @_;
-    my $data = $self->_fetch_json('by-tag', { tag => $tag }) or return;
+    my $data = $self->_fetch_json(tag => { tag => $tag }) or return;
     WWW::PGXN::Tag->new($data);
 }
 
@@ -95,28 +95,23 @@ sub proxy {
 }
 
 BEGIN {
-    for my $spec (
-        [ meta     => 'meta'   ],
-        [ download => 'dist'   ],
-        [ source   => 'source' ],
-    ) {
-        my ($thing, $key) = @{ $spec };
+    for my $thing (qw(meta download source)) {
         no strict 'refs';
         *{"$thing\_url_for"} = sub {
-            $_[0]->_url_for( $key => { dist => $_[1], version => $_[2] });
+            $_[0]->_url_for( $thing => { dist => $_[1], version => $_[2] });
         };
         *{"$thing\_path_for"} = sub {
-            $_[0]->_path_for( $key => { dist => $_[1], version => $_[2] });
+            $_[0]->_path_for( $thing => { dist => $_[1], version => $_[2] });
         };
     }
 
     for my $thing (qw(tag extension user)) {
         no strict 'refs';
         *{"$thing\_url_for"} = sub {
-            $_[0]->_url_for( "by-$thing" => { $thing => $_[1] });
+            $_[0]->_url_for( $thing => { $thing => $_[1] });
         };
         *{"$thing\_path_for"} = sub {
-            $_[0]->_path_for( "by-$thing" => { $thing => $_[1] });
+            $_[0]->_path_for( $thing => { $thing => $_[1] });
         };
     }
 }
@@ -187,7 +182,7 @@ sub _fetch_json {
 
 sub _download_to {
     my ($self, $file) = (shift, shift);
-    my $url = $self->_url_for(dist => @_);
+    my $url = $self->_url_for(download => @_);
     my $res = $self->_fetch($url);
     if (-e $file) {
         if (-d $file) {
