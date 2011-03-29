@@ -2,16 +2,17 @@
 
 use strict;
 use warnings;
-use Test::More tests => 41;
+use Test::More tests => 42;
 #use Test::More 'no_plan';
 use Test::MockModule;
 use WWW::PGXN;
 
+my $searcher_path;
 my %params;
 SEARCHER: {
     package PGXN::API::Searcher;
     $INC{'PGXN/API/Searcher.pm'} = __FILE__;
-    sub new { bless {} => shift }
+    sub new { $searcher_path = $_[1]; bless {} => shift }
     sub search { shift; %params = @_; return { foo => 1 } };
 }
 
@@ -50,6 +51,8 @@ ok $pgxn->url('file:t/mirror'), 'Set a file: URL';
 $mocker->unmock_all;
 
 ok $res = $pgxn->search(@query), 'Search via file: URL';
+is $searcher_path, 't/mirror',
+    'The file system path should have been passed to the searcher';
 is_deeply $res, {foo => 1}, 'Should have the results';
 is_deeply \%params, {@query},
     'Searcher shoudld have got proper args';

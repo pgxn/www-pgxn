@@ -58,7 +58,7 @@ sub search {
     if ($url->scheme eq 'file') {
         # Fetch it via PGXN::API::Searcher.
         return PGXN::API::Searcher->new(
-            File::Spec->catdir($url), '_index'
+            File::Spec->catdir($url->path_segments)
         )->search(%params);
     }
 
