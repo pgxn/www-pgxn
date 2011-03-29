@@ -148,8 +148,8 @@ sub path_for_doc {
     $tmpl->process(
         dist    => $self->name,
         version => $self->version,
-        path    => $path,
-        '+path' => $path, # XXX Part of above-mentioned hack.
+        doc     => $path,
+        '+doc'  => $path, # XXX Part of above-mentioned hack.
     );
 }
 

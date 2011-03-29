@@ -118,14 +118,14 @@ BEGIN {
 }
 
 sub doc_path_for {
-    my ($self, $dist, $version, $path) = @_;
+    my ($self, $dist, $version, $doc) = @_;
     # XXX Nasty hack until we get + operator in URI Template v4.
     local $URI::Escape::escapes{'/'} = '/';
     $self->_path_for(doc => {
         dist    => $dist,
         version => $version,
-        path    => $path,
-        '+path' => $path,
+        doc     => $doc,
+        '+doc'  => $doc,
     });
 }
 
@@ -360,17 +360,27 @@ in the network to which the PGXN API or mirror server belongs.
 
 =head3 C<search>
 
-  my $results = $pgxn->search({ query => 'tap' });
-  $results    = $pgxn->search(dist => { query => 'wicked' });
+  my $results = $pgxn->search( query => 'tap' );
+  $results    = $pgxn->search( query => 'wicked', index => 'dist' );
 
 Sends a search query to the API server (not supported for mirrors). For an API
 server accessed via a C<file:> URL, L<PGXN::API::Searcher> is required and
 used to fetch the results directly. Otherwise, an HTTP request is sent to the
 server as usual.
 
-By default, all of the documentation indexed by the API is searched. Pass a
-string as the first argument to specify that the search be against another
-index. The supported indexes are:
+The supported parameters are:
+
+=over
+
+=item query
+
+The search query. See L<KinoSearch::Search::QueryParser> for the supported
+syntax of the query. Required.
+
+=item index
+
+The name of the search index to query. The default is "doc". The possible
+values are:
 
 =over
 
@@ -386,7 +396,16 @@ index. The supported indexes are:
 
 =back
 
-If no index is specified, the default is C<doc>.
+=item offset
+
+How many hits to skip before showing results. Defaults to 0.
+
+=item limit
+
+Maximum number of hits to return. Defaults to 50 and may not be greater than
+1024.
+
+=back
 
 Currently the return value is a hash composed directly from the JSON returned
 by the search request. See L<PGXN::API::Searcher> for details on its
