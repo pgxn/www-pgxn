@@ -138,10 +138,10 @@ is_deeply $dist->docs, {
 ok my $doc = $dist->body_for_doc('README'),
     'Fetch the README body';
 
-# Contents should be the encoded HTML.
+# Contents should be the decoded HTML.
 is $doc, do {
     my $fn = catfile qw(t mirror dist pair 0.1.1 README.html);
-    open my $fh, '<:raw', $fn or die "Cannot open $fn: $!\n";
+    open my $fh, '<:encoding(utf-8)', $fn or die "Cannot open $fn: $!\n";
     local $/;
     <$fh>;
 }, 'Should have the encoded contents of the file';
@@ -151,7 +151,7 @@ ok $doc = $dist->body_for_doc('doc/pair'),
     'Fetch the doc/pair body';
 is $doc, do {
     my $fn = catfile qw(t mirror dist pair 0.1.1 doc pair.html);
-    open my $fh, '<:raw', $fn or die "Cannot open $fn: $!\n";
+    open my $fh, '<:encoding(utf-8)', $fn or die "Cannot open $fn: $!\n";
     local $/;
     <$fh>;
 }, 'Should have the encoded contents of the doc/pair file';

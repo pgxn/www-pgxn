@@ -157,6 +157,7 @@ sub body_for_doc {
     my $self = shift;
     my $url = $self->url_for_doc(shift) or return;
     my $res = $self->{_pgxn}->_fetch($url) or return;
+    utf8::decode $res->{content};
     return $res->{content};
 }
 
