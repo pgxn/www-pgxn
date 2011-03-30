@@ -137,10 +137,7 @@ sub url_for_doc {
 sub path_for_doc {
     my ($self, $path) = @_;
     $self->_merge_meta unless $self->{version};
-    return unless $self->{docs};
-
-    croak "$path is not a known document path in " . $self->name
-        . ' ' . $self->version unless exists $self->{docs}{$path};
+    return unless $self->{docs} && $self->{docs}{$path};
 
     my $tmpl = $self->{_pgxn}->_uri_templates->{doc} or return;
     # XXX Nasty hack until we get + operator in URI Template v4.

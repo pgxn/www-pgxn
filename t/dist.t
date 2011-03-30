@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 use utf8;
-use Test::More tests => 84;
+use Test::More tests => 85;
 #use Test::More 'no_plan';
 use WWW::PGXN;
 use File::Spec::Functions qw(catfile);
@@ -164,6 +164,8 @@ is $dist->path_for_doc('README'), '/dist/pair/0.1.1/README.html',
     'Should have README path';
 is $dist->path_for_doc('doc/pair'), '/dist/pair/0.1.1/doc/pair.html',
     'Should have doc/pair path';
+is $dist->path_for_doc('doc/nonexistent'), undef,
+    'Should get undef for nonexistent path';
 
 # Make sure we have no errors if there's no doc URI template.
 delete $pgxn->_uri_templates->{doc};
