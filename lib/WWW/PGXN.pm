@@ -51,20 +51,27 @@ sub get_tag {
     WWW::PGXN::Tag->new($data);
 }
 
+my %valid_in = ( map { $_ => undef } qw(docs dists extensions users tags));
+
 sub search {
     my ($self, %params) = @_;
     my $url = $self->url;
+    my $in  = delete $params{in}
+        or croak 'Missing required "in" parameter to search()';
+
+    croak qq{Invalid "in" parameter to search(); Must be one of:\n}
+        . join("\n", map { "* $_" } sort keys %valid_in)
+        unless exists $valid_in{$in};
 
     if ($url->scheme eq 'file') {
         # Fetch it via PGXN::API::Searcher.
         return PGXN::API::Searcher->new(
             File::Spec->catdir($url->path_segments)
-        )->search(%params);
+        )->search(index => substr($in, 0, -1), %params);
     }
 
-    my $qurl = URI->new($url . "/search");
+    my $qurl = URI->new($url . "/search/$in");
     $qurl->query_form({
-        in => delete $params{index},
         map { substr($_, 0, 1) => $params{$_} } keys %params
     });
     my $res = $self->_fetch($qurl) or return;

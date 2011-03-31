@@ -1,8 +1,8 @@
-#!/usr/bin/env perl -w
+#!/usr/bin/perl -w
 
 use strict;
 use warnings;
-use Test::More tests => 42;
+use Test::More tests => 39;
 #use Test::More 'no_plan';
 use Test::MockModule;
 use WWW::PGXN;
@@ -28,37 +28,36 @@ $mocker->mock(_fetch => sub {
 });
 
 my @query = ( query  => 'whü', offset => 2, limit  => 10 );
-ok my $res = $pgxn->search(@query), 'Search';
-is_deeply $res, {foo => 'bar'}, 'Should have the results';
-is $fetched_url, 'http://api.pgxn.org/search?l=10&q=wh%C3%BC&in=&o=2',
-    'Should have requested the proper URL';
-
 # Track types.
-for my $in (qw(doc dist extension user tag)) {
-    ok my $res = $pgxn->search(index => $in, @query), "Search in $in";
-    is_deeply $res, {foo => 'bar'}, "Should have the  $in results";
-    is $fetched_url, "http://api.pgxn.org/search?l=10&q=wh%C3%BC&in=$in&o=2",
+for my $in (qw(docs dists extensions users tags)) {
+    ok my $res = $pgxn->search(in => $in, @query), "Search in $in";
+    is_deeply $res, {foo => 'bar'}, "Should have the $in results";
+    is $fetched_url, "http://api.pgxn.org/search/$in?l=10&q=wh%C3%BC&o=2",
         "Should have requested the proper $in URL";
 }
-
-ok $res = $pgxn->search(@query), 'Search';
-is_deeply $res, {foo => 'bar'}, 'Should have the results';
-is $fetched_url, 'http://api.pgxn.org/search?l=10&q=wh%C3%BC&in=&o=2',
-    'Should have requested the proper URL';
 
 # Now make sure that the file system does the right thing.
 ok $pgxn->url('file:t/mirror'), 'Set a file: URL';
 $mocker->unmock_all;
 
-ok $res = $pgxn->search(@query), 'Search via file: URL';
-is $searcher_path, 't/mirror',
-    'The file system path should have been passed to the searcher';
-is_deeply $res, {foo => 1}, 'Should have the results';
-is_deeply \%params, {@query},
-    'Searcher shoudld have got proper args';
-
 for my $in (qw(doc dist extension user tag)) {
-    ok $res = $pgxn->search(index => $in, @query), "Search via file:/search/$in";
+    ok my $res = $pgxn->search(in => $in . 's', @query), "Search via file:/search/${in}s";
+    is $searcher_path, 't/mirror',
+    'The file system path should have been passed to the searcher';
     is_deeply $res, {foo => 1}, "Should have the $in results";
     is_deeply \%params, {index => $in, @query}, "Searcher shoudld have got $in args";
 }
+
+# Make sure we get errors for invalid indexes.
+local $@;
+eval { $pgxn->search };
+like $@, qr{\QMissing required "in" parameter to search()},
+    'Should get exception for missing "in" param';
+
+eval { $pgxn->search(in => 'ha ha') };
+like $@, qr{^Invalid "in" parameter to search\(\); Must be one of:
+\* dists
+\* docs
+\* extensions
+\* tags
+\* users}, 'Should get exception for invalid "in" param';
