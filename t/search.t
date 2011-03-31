@@ -40,12 +40,12 @@ for my $in (qw(docs dists extensions users tags)) {
 ok $pgxn->url('file:t/mirror'), 'Set a file: URL';
 $mocker->unmock_all;
 
-for my $in (qw(doc dist extension user tag)) {
-    ok my $res = $pgxn->search(in => $in . 's', @query), "Search via file:/search/${in}s";
+for my $in (qw(docs dists extensions users tags)) {
+    ok my $res = $pgxn->search(in => $in, @query), "Search via file:/search/${in}s";
     is $searcher_path, 't/mirror',
     'The file system path should have been passed to the searcher';
     is_deeply $res, {foo => 1}, "Should have the $in results";
-    is_deeply \%params, {index => $in, @query}, "Searcher shoudld have got $in args";
+    is_deeply \%params, {in => $in, @query}, "Searcher shoudld have got $in args";
 }
 
 # Make sure we get errors for invalid indexes.

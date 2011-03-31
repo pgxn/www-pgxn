@@ -67,7 +67,7 @@ sub search {
         # Fetch it via PGXN::API::Searcher.
         return PGXN::API::Searcher->new(
             File::Spec->catdir($url->path_segments)
-        )->search(index => substr($in, 0, -1), %params);
+        )->search(in => $in, %params);
     }
 
     my $qurl = URI->new($url . "/search/$in");
