@@ -65,9 +65,10 @@ sub search {
 
     if ($url->scheme eq 'file') {
         # Fetch it via PGXN::API::Searcher.
-        return PGXN::API::Searcher->new(
+        my $searcher = $self->{_searcher} ||= PGXN::API::Searcher->new(
             File::Spec->catdir($url->path_segments)
-        )->search(in => $in, %params);
+        );
+        return $searcher->search(in => $in, %params);
     }
 
     my $qurl = URI->new($url . "/search/$in");
@@ -93,6 +94,7 @@ sub url {
     $self->{url} = URI->new($url);
     require PGXN::API::Searcher if $self->{url}->scheme eq 'file';
     delete $self->{_req};
+    delete $self->{_searcher};
     $self->{url};
 }
 
