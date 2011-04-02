@@ -19,3 +19,8 @@ lifecycle
 browsable
 UTF
 pgxn
+GitHub
+API
+metadata
+JSON
+CPAN
