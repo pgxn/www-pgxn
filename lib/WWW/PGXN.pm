@@ -51,6 +51,12 @@ sub get_tag {
     WWW::PGXN::Tag->new($data);
 }
 
+sub get_stats {
+    my ($self, $name) = @_;
+    return undef unless $self->_uri_templates->{stats};
+    my $data = $self->_fetch_json(stats => { name => $name }) or return;
+}
+
 my %valid_in = ( map { $_ => undef } qw(docs dists extensions users tags));
 
 sub search {
@@ -338,7 +344,7 @@ errors, an exception will be thrown.
 
 =head3 C<get_extension>
 
-  my $dist = $pgxn->get_extension($extension_name);
+  my $extension = $pgxn->get_extension($extension_name);
 
 Finds the data for the named extension. Returns a L<WWW::PGXN::Extension>
 object. If the extension cannot be found, C<undef> will be returned. For any
@@ -346,7 +352,7 @@ other errors, an exception will be thrown.
 
 =head3 C<get_user>
 
-  my $dist = $pgxn->get_user($user_name);
+  my $user = $pgxn->get_user($user_name);
 
 Finds the data for the named user. Returns a L<WWW::PGXN::User> object. If the
 user cannot be found, C<undef> will be returned. For any other errors, an
@@ -354,11 +360,29 @@ exception will be thrown.
 
 =head3 C<get_tag>
 
-  my $dist = $pgxn->get_tag($tag_name);
+  my $tag = $pgxn->get_tag($tag_name);
 
 Finds the data for the named tag. Returns a L<WWW::PGXN::Tag> object. If the
 tag cannot be found, C<undef> will be returned. For any other errors, an
 exception will be thrown.
+
+=head3 C<get_stats>
+
+  my $stats = $pgxn->get_stats($stats_name);
+
+Returns the contents of a stats file. The current stats file names are:
+
+=over
+
+=item * C<dists>
+
+=item * C<extensions>
+
+=item * C<users>
+
+=item * C<tags>
+
+=back
 
 =head3 C<mirrors>
 
