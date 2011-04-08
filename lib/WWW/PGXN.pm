@@ -53,8 +53,7 @@ sub get_tag {
 
 sub get_stats {
     my ($self, $name) = @_;
-    return undef unless $self->_uri_templates->{stats};
-    my $data = $self->_fetch_json(stats => { name => $name }) or return;
+    my $data = $self->_fetch_json(stats => { stats => $name }) or return;
 }
 
 my %valid_in = ( map { $_ => undef } qw(docs dists extensions users tags));
@@ -370,17 +369,19 @@ exception will be thrown.
 
   my $stats = $pgxn->get_stats($stats_name);
 
-Returns the contents of a stats file. The current stats file names are:
+Returns the contents of a stats file. The current stats names are:
 
 =over
 
-=item * C<dists>
+=item * C<summary>
 
-=item * C<extensions>
+=item * C<dist>
 
-=item * C<users>
+=item * C<extension>
 
-=item * C<tags>
+=item * C<user>
+
+=item * C<tag>
 
 =back
 

@@ -7,6 +7,7 @@
    "user":      "/user/{user}.json",
    "tag":       "/tag/{tag}.json",
    "mirrors":   "/meta/mirrors.json",
+   "stats":     "/stats/{stats}.json",
    "source":    "/src/{dist}/{dist}-{version}/",
    "doc":       "/dist/{dist}/{version}/{+doc}.html"
 }
