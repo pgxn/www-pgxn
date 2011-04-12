@@ -92,6 +92,16 @@ sub mirrors {
     } };
 }
 
+sub spec {
+    my ($self, $format) = @_;
+    $format ||= 'txt';
+    my $res = $self->_fetch(
+        $self->_url_for('spec' => { format => $format })
+    ) or return;
+    utf8::decode $res->{content};
+    return $res->{content};
+}
+
 sub url {
     my $self = shift;
     return $self->{url} unless @_;
@@ -391,6 +401,15 @@ Returns the contents of a stats file. The current stats names are:
 
 Returns a list of L<WWW::PGXN::Mirror> objects representing all of the mirrors
 in the network to which the PGXN API or mirror server belongs.
+
+=head3 C<spec>
+
+  my $spec = $pgxn->spec;
+  my $html = $pgxn->spec('html');
+
+Returns the contents of the PGXN Meta Spec document. By default, this is a
+text document. But you can get an HTML version by passing C<HTML> as the
+argument. Pass C<txt> to be specific about wanting the text document.
 
 =head3 C<search>
 

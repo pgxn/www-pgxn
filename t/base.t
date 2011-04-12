@@ -2,9 +2,10 @@
 
 use strict;
 use warnings;
-use Test::More tests => 30;
+use Test::More tests => 36;
 #use Test::More 'no_plan';
 use File::Spec::Functions qw(catfile);
+use utf8;
 
 my $CLASS;
 BEGIN {
@@ -141,3 +142,15 @@ is $pgxn->user_path_for('theory'),
 is $pgxn->doc_path_for('pair', '0.1.2', 'doc/foo'),
     '/dist/pair/0.1.2/doc/foo.html',
     'doc_path_for() should work';
+
+##############################################################################
+# Test spec fetching.
+ok my $spec = $pgxn->spec, 'Get spec';
+like $spec, qr{PGXN Meta Spec - The PGXN distribution metadatå specification$}m,
+    'It should look like the text file';
+ok $spec = $pgxn->spec('txt'), 'Get text spec';
+like $spec, qr{PGXN Meta Spec - The PGXN distribution metadatå specification$}m,
+    'It should look like the text file';
+ok $spec = $pgxn->spec('html'), 'Get HTML spec';
+like $spec, qr{<p>PGXN Meta Spec - The PGXN distribution metadatå specification</p>$}m,
+    'It should look like the HTML file';
