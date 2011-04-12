@@ -76,7 +76,7 @@ sub search {
         return $searcher->search(in => $in, %params);
     }
 
-    my $qurl = URI->new($url . "/search/$in");
+    my $qurl = $self->_url_for(search => { in => $in });
     $qurl->query_form({
         map { substr($_, 0, 1) => $params{$_} } keys %params
     });

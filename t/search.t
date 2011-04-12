@@ -26,6 +26,9 @@ $mocker->mock(_fetch => sub {
     $fetched_url = $_[1];
     return { content => '{"foo":"bar"}' };
 });
+$mocker->mock(_uri_templates => {
+    search => URI::Template->new('/search/{in}'),
+});
 
 my @query = ( query  => 'whü', offset => 2, limit  => 10 );
 # Track types.
