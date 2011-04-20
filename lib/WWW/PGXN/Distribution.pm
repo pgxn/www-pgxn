@@ -128,31 +128,31 @@ sub source_path {
     );
 }
 
-sub url_for_doc {
+sub url_for_html_doc {
     my $self = shift;
-    my $uri = $self->path_for_doc(shift) or return;
+    my $uri = $self->path_for_html_doc(shift) or return;
     return URI->new($self->{_pgxn}->url . $uri);
 }
 
-sub path_for_doc {
+sub path_for_html_doc {
     my ($self, $path) = @_;
     $self->_merge_meta unless $self->{version};
     return unless $self->{docs} && $self->{docs}{$path};
 
-    my $tmpl = $self->{_pgxn}->_uri_templates->{doc} or return;
+    my $tmpl = $self->{_pgxn}->_uri_templates->{htmldoc} or return;
     # XXX Nasty hack until we get + operator in URI Template v4.
     local $URI::Escape::escapes{'/'} = '/';
     $tmpl->process(
-        dist    => $self->name,
-        version => $self->version,
-        doc     => $path,
-        '+doc'  => $path, # XXX Part of above-mentioned hack.
+        dist       => $self->name,
+        version    => $self->version,
+        docpath    => $path,
+        '+docpath' => $path, # XXX Part of above-mentioned hack.
     );
 }
 
-sub body_for_doc {
+sub body_for_html_doc {
     my $self = shift;
-    my $url = $self->url_for_doc(shift) or return;
+    my $url = $self->url_for_html_doc(shift) or return;
     my $res = $self->{_pgxn}->_fetch($url) or return;
     utf8::decode $res->{content};
     return $res->{content};
@@ -340,7 +340,7 @@ keys are paths to documentation files, and the values are hashes with at least
 one key, C<title> which contains the title, of course. A second key,
 C<abstract>, is optional and contains an abstract of the document. The
 documentation files are stored as HTML and may be fetched via
-C<body_for_doc()>.
+C<body_for_html_doc()>.
 
 =head3 C<no_index>
 
@@ -652,29 +652,30 @@ for the given release status. The supported release statuses are:
 Returns a list of the versions for a particular release status, if any. The
 are returned in order from most to least recent.
 
-=head3 C<url_for_doc>
+=head3 C<url_for_html_doc>
 
   # returns http://api.pgxn.org/dist/pair/pair-0.1.1/doc/pair.html
-  my $doc_url = $distribution->url_for_doc('doc/pair');
+  my $doc_url = $distribution->url_for_html_doc('doc/pair');
 
-The absolute URL to a documentation file. Pass a document path to get its URL.
+The absolute URL to an HTML documentation file. Pass a document path to get
+its URL. The keys in the C<docs> hash reference represent all known document
+paths. If connected to a mirror, rather than an API server, C<undef> will be
+returned. Otherwise, if not document exists at that path, an exception will be
+thrown.
+
+=head3 C<path_for_html_doc>
+
+  # returns /dist/pair/pair-0.1.1/doc/pair.html
+  my $doc_url = $distribution->path_for_html_doc('doc/pair');
+
+The path to an HTML documentation file. Pass a document path to get its URL.
 The keys in the C<docs> hash reference represent all known document paths. If
 connected to a mirror, rather than an API server, C<undef> will be returned.
 Otherwise, if not document exists at that path, an exception will be thrown.
 
-=head3 C<path_for_doc>
+=head3 C<body_for_html_doc>
 
-  # returns /dist/pair/pair-0.1.1/doc/pair.html
-  my $doc_url = $distribution->path_for_doc('doc/pair');
-
-The path to a documentation file. Pass a document path to get its URL. The
-keys in the C<docs> hash reference represent all known document paths. If
-connected to a mirror, rather than an API server, C<undef> will be returned.
-Otherwise, if not document exists at that path, an exception will be thrown.
-
-=head3 C<body_for_doc>
-
-  my $body = $distribution->body_for_doc('README');
+  my $body = $distribution->body_for_html_doc('README');
 
 Returns the body of an HTML document. Pass in the path to the doc (minus a
 suffix) to retrieve its contents. They keys in the hash returned by C<docs>

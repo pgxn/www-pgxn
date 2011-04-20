@@ -147,21 +147,21 @@ BEGIN {
     }
 }
 
-sub doc_path_for {
-    my ($self, $dist, $version, $doc) = @_;
+sub html_doc_path_for {
+    my ($self, $dist, $version, $path) = @_;
     # XXX Nasty hack until we get + operator in URI Template v4.
     local $URI::Escape::escapes{'/'} = '/';
-    $self->_path_for(doc => {
-        dist    => $dist,
-        version => $version,
-        doc     => $doc,
-        '+doc'  => $doc,
+    $self->_path_for(htmldoc => {
+        dist       => $dist,
+        version    => $version,
+        docpath    => $path,
+        '+docpath' => $path,
     });
 }
 
-sub doc_url_for {
+sub html_doc_url_for {
     my $self = shift;
-    return URI->new($self->url . $self->doc_path_for(@_));
+    return URI->new($self->url . $self->html_doc_path_for(@_));
 }
 
 sub _uri_templates {
@@ -443,7 +443,7 @@ argument. Pass C<txt> to be specific about wanting the text document.
 =head3 C<search>
 
   my $results = $pgxn->search( query => 'tap' );
-  $results    = $pgxn->search( query => 'wicked', index => 'dist' );
+  $results    = $pgxn->search( query => 'wicked', index => 'dists' );
 
 Sends a search query to the API server (not supported for mirrors). For an API
 server accessed via a C<file:> URL, L<PGXN::API::Searcher> is required and
@@ -461,20 +461,20 @@ syntax of the query. Required.
 
 =item index
 
-The name of the search index to query. The default is "doc". The possible
+The name of the search index to query. The default is "docs". The possible
 values are:
 
 =over
 
-=item doc
+=item docs
 
-=item dist
+=item dists
 
-=item extension
+=item extensions
 
-=item user
+=item users
 
-=item tag
+=item tags
 
 =back
 
@@ -514,9 +514,9 @@ archive file containing the distribution itself.
 Returns the URL for a distribution source file. This URL is available only
 from an API server, not a mirror.
 
-=head3 C<doc_url_for>
+=head3 C<html_doc_url_for>
 
-  my $doc_url = $pgxn->doc_url_for($dist_name, $dist_version, $doc_path);
+  my $doc_url = $pgxn->html_doc_url_for($dist_name, $dist_version, $doc_path);
 
 Returns the URL for a distribution documentation file. This URL is available
 only from an API server, not a mirror.
@@ -561,9 +561,9 @@ Returns the download path for a distribution and version.
 Returns the path for a distribution source file. This path is available only
 from an API server, not a mirror.
 
-=head3 C<doc_path_for>
+=head3 C<html_doc_path_for>
 
-  my $doc_path = $pgxn->doc_path_for($dist_name, $dist_version, $doc_path);
+  my $doc_path = $pgxn->html_doc_path_for($dist_name, $dist_version, $doc_path);
 
 Returns the PATH for a distribution documentation file. This PATH is available
 only from an API server, not a mirror.

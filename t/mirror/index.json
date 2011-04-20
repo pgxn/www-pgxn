@@ -9,8 +9,7 @@
    "mirrors":   "/meta/mirrors.json",
    "stats":     "/stats/{stats}.json",
    "source":    "/src/{dist}/{dist}-{version}/",
-   "doc":       "/dist/{dist}/{version}/{+doc}.html",
+   "htmldoc":   "/dist/{dist}/{version}/{+docpath}.html",
    "spec":      "/meta/spec.{format}",
    "stats":     "/stats/{stats}.json"
 }
-

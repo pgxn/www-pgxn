@@ -24,3 +24,4 @@ API
 metadata
 JSON
 CPAN
+dists

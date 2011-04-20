@@ -111,9 +111,9 @@ is $pgxn->user_url_for('theory'),
     'file:t/mirror/user/theory.json',
     'user_url_for() should work';
 
-is $pgxn->doc_url_for('pair', '0.1.2', 'doc/foo'),
+is $pgxn->html_doc_url_for('pair', '0.1.2', 'doc/foo'),
     'file:t/mirror/dist/pair/0.1.2/doc/foo.html',
-    'doc_url_for() should work';
+    'html_doc_url_for() should work';
 
 is $pgxn->meta_path_for('pair', '1.2.0'),
     '/dist/pair/1.2.0/META.json',
@@ -139,9 +139,9 @@ is $pgxn->user_path_for('theory'),
     '/user/theory.json',
     'user_path_for() should work';
 
-is $pgxn->doc_path_for('pair', '0.1.2', 'doc/foo'),
+is $pgxn->html_doc_path_for('pair', '0.1.2', 'doc/foo'),
     '/dist/pair/0.1.2/doc/foo.html',
-    'doc_path_for() should work';
+    'html_doc_path_for() should work';
 
 ##############################################################################
 # Test spec fetching.

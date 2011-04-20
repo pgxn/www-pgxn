@@ -53,9 +53,9 @@ can_ok $dist => qw(
     source_url
     source_path
     download_to
-    body_for_doc
-    url_for_doc
-    path_for_doc
+    body_for_html_doc
+    url_for_html_doc
+    path_for_html_doc
 );
 is $dist->{_pgxn}, $pgxn, 'It should contain the WWW::PGXN object';
 
@@ -135,7 +135,7 @@ is_deeply $dist->docs, {
     'doc/pair' => { title => 'pair', abstract => 'A key/value pair data type' }
 }, 'Should have docs hash';
 
-ok my $doc = $dist->body_for_doc('README'),
+ok my $doc = $dist->body_for_html_doc('README'),
     'Fetch the README body';
 
 # Contents should be the decoded HTML.
@@ -147,7 +147,7 @@ is $doc, do {
 }, 'Should have the encoded contents of the file';
 
 # Do the same for the doc.
-ok $doc = $dist->body_for_doc('doc/pair'),
+ok $doc = $dist->body_for_html_doc('doc/pair'),
     'Fetch the doc/pair body';
 is $doc, do {
     my $fn = catfile qw(t mirror dist pair 0.1.1 doc pair.html);
@@ -156,23 +156,23 @@ is $doc, do {
     <$fh>;
 }, 'Should have the encoded contents of the doc/pair file';
 
-is $dist->url_for_doc('README'), 'file:t/mirror/dist/pair/0.1.1/README.html',
+is $dist->url_for_html_doc('README'), 'file:t/mirror/dist/pair/0.1.1/README.html',
     'Should have README URL';
-is $dist->url_for_doc('doc/pair'), 'file:t/mirror/dist/pair/0.1.1/doc/pair.html',
+is $dist->url_for_html_doc('doc/pair'), 'file:t/mirror/dist/pair/0.1.1/doc/pair.html',
     'Should have doc/pair URL';
-is $dist->path_for_doc('README'), '/dist/pair/0.1.1/README.html',
+is $dist->path_for_html_doc('README'), '/dist/pair/0.1.1/README.html',
     'Should have README path';
-is $dist->path_for_doc('doc/pair'), '/dist/pair/0.1.1/doc/pair.html',
+is $dist->path_for_html_doc('doc/pair'), '/dist/pair/0.1.1/doc/pair.html',
     'Should have doc/pair path';
-is $dist->path_for_doc('doc/nonexistent'), undef,
+is $dist->path_for_html_doc('doc/nonexistent'), undef,
     'Should get undef for nonexistent path';
 
 # Make sure we have no errors if there's no doc URI template.
-delete $pgxn->_uri_templates->{doc};
-is $dist->body_for_doc('README'), undef,
+delete $pgxn->_uri_templates->{htmldoc};
+is $dist->body_for_html_doc('README'), undef,
     'Should get no errors when no doc URI template';
-is $dist->url_for_doc('README'), undef, 'Should again have no README URL';
-is $dist->path_for_doc('README'), undef,
+is $dist->url_for_html_doc('README'), undef, 'Should again have no README URL';
+is $dist->path_for_html_doc('README'), undef,
     'Should again have no README path';
 
 ok $dist = $pgxn->get_distribution('pair'), 'Find current pair (0.1.2)';
@@ -185,12 +185,11 @@ is_deeply $dist->docs, {
 ok $dist = $pgxn->get_distribution('pair' => '0.1.0'),
     'Find pair 0.1.0';
 is_deeply $dist->docs, {}, 'Should have no docs';
-is $dist->body_for_doc('README'), undef, 'Should have no README.html';
-is $dist->body_for_doc('doc/pair'), undef, 'Should have no doc/pair.html';
-is $dist->url_for_doc('README'), undef, 'Should have no README URL';
-is $dist->path_for_doc('README'), undef,
+is $dist->body_for_html_doc('README'), undef, 'Should have no README.html';
+is $dist->body_for_html_doc('doc/pair'), undef, 'Should have no doc/pair.html';
+is $dist->url_for_html_doc('README'), undef, 'Should have no README URL';
+is $dist->path_for_html_doc('README'), undef,
     'Should have no README path';
-
 
 ##############################################################################
 # Test merging.
