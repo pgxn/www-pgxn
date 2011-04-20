@@ -184,10 +184,27 @@ The version of the distribution in which the extension may be found.
 A brief description of the extension. Available only from PGXN API servers,
 not mirrors.
 
+=item C<sha1>
+
+The SHA1 hash for the distribution archive file.
+
+=item C<docpath>
+
+A path to the documentation for the extension, if any.
+
 =back
 
 If no release has been made with the given status, an empty hash reference
-will be returned.
+will be returned. Here's an example of the structure for a distribution loaded
+from an API server:
+
+  {
+      dist     => 'pair',
+      version  => '0.1.1',
+      abstract => 'A key/value pair data type',
+      sha1     => 'c552c961400253e852250c5d2f3def183c81adb3',
+      docpath  => 'doc/pair',
+  }
 
 =head3 C<latest_info>
 

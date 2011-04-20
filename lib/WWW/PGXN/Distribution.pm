@@ -458,6 +458,19 @@ The L<semantic version|SemVer> of the resource.
 
 A brief description of the resource.
 
+=item C<docfile>
+
+A path to the documentation file for the resource, if any.
+
+=item C<docpath>
+
+A path to the documentation for the resource, usually the same as C<docfile>
+but without the file name extension. So if C<docfile> is F<docs/pair.txt>,
+C<docpath> would be F<docs/pair>. Provided only by the API server. May be
+present even if C<docfile> is not, since the API might have found the
+documentation even if the release manager didn't specify it in the
+F<META.json>.
+
 =back
 
 Here's an example of the structure for a simple distribution that provides a
@@ -467,7 +480,9 @@ single extension:
      pair => {
         abstract => 'A key/value pair data type',
         file     => 'sql/pair.sql',
-        version  => '0.1.1'
+        version  => '0.1.1',
+        docfile  => 'doc/pair.md',
+        docpath  => 'doc/pair',
      }
   }
 
