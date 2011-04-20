@@ -657,22 +657,20 @@ are returned in order from most to least recent.
   # returns http://api.pgxn.org/dist/pair/pair-0.1.1/doc/pair.html
   my $doc_url = $distribution->url_for_doc('doc/pair');
 
-The absolute URL to a documentation file. Pass the path to a document path to
-get its URL. The keys in the C<docs> hash reference represent all known
-document paths. If connected to a mirror, rather than an API server, C<undef>
-will be returned. Otherwise, if not document exists at that path, an exception
-will be thrown.
+The absolute URL to a documentation file. Pass a document path to get its URL.
+The keys in the C<docs> hash reference represent all known document paths. If
+connected to a mirror, rather than an API server, C<undef> will be returned.
+Otherwise, if not document exists at that path, an exception will be thrown.
 
 =head3 C<path_for_doc>
 
   # returns /dist/pair/pair-0.1.1/doc/pair.html
   my $doc_url = $distribution->path_for_doc('doc/pair');
 
-The path to a documentation file. Pass the path to a document path to get its
-URL. The keys in the C<docs> hash reference represent all known document
-paths. If connected to a mirror, rather than an API server, C<undef> will be
-returned. Otherwise, if not document exists at that path, an exception will be
-thrown.
+The path to a documentation file. Pass a document path to get its URL. The
+keys in the C<docs> hash reference represent all known document paths. If
+connected to a mirror, rather than an API server, C<undef> will be returned.
+Otherwise, if not document exists at that path, an exception will be thrown.
 
 =head3 C<body_for_doc>
 
