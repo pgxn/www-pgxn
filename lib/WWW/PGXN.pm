@@ -41,25 +41,25 @@ sub get_extension {
 
 sub get_user {
     my ($self, $user) = @_;
-    my $data = $self->_fetch_json(user => { user => $user }) or return;
+    my $data = $self->_fetch_json(user => { user => lc $user }) or return;
     WWW::PGXN::User->new($data);
 }
 
 sub get_tag {
     my ($self, $tag) = @_;
-    my $data = $self->_fetch_json(tag => { tag => $tag }) or return;
+    my $data = $self->_fetch_json(tag => { tag => lc $tag }) or return;
     WWW::PGXN::Tag->new($data);
 }
 
 sub get_stats {
     my ($self, $name) = @_;
-    my $data = $self->_fetch_json(stats => { stats => $name }) or return;
+    my $data = $self->_fetch_json(stats => { stats => lc $name }) or return;
 }
 
 sub get_userlist {
     my ($self, $char) = @_;
     return undef unless $self->_uri_templates->{userlist};
-    return $self->_fetch_json(userlist => { char => $char }) || [];
+    return $self->_fetch_json(userlist => { char => lc $char }) || [];
 }
 
 my %valid_in = ( map { $_ => undef } qw(docs dists extensions users tags));
@@ -102,7 +102,7 @@ sub spec {
     my ($self, $format) = @_;
     $format ||= 'txt';
     my $res = $self->_fetch(
-        $self->_url_for('spec' => { format => $format })
+        $self->_url_for('spec' => { format => lc $format })
     ) or return;
     utf8::decode $res->{content};
     return $res->{content};
@@ -139,10 +139,10 @@ BEGIN {
     for my $thing (qw(tag extension user)) {
         no strict 'refs';
         *{"$thing\_url_for"} = sub {
-            $_[0]->_url_for( $thing => { $thing => $_[1] });
+            $_[0]->_url_for( $thing => { $thing => lc $_[1] });
         };
         *{"$thing\_path_for"} = sub {
-            $_[0]->_path_for( $thing => { $thing => $_[1] });
+            $_[0]->_path_for( $thing => { $thing => lc $_[1] });
         };
     }
 }
