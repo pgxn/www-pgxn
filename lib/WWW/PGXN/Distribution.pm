@@ -75,8 +75,8 @@ sub _merge_meta {
     my $rel = $self->{releases};
     my $rels = $rel->{stable} || $rel->{testing} || $rel->{unstable};
     my $meta = $self->{_pgxn}->_fetch_json(meta => {
-        version => $rels->[0]{version},
-        dist    => $self->{name},
+        version => lc $rels->[0]{version},
+        dist    => lc $self->{name},
     }) || {};
     @{$self}{keys %{ $meta }} = values %{ $meta };
 }
@@ -84,7 +84,7 @@ sub _merge_meta {
 sub _merge_by_dist {
     my $self = shift;
     my $by_dist = $self->{_pgxn}->_fetch_json(dist => {
-        dist => $self->{name}
+        dist => lc $self->{name}
     }) || {};
     @{$self}{keys %{ $by_dist }} = values %{ $by_dist };
 }
@@ -92,24 +92,24 @@ sub _merge_by_dist {
 sub download_url {
     my $self = shift;
     $self->{_pgxn}->_url_for(download => {
-        dist    => $self->name,
-        version => $self->version
+        dist    => lc $self->name,
+        version => lc $self->version
     });
 }
 
 sub download_path {
     my $self = shift;
     $self->{_pgxn}->_path_for(download => {
-        dist    => $self->name,
-        version => $self->version
+        dist    => lc $self->name,
+        version => lc $self->version
     });
 }
 
 sub download_to {
     my $self = shift;
     $self->{_pgxn}->_download_to(shift, {
-        dist    => $self->name,
-        version => $self->version
+        dist    => lc $self->name,
+        version => lc $self->version
     });
 }
 
@@ -123,8 +123,8 @@ sub source_path {
     my $self = shift;
     my $tmpl = $self->{_pgxn}->_uri_templates->{source} or return;
     return $tmpl->process(
-        dist    => $self->name,
-        version => $self->version
+        dist    => lc $self->name,
+        version => lc $self->version
     );
 }
 
@@ -143,8 +143,8 @@ sub path_for_html_doc {
     # XXX Nasty hack until we get + operator in URI Template v4.
     local $URI::Escape::escapes{'/'} = '/';
     $tmpl->process(
-        dist       => $self->name,
-        version    => $self->version,
+        dist       => lc $self->name,
+        version    => lc $self->version,
         docpath    => $path,
         '+docpath' => $path, # XXX Part of above-mentioned hack.
     );

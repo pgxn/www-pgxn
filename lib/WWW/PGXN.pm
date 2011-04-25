@@ -27,14 +27,14 @@ sub get_distribution {
     my ($self, $dist, $version) = @_;
     my $data = $self->_fetch_json(
         (defined $version ? 'meta' : 'dist'),
-        { dist => $dist, version => $version || '' }
+        { dist => lc $dist, version => lc($version || '') }
     ) or return;
     WWW::PGXN::Distribution->new($self, $data);
 }
 
 sub get_extension {
     my ($self, $ext) = @_;
-    my $data = $self->_fetch_json(extension => { extension => $ext })
+    my $data = $self->_fetch_json(extension => { extension => lc $ext })
         or return;
     WWW::PGXN::Extension->new($self, $data);
 }
@@ -102,7 +102,7 @@ sub spec {
     my ($self, $format) = @_;
     $format ||= 'txt';
     my $res = $self->_fetch(
-        $self->_url_for('spec' => { format => lc $format })
+        $self->_url_for('spec' => { format => $format })
     ) or return;
     utf8::decode $res->{content};
     return $res->{content};
@@ -129,10 +129,10 @@ BEGIN {
     for my $thing (qw(meta download source)) {
         no strict 'refs';
         *{"$thing\_url_for"} = sub {
-            $_[0]->_url_for( $thing => { dist => $_[1], version => $_[2] });
+            $_[0]->_url_for( $thing => { dist => lc $_[1], version => lc $_[2] });
         };
         *{"$thing\_path_for"} = sub {
-            $_[0]->_path_for( $thing => { dist => $_[1], version => $_[2] });
+            $_[0]->_path_for( $thing => { dist => lc $_[1], version => lc $_[2] });
         };
     }
 
@@ -152,8 +152,8 @@ sub html_doc_path_for {
     # XXX Nasty hack until we get + operator in URI Template v4.
     local $URI::Escape::escapes{'/'} = '/';
     $self->_path_for(htmldoc => {
-        dist       => $dist,
-        version    => $version,
+        dist       => lc $dist,
+        version    => lc $version,
         docpath    => $path,
         '+docpath' => $path,
     });
