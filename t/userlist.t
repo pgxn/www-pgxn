@@ -22,7 +22,7 @@ is $pgxn->get_userlist('t'), undef,
     'Should get no userlist when no userlist template';
 
 # Add a template but fetch a non-existent file.
-$pgxn->_uri_templates->{userlist} = URI::Template->new('/users/{char}.json');
+$pgxn->_uri_templates->{userlist} = URI::Template->new('/users/{letter}.json');
 is_deeply $pgxn->get_userlist('z'), [],
     'Should get empty userlist when no userlist file';
 

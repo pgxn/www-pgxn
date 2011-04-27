@@ -57,9 +57,9 @@ sub get_stats {
 }
 
 sub get_userlist {
-    my ($self, $char) = @_;
+    my ($self, $letter) = @_;
     return undef unless $self->_uri_templates->{userlist};
-    return $self->_fetch_json(userlist => { char => lc $char }) || [];
+    return $self->_fetch_json(userlist => { letter => lc $letter }) || [];
 }
 
 my %valid_in = ( map { $_ => undef } qw(docs dists extensions users tags));
@@ -406,11 +406,11 @@ Returns the contents of a stats file. The current stats names are:
   my $userlist = $pgxn->get_userlist('t');
 
 Returns a the contents of a user list, which contains data on all users whose
-nickname starts with the specified character. If called against a mirror, this
-method always returns C<undef>. When called against an API, it will always
-return an array of users. If there is no user list file for the specified
-letter, the array will be empty. Otherwise, it will contain a list of hash
-references with two keys:
+nickname starts with the specified lowercase ASCII letter. If called against a
+mirror, this method always returns C<undef>. When called against an API, it
+will always return an array of users. If there is no user list file for the
+specified letter, the array will be empty. Otherwise, it will contain a list
+of hash references with two keys:
 
 =over
 
