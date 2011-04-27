@@ -92,7 +92,7 @@ is $pgxn->meta_url_for('pair', '1.2.0'),
     'meta_url_for() shuld work';
 
 is $pgxn->download_url_for('pair', '1.2.0'),
-    'file:t/mirror/dist/pair/1.2.0/pair-1.2.0.pgz',
+    'file:t/mirror/dist/pair/1.2.0/pair-1.2.0.zip',
     'download_url_for() shuld work';
 
 is $pgxn->source_url_for('pair', '1.2.0'),
@@ -120,7 +120,7 @@ is $pgxn->meta_path_for('pair', '1.2.0'),
     'meta_path_for() shuld work';
 
 is $pgxn->download_path_for('pair', '1.2.0'),
-    '/dist/pair/1.2.0/pair-1.2.0.pgz',
+    '/dist/pair/1.2.0/pair-1.2.0.zip',
     'download_path_for() shuld work';
 
 is $pgxn->source_path_for('pair', '1.2.0'),

@@ -288,7 +288,7 @@ version of the extension exists.
 Downloads the distribution containing the latest version of the extension with
 the named release status. Pass the name of the file to save to, or the name of
 a directory. If a directory is specified, the file will be written with the
-same name as it has on PGXN, such as C<pgTAP-0.24.0.pgz>. Either way, the name
+same name as it has on PGXN, such as C<pgtap-0.24.0.zip>. Either way, the name
 of the file written will be returned. Regardless of the file's name, it will
 always be a zip archive.
 

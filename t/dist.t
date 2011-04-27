@@ -222,9 +222,9 @@ is $dist->version, '0.1.2', 'Version should be "0.1.2"';
 ok $dist = $pgxn->get_distribution('pair' => '0.1.1'),
     'Find pair 1.0.1';
 
-is $dist->download_url, 'file:t/mirror/dist/pair/0.1.1/pair-0.1.1.pgz',
+is $dist->download_url, 'file:t/mirror/dist/pair/0.1.1/pair-0.1.1.zip',
     'Should have donload URL';
-is $dist->download_path, '/dist/pair/0.1.1/pair-0.1.1.pgz',
+is $dist->download_path, '/dist/pair/0.1.1/pair-0.1.1.zip',
     'Should have download path';
 
 # Check source URLs.
@@ -237,14 +237,14 @@ is $dist->source_url, undef, 'Should have no source URL when no tmplate';
 is $dist->source_path, undef, 'Should have no source path when no tmplate';
 
 # Download to a file.
-my $zip = catfile qw(t pair-0.1.1.zip);
+my $zip = catfile qw(t my-pair-0.1.1.zip);
 ok !-e $zip, "$zip should not yet exist";
 END { unlink $zip }
 is $dist->download_to($zip), $zip, "Download to $zip";
 ok -e $zip, "$zip should now exist";
 
-# Download to a diretory.
-my $pgz = catfile qw(t pair-0.1.1.pgz);
+# Download to a directory.
+my $pgz = catfile qw(t pair-0.1.1.zip);
 ok !-e $pgz, "$pgz should not yet exist";
 END { unlink $pgz }
 is $dist->download_to('t'), $pgz, 'Download to t/';

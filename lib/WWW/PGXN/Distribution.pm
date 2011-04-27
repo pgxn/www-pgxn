@@ -564,11 +564,11 @@ like so:
 The absolute URL for the distribution archive file on the mirror or API sever,
 such as
 
-  http://api.pgxn.org/dist/pair/pair-0.1.1.pgz
+  http://api.pgxn.org/dist/pair/pair-0.1.1.zip
 
 Or, for a file system URL:
 
-  file:/path/to/mirror/dist/pair/pair-0.1.1.pgz
+  file:/path/to/mirror/dist/pair/pair-0.1.1.zip
 
 =head3 C<download_path>
 
@@ -579,7 +579,7 @@ PGXN mirror root. So rather than the full URL you'd get from the C<url>
 method, you just get the path as derived from the distribution URI template,
 for example:
 
-  /dist/pair/pair-0.1.1.pgz
+  /dist/pair/pair-0.1.1.zip
 
 =head3 C<source_url>
 
@@ -615,7 +615,7 @@ URI template, for example:
 
 Downloads the distribution. Pass the name of the file to save to, or the name
 of a directory. If a directory is specified, the file will be written with the
-same name as it has on PGXN, such as C<pgTAP-0.24.0.pgz>. Either way, the name
+same name as it has on PGXN, such as C<pgtap-0.24.0.zip>. Either way, the name
 of the file written will be returned. Regardless of the file's name, it will
 always be a zip archive.
 
