@@ -12,7 +12,7 @@ use URI::Template;
 use JSON ();
 use Carp;
 
-our $VERSION = v0.12.0;
+our $VERSION = v0.12.1;
 
 sub new {
     my($class, %params) = @_;
