@@ -286,19 +286,22 @@ WWW::PGXN - Interface to PGXN mirrors and the PGXN API
 =head1 Description
 
 This module provide a simple Perl interface over the the L<PGXN
-API|http://api.pgxn.org/>. It also works with any PGXN mirror server. It
-provides an interface for finding distributions, extensions, users, and tags.
-It's designed to make it dead simple for applications such as web apps and
-command-line clients to get the data they need from a PGXN mirror with a
-minimum of hassle, including via the file system, if there is a local mirror.
+API|http://github.com/pgxn/pgxn-api/wiki>. It also works with any PGXN mirror
+server. It provides an interface for finding distributions, extensions, users,
+and tags, as well as for accessing documentation, lists of users, and the
+full-text search interface. WWW::PGXN is designed to make it dead simple for
+applications such as web apps and command-line clients to get the data they
+need from a PGXN mirror with a minimum of hassle, including via the file
+system, if there is a local mirror.
 
 L<PGXN|http://pgxn.org> is a L<CPAN|http://cpan.org>-inspired network for
 distributing extensions for the L<PostgreSQL RDBMS|http://www.postgresql.org>.
 All of the infrastructure tools, however, have been designed to be used to
-create networks for distributing any kind of release distributions. As such,
-WWW::PGXN should work with any mirror that gets its data from a
+create networks for distributing any kind of release distributions and for
+providing a lightweight static file JSON REST API. As such, WWW::PGXN should
+work with any mirror that gets its data from a
 L<PGXN::Manager|http://github.com/theory/pgxn-manager>-managed master server,
-and with any L<PGXN::API|http://github.com/theory/pgxn-api>-powered server.
+and with any L<PGXN::API>-powered server.
 
 =head1 Interface
 
@@ -590,14 +593,19 @@ Returns the path for an tag metadata file.
 
 =over
 
-=item * L<PGXN|http://www.pgxn.org/>
+=item * L<PGXN|http://pgxn.org/>
 
 The PostgreSQL Extension Network, the reference implementation of the PGXN
 infrastructure.
 
-=item * L<PGXN::API|http://github.com/theory/pgxn-api>
+=item * L<PGXN::API>
 
 Creates and serves a PGXN API implementation from a PGXN mirror.
+
+=item * L<API Documentation|http://github.com/theory/pgxn-api>
+
+Comprehensive documentation of the REST API provided by L<PGXN::API> and
+consumed by WWW::PGXN.
 
 =item * L<PGXN::Manager|http://github.com/theory/pgxn-manager>
 
