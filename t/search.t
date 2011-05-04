@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use Test::More tests => 39;
 #use Test::More 'no_plan';
+use File::Spec::Functions qw(catdir);
 use Test::MockModule;
 use WWW::PGXN;
 
@@ -42,10 +43,11 @@ for my $in (qw(docs dists extensions users tags)) {
 # Now make sure that the file system does the right thing.
 ok $pgxn->url('file:t/mirror'), 'Set a file: URL';
 $mocker->unmock_all;
+my $path = catdir qw(t mirror);
 
 for my $in (qw(docs dists extensions users tags)) {
     ok my $res = $pgxn->search(in => $in, @query), "Search via file:/search/${in}s";
-    is $searcher_path, 't/mirror',
+    is $searcher_path, $path,
     'The file system path should have been passed to the searcher';
     is_deeply $res, {foo => 1}, "Should have the $in results";
     is_deeply \%params, {in => $in, @query}, "Searcher shoudld have got $in args";
