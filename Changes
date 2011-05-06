@@ -2,6 +2,7 @@ Revision history for Perl extension WWW-PGXN.
 
 0.12.1
       - Fixed test failures on Windows.
+      - Support Perl 5.10 and higher. Tests were failing on 5.8.
 
 0.12.0  2011-04-29T21:50:27
       - Initial public release on CPAN.

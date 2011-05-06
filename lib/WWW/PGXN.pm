@@ -1,6 +1,6 @@
 package WWW::PGXN;
 
-use 5.008001;
+use 5.010;
 use strict;
 use WWW::PGXN::Distribution;
 use WWW::PGXN::Extension;
