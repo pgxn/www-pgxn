@@ -25,7 +25,7 @@ Dependencies
 
 WWW-PGXN requires the following modules:
 
-* perl 5.8.1
+* perl 5.10.0
 
 Copyright and Licence
 ---------------------
