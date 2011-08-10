@@ -1,5 +1,7 @@
 Revision history for Perl extension WWW-PGXN.
 
+0.12.3
+
 0.12.2  2011-08-10T17:25:27
       - Require URI::Template 0.15.
 
