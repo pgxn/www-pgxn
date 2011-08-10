@@ -19,7 +19,7 @@ Module::Build->new(
         'HTTP::Tiny'    => 0,
         'JSON'          => 0,
         'perl'          => 5.010,
-        'URI::Template' => 0,
+        'URI::Template' => '0.15',
     },
     recommends => {
         'Test::Pod'           => '1.41',
