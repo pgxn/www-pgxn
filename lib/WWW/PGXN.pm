@@ -459,8 +459,8 @@ The supported parameters are:
 
 =item query
 
-The search query. See L<KinoSearch::Search::QueryParser> for the supported
-syntax of the query. Required.
+The search query. See L<Lucy::Search::QueryParser> for the supported syntax of
+the query. Required.
 
 =item index
 
