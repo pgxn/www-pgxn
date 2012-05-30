@@ -149,13 +149,10 @@ BEGIN {
 
 sub html_doc_path_for {
     my ($self, $dist, $version, $path) = @_;
-    # XXX Nasty hack until we get + operator in URI Template v4.
-    local $URI::Escape::escapes{'/'} = '/';
     $self->_path_for(htmldoc => {
-        dist       => lc $dist,
-        version    => lc $version,
-        docpath    => $path,
-        '+docpath' => $path,
+        dist    => lc $dist,
+        version => lc $version,
+        docpath => $path,
     });
 }
 

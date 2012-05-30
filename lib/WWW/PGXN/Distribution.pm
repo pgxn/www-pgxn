@@ -140,13 +140,10 @@ sub path_for_html_doc {
     return unless $self->{docs} && $self->{docs}{$path};
 
     my $tmpl = $self->{_pgxn}->_uri_templates->{htmldoc} or return;
-    # XXX Nasty hack until we get + operator in URI Template v4.
-    local $URI::Escape::escapes{'/'} = '/';
     $tmpl->process(
-        dist       => lc $self->name,
-        version    => lc $self->version,
-        docpath    => $path,
-        '+docpath' => $path, # XXX Part of above-mentioned hack.
+        dist    => lc $self->name,
+        version => lc $self->version,
+        docpath => $path,
     );
 }
 
