@@ -2,11 +2,12 @@
 
 use strict;
 use warnings;
-use Test::More tests => 39;
+use Test::More tests => 44;
 #use Test::More 'no_plan';
 use File::Spec::Functions qw(catdir);
 use Test::MockModule;
 use WWW::PGXN;
+use URI::QueryParam;
 
 my $searcher_path;
 my %params;
@@ -36,8 +37,11 @@ my @query = ( query  => 'whü', offset => 2, limit  => 10 );
 for my $in (qw(docs dists extensions users tags)) {
     ok my $res = $pgxn->search(in => $in, @query), "Search in $in";
     is_deeply $res, {foo => 'bar'}, "Should have the $in results";
-    is $fetched_url, "http://api.pgxn.org/search/$in?l=10&q=wh%C3%BC&o=2",
-        "Should have requested the proper $in URL";
+    is_deeply $fetched_url->query_form_hash, { l => 10, q => 'whü', o => 2 },
+        "Should have requested the proper $in URL query form";
+    $fetched_url->query_form([]);
+    is $fetched_url, "http://api.pgxn.org/search/$in",
+        "Should have requested the proper $in URL host and path";
 }
 
 # Now make sure that the file system does the right thing.
