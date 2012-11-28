@@ -3,7 +3,7 @@ package WWW::PGXN::Mirror;
 use 5.8.1;
 use strict;
 
-our $VERSION = v0.12.3;
+our $VERSION = v0.12.4;
 
 BEGIN {
     for my $attr (qw(

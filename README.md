@@ -1,4 +1,4 @@
-WWW/PGXN version 0.12.3
+WWW/PGXN version 0.12.4
 =======================
 
 This library's module, WWW::PGXN, provides a simple Perl interface to the PGXN
