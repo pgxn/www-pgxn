@@ -1,6 +1,6 @@
 Revision history for Perl extension WWW-PGXN.
 
-0.12.4
+0.12.4  2013-11-06T05:56:15Z
       - Removed the Pod tests from the distribution.
       - Fixed user agent string so it actually includes the version number.
         This prevents nginx from returning a 400 response.
