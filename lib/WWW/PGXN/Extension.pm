@@ -3,7 +3,7 @@ package WWW::PGXN::Extension;
 use 5.8.1;
 use strict;
 
-our $VERSION = v0.12.4;
+our $VERSION = v0.12.5;
 
 BEGIN {
     # Hash accessors.

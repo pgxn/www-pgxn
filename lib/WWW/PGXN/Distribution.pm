@@ -4,7 +4,7 @@ use 5.8.1;
 use strict;
 use File::Spec;
 use Carp;
-our $VERSION = v0.12.4;
+our $VERSION = v0.12.5;
 
 BEGIN {
     # XXX Use DateTime for release date?

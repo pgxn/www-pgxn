@@ -3,7 +3,7 @@ package WWW::PGXN::Tag;
 use 5.8.1;
 use strict;
 
-our $VERSION = v0.12.4;
+our $VERSION = v0.12.5;
 
 sub new {
     my ($class, $data) = @_;
