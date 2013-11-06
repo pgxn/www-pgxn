@@ -2,6 +2,8 @@ Revision history for Perl extension WWW-PGXN.
 
 0.12.4
       - Removed the Pod tests from the distribution.
+      - Fixed user agent string so it actually includes the version number.
+        This prevents nginx from returning a 400 response.
 
 0.12.3  2012-11-28T01:09:09Z
       - Updated URI::Template to v0.16 for its support for `{+var}` and
