@@ -29,7 +29,7 @@ Module::Build->new(
         resources => {
             homepage   => 'http://search.cpan.org/dist/WWW-PGXN/',
             bugtracker => 'http://github.com/theory/www-pgxn/issues/',
-            repository => 'http://github.com/theory/www-pgxn/tree/',
+            repository => 'http://github.com/theory/www-pgxn',
         }
     },
 )->create_build_script;
