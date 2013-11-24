@@ -28,8 +28,8 @@ Module::Build->new(
     meta_merge => {
         resources => {
             homepage   => 'http://search.cpan.org/dist/WWW-PGXN/',
-            bugtracker => 'http://github.com/theory/www-pgxn/issues/',
-            repository => 'http://github.com/theory/www-pgxn',
+            bugtracker => 'http://github.com/pgxn/www-pgxn/issues/',
+            repository => 'http://github.com/pgxn/www-pgxn',
         }
     },
 )->create_build_script;
