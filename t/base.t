@@ -18,8 +18,8 @@ SEARCHER: {
     $INC{'PGXN/API/Searcher.pm'} = __FILE__;
 }
 
-my $pgxn = new_ok $CLASS, [ url => 'http://api.pgxn.org/' ];
-is $pgxn->url, 'http://api.pgxn.org', 'Should have the URL';
+my $pgxn = new_ok $CLASS, [ url => 'https://api.pgxn.org/' ];
+is $pgxn->url, 'https://api.pgxn.org', 'Should have the URL';
 is $pgxn->proxy, undef, 'Should have no proxy';
 
 ##############################################################################

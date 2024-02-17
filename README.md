@@ -26,11 +26,14 @@ Dependencies
 WWW-PGXN requires the following modules:
 
 * perl 5.10.0
+* HTTP::Tiny
+* JSON
+* URI::Template 0.16
 
-Copyright and Licence
+Copyright and License
 ---------------------
 
-Copyright (c) 2011 David E. Wheeler. Some Rights Reserved.
+Copyright (c) 2011-2024 David E. Wheeler. Some Rights Reserved.
 
 This module is free software; you can redistribute it and/or modify it under
 the same terms as Perl itself.
