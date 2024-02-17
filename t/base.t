@@ -42,7 +42,7 @@ is_deeply $res, {
 }, 'Should have "not found" response';
 
 my $f = catfile qw(t mirror index.json);
-open my $fh, '<:raw:crlf', $f or die "Cannot open $f: $!\n";
+open my $fh, '<:raw', $f or die "Cannot open $f: $!\n";
 my $json = do {
     local $/;
     <$fh>;
@@ -146,11 +146,11 @@ is $pgxn->html_doc_path_for('pair', '0.1.2', 'doc/foo'),
 ##############################################################################
 # Test spec fetching.
 ok my $spec = $pgxn->spec, 'Get spec';
-like $spec, qr{PGXN Meta Spec - The PGXN distribution metadatå specification$}m,
+like $spec, qr{PGXN Meta Spec - The PGXN distribution metadatå specification\r?$}m,
     'It should look like the text file';
 ok $spec = $pgxn->spec('txt'), 'Get text spec';
-like $spec, qr{PGXN Meta Spec - The PGXN distribution metadatå specification$}m,
+like $spec, qr{PGXN Meta Spec - The PGXN distribution metadatå specification\r?$}m,
     'It should look like the text file';
 ok $spec = $pgxn->spec('html'), 'Get HTML spec';
-like $spec, qr{<p>PGXN Meta Spec - The PGXN distribution metadatå specification</p>$}m,
+like $spec, qr{<p>PGXN Meta Spec - The PGXN distribution metadatå specification</p>\r?$}m,
     'It should look like the HTML file';
