@@ -250,7 +250,7 @@ sub get {
         headers => {},
     } unless -e $file;
 
-    open my $fh, '<:raw', $file or return {
+    open my $fh, '<:raw:crlf', $file or return {
         success => 0,
         status  => 500,
         reason  => $!,

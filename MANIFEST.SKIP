@@ -5,7 +5,7 @@
 \B\.svn\b
 \B\.git
 
-# Avoid Makemaker generated and utility files.
+# Avoid MakeMaker generated and utility files.
 \bMakefile$
 \bblib
 \bMakeMaker-\d
@@ -16,6 +16,7 @@
 # Avoid Module::Build generated and utility files.
 \bBuild$
 \b_build
+^latest_changes\.md$
 
 # Avoid temp and backup files.
 ~$
@@ -26,7 +27,7 @@
 \b\.#
 
 # Avoid build files.
-^WWW-PGXN
+^PGXN-API
 
 # Avoid Pod tests.
 t/pod.+

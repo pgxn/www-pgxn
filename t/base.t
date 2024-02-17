@@ -42,7 +42,7 @@ is_deeply $res, {
 }, 'Should have "not found" response';
 
 my $f = catfile qw(t mirror index.json);
-open my $fh, '<:raw', $f or die "Cannot open $f: $!\n";
+open my $fh, '<:raw:crlf', $f or die "Cannot open $f: $!\n";
 my $json = do {
     local $/;
     <$fh>;
