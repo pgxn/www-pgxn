@@ -3,7 +3,7 @@ package WWW::PGXN::User;
 use 5.8.1;
 use strict;
 
-our $VERSION = v0.12.5;
+our $VERSION = v0.13.0;
 
 BEGIN {
     for my $attr (qw(
