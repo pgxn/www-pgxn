@@ -614,9 +614,9 @@ distributions to it.
 =head1 Support
 
 This module is stored in a public
-L<GitHub repository|https://github.com/theory/www-pgxn/>. Feel free to fork
+L<GitHub repository|https://github.com/pgxn/www-pgxn/>. Feel free to fork
 and contribute! Please file bug reports via
-L<GitHub Issues|https://github.com/theory/www-pgxn/issues/>
+L<GitHub Issues|https://github.com/pgxn/www-pgxn/issues/>
 
 =head1 Author
 

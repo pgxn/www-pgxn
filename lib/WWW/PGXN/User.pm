@@ -42,9 +42,9 @@ WWW::PGXN::User - User metadata fetched from PGXN
 
 =head1 Description
 
-This module represents PGXN user metadata fetched from PGXN>. It is not
-intended to be constructed directly, but via the L<WWW::PGXN/get_user> method
-of L<WWW::PGXN>.
+This module represents PGXN user metadata fetched from
+L<PGXN|https://pgxn.org>. It is not intended to be constructed directly, but
+via L<WWW::PGXN/get_user>.
 
 =head1 Interface
 
@@ -158,13 +158,10 @@ The main class to communicate with a PGXN mirror or API server.
 
 =head1 Support
 
-This module is stored in an open L<GitHub
-repository|https://github.com/theory/www-pgxn/>. Feel free to fork and
-contribute!
-
-Please file bug reports via L<GitHub
-Issues|https://github.com/theory/www-pgxn/issues/> or by sending mail to
-L<bug-WWW-PGXN@rt.cpan.org|mailto:bug-WWW-PGXN@rt.cpan.org>.
+This module is stored in a public
+L<GitHub repository|https://github.com/pgxn/www-pgxn/>.
+Feel free to fork and contribute! Please file bug reports via
+L<GitHub Issues|https://github.com/pgxn/www-pgxn/issues/>.
 
 =head1 Author
 

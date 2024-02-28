@@ -171,9 +171,10 @@ WWW::PGXN::Distribution - Distribution metadata fetched from PGXN
 
 =head1 Description
 
-This module represents PGXN distribution metadata fetched from PGXN>. It is
-not intended to be constructed directly, but via the
-L<WWW::PGXN/get_distribution> method of L<WWW::PGXN>.
+
+This module represents PGXN distribution metadata fetched from
+L<PGXN|https://pgxn.org>. It is not intended to be constructed directly, but
+via L<WWW::PGXN/get_distribution>.
 
 =head1 Interface
 
@@ -344,9 +345,9 @@ C<body_for_html_doc()>.
   my $no_index = $distribution->no_index;
 
 Returns a hash reference describing files and directories that should not be
-indexed by search engines or the PGXN infrastructure. The L<PGXN Meta
-spec|https://pgxn.org/meta/spec.html#no_index> specifies that the structure of
-this hash contain only these keys:
+indexed by search engines or the PGXN infrastructure. The
+L<PGXN Meta spec|https://pgxn.org/meta/spec.html#no_index> specifies that the
+structure of this hash contain only these keys:
 
 =over
 
@@ -730,13 +731,10 @@ The main class to communicate with a PGXN mirror or API server.
 
 =head1 Support
 
-This module is stored in an open L<GitHub
-repository|https://github.com/theory/www-pgxn/>. Feel free to fork and
-contribute!
-
-Please file bug reports via L<GitHub
-Issues|https://github.com/theory/www-pgxn/issues/> or by sending mail to
-L<bug-WWW-PGXN@rt.cpan.org|mailto:bug-WWW-PGXN@rt.cpan.org>.
+This module is stored in a public
+L<GitHub repository|https://github.com/pgxn/www-pgxn/>.
+Feel free to fork and contribute! Please file bug reports via
+L<GitHub Issues|https://github.com/pgxn/www-pgxn/issues/>.
 
 =head1 Author
 
