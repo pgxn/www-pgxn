@@ -30,7 +30,7 @@ Dependencies
 
 WWW-PGXN requires the following modules:
 
-*   perl 5.10.0
+*   perl 5.12.0
 *   HTTP::Tiny
 *   JSON
 *   URI::Template 0.16

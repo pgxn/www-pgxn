@@ -4,6 +4,8 @@ Revision history for Perl extension WWW-PGXN.
       - Tweaked the Pod for the submodule (Distribution, User, Tag, etc.).
       - Fixed outdated GitHub links and removed the rt.cpan.org bug reporting
         address.
+      - Dropped support for Perl 5.10, as upstream some dependencies now
+        require Perl 5.12.
 
 0.13.0  2024-02-17T22:23:29Z
       - Added CI tests for Perls 5.10 - 5.38 on Linux, macOS, and Windows.
